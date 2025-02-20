@@ -23,11 +23,6 @@
 
     <dependencies>
         <dependency>
-            <artifactId>core</artifactId>
-            <version>1.0</version>
-            <groupId>com.example</groupId>
-        </dependency>
-        <dependency>
             <groupId>org.jobrunr</groupId>
             <artifactId>jobrunr-spring-boot-3-starter</artifactId>
             <version>6.1.4</version>

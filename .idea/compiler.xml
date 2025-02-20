@@ -40,7 +40,7 @@
       <module name="config-sever" options="-parameters" />
       <module name="core" options="-parameters" />
       <module name="department-service" options="-parameters" />
-      <module name="discount-service" options="-parameters" />
+      <module name="discount-service" options="" />
       <module name="discount-service (1)" options="-parameters" />
       <module name="discount-service (2)" options="-parameters" />
       <module name="employee-service" options="-parameters" />

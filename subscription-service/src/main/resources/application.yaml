@@ -1,0 +1,39 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: mail-delivery
+  cache:
+    type: redis
+    redis:
+      cache-null-values: false
+      use-key-prefix: true
+      time-to-live: 3000
+  data:
+    redis:
+      host: redis-19160.c292.ap-southeast-1-1.ec2.redns.redis-cloud.com
+      port: 19160
+      username: default
+      password: UW1mVlhCWk5wakRxUkQ1MnZmdHlxYjVQZm9Ta0djYjk=
+      havePassword: YES
+  kafka:
+    consumer:
+      bootstrap-servers: localhost
+      group-id: group_id
+mail:
+  smtp:
+    port: 587
+    username: sonptph25875@fpt.edu.vn
+    password: aWJsYSBld3JoIHp3Y3kgY25kaA==
+    host: smtp.gmail.com
+    sender: EKROK-CINEMA
+cloudflare:
+  r2:
+    access-key-id: "NDg5MDEwY2MyNTc3NWY0M2IxMTMxNWRhOGM5ZThlY2Y="
+    secret-access-key: "ODNjZmI2ZmMyNDg1YjJiZGJjNjUyNDc4ZWM0ZGFiNGVhNjlmNTQ2ZjM2MmRjM2Y0ODNiZmRhN2E1M2Y3ZDg2Zg=="
+    bucket-name: "ekrok-cinema"
+    region: "auto"
+    endpoint: "https://d06c0f7e9f2d0c33fee98a0934f64d09.r2.cloudflarestorage.com"
+kafka:
+  server-config: localhost:9092
+  group-id: service

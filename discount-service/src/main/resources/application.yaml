@@ -32,3 +32,6 @@ cloudflare:
     bucket-name: ekrok-cinema
     region: auto
     endpoint: https://d06c0f7e9f2d0c33fee98a0934f64d09.r2.cloudflarestorage.com
+kafka:
+  server-config: localhost:9092
+  group-id: service

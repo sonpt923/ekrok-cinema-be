@@ -22,6 +22,9 @@ spring:
       database: notification-service
       username: admin
       password: Son191203
+kafka:
+  group-id: service-demo
+  server-config: localhost:9092
 cloudflare:
   r2:
     access-key-id: NDg5MDEwY2MyNTc3NWY0M2IxMTMxNWRhOGM5ZThlY2Y=

@@ -2,7 +2,6 @@ package com.example.notificationservice.controller;
 
 import com.example.config.EnableWrapResponse;
 import com.example.notificationservice.dto.request.MailRequest;
-import com.example.notificationservice.model.MailTemplate;
 import com.example.notificationservice.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

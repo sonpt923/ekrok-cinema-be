@@ -2,7 +2,6 @@ package com.example.notificationservice.service.impl;
 
 import com.example.exception.ValidationException;
 import com.example.notificationservice.dto.request.MailRequest;
-import com.example.notificationservice.model.MailTemplate;
 import com.example.notificationservice.repository.MailTemplateRepository;
 import com.example.notificationservice.repository.customize.MailTemplateRepositoryCustom;
 import com.example.notificationservice.service.MailService;
@@ -12,9 +11,6 @@ import com.example.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class MailServiceImpl implements MailService {

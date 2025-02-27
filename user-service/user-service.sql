@@ -1,7 +1,7 @@
 CREATE
 DATABASE `user-service`;
 
-CREATE TABLE `user-service`.`new_table`
+CREATE TABLE `user-service`.`user`
 (
     `id`         BIGINT       NOT NULL AUTO_INCREMENT,
     `username`   VARCHAR(45)  NOT NULL,
@@ -15,3 +15,9 @@ CREATE TABLE `user-service`.`new_table`
     PRIMARY KEY (`id`),
     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE
 );
+
+CREATE TABLE  `user-service`.``
+(
+    `id` BIGINT  NOT NULL AUTO_INCREMENT,
+    ``   VARCHAR(45) NOT NULL
+)

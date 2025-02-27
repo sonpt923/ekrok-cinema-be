@@ -1,6 +1,7 @@
 package com.example.recommendationservice.service;
 
 import com.example.recommendationservice.dto.request.UserRequest;
+import org.springframework.http.ResponseEntity;
 
 public interface UserService {
 
@@ -11,5 +12,10 @@ public interface UserService {
     Object deleteUser(UserRequest userRequest);
 
     Object findAccountByCondition(UserRequest userRequest);
+
+    Object revolkToken(UserRequest userRequest);
+
+    Object deleteAccount(UserRequest userRequest);
+
 
 }

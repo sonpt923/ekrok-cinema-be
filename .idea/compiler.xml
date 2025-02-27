@@ -17,7 +17,6 @@
         <module name="core" />
         <module name="payment-service" />
         <module name="schedule-service" />
-        <module name="discount-service" />
         <module name="api-gateway" />
         <module name="saga-service" />
         <module name="config-sever" />
@@ -26,6 +25,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="chat-service" target="17" />
+      <module name="discount-service" target="11" />
       <module name="discount-service (1)" target="11" />
       <module name="discount-service (2)" target="11" />
       <module name="employee-service" target="17" />

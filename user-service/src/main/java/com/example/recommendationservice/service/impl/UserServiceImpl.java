@@ -108,6 +108,22 @@ public class UserServiceImpl implements UserService {
         return userRepositoryCustom.findAccountByCondition(userRequest);
     }
 
+    @Override
+    public Object revolkToken(UserRequest userRequest) {
+        return null;
+    }
+
+    @Override
+    public Object deleteAccount(UserRequest userRequest) {
+        // start luong = 1
+        // lưu otp vào redis
+        // -> call sang notification send mã xác minh
+        // start luong = 2
+        // check otp
+        // neu dung
+        return null;
+    }
+
     private void validateCreateUser(UserRequest userRequest) {
 
         if (StringUtil.stringIsNullOrEmty(userRequest.getFullName())) {

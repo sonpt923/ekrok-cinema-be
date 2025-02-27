@@ -35,10 +35,6 @@ spring:
   security:
     jwt:
       expiration_time: 1000 #hour
-frontend:
-  host: http://localhost:3000
-  url:
-    change-password: /forgot-password
 cloudflare:
   r2:
     access-key-id: NDg5MDEwY2MyNTc3NWY0M2IxMTMxNWRhOGM5ZThlY2Y=

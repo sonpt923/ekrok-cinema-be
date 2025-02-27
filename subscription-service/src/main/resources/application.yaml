@@ -2,7 +2,18 @@ server:
   port: 8090
 spring:
   application:
-    name: mail-delivery
+    name: sbucription-service
+  config:
+    import: "optional:configserver:http://localhost:8088"
+  datasource:
+    url: jdbc:mysql://localhost:3306/user-service?useSSL=true
+    username: root
+    password: Son191203
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
   cache:
     type: redis
     redis:
@@ -16,17 +27,6 @@ spring:
       username: default
       password: UW1mVlhCWk5wakRxUkQ1MnZmdHlxYjVQZm9Ta0djYjk=
       havePassword: YES
-  kafka:
-    consumer:
-      bootstrap-servers: localhost
-      group-id: group_id
-mail:
-  smtp:
-    port: 587
-    username: sonptph25875@fpt.edu.vn
-    password: aWJsYSBld3JoIHp3Y3kgY25kaA==
-    host: smtp.gmail.com
-    sender: EKROK-CINEMA
 cloudflare:
   r2:
     access-key-id: "NDg5MDEwY2MyNTc3NWY0M2IxMTMxNWRhOGM5ZThlY2Y="

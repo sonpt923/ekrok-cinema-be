@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @EnableWrapResponse
 @RequestMapping("/user")
-public class UserController {
+public class AccountManagementController {
 
     @Autowired
     private UserService userService;

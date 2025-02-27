@@ -59,7 +59,11 @@
 
 # II, Công nghệ
 
-## 1, Database
+## 1, Netflix
+- Zuul gateway
+- Eureka: http://localhost:8761/
+
+## 2, Database
 
 - RDMS:
     - mysql:
@@ -68,21 +72,21 @@
     - MongoDB:
     - Redis:
 
-## 2, spring boot
+## 3, spring boot
 
 - JWT, security, oauth2
 - JPA,
 - Log4j
 - UnitTesting
 
-## 3, cloud
+## 4, cloud
 
 - **AWS**:
     - RDS: sử dụng để làm cơ ở dữ liệu ...
     - EC2: su dụng để ...
     - S3 Bucket (cloudflare): lưu tru du lieu (file, video...)
 
-## 4, Message Queue
+## 5, Message Queue, Streaming
 
 - **Kafka**:
 
@@ -95,8 +99,5 @@
 
 ## 6, Orther
 
-# III, 
- 
-# V,
 
 - draw.io: https://app.diagrams.net/#G1D8ayGQ-tIOHoZhpv60E1_BywWRZHdryd#%7B%22pageId%22%3A%22pxJnE2IzepgIanvHQNzt%22%7D

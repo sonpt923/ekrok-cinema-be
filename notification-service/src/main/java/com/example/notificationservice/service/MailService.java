@@ -1,7 +1,6 @@
 package com.example.notificationservice.service;
 
 import com.example.notificationservice.dto.request.MailRequest;
-import com.example.notificationservice.model.MailTemplate;
 
 public interface MailService {
 

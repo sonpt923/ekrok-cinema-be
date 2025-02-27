@@ -46,13 +46,13 @@ public class AuthenServiceImpl implements AuthenService {
     private ApDomainService apDomainService;
 
     @Autowired
-    private MydictionaryService dictionaryService;
+    private MydictionaryService dic;
 
     @Autowired
     private OTPCacheRepository otpCacheRepository;
 
     @Autowired
-    private NotificationService notificationService;
+    private SecurityCache securityCache;
 
     @Autowired
     private TokenCacheRepository tokenCacheRepository;
@@ -76,7 +76,7 @@ public class AuthenServiceImpl implements AuthenService {
             }
         }
         throw new ValidationException(BaseConstants.ERROR_DATA_NOT_FOUND,
-                dictionaryService.get("ERROR.DATA_IS_EXIST"));
+                dic.get("ERROR.DATA_IS_EXIST"));
     }
 
     @Override
@@ -89,36 +89,31 @@ public class AuthenServiceImpl implements AuthenService {
                 .fullName(request.getFullName())
                 .createdBy(request.getUsername())
                 .build();
-        ResponseEntity response = notificationService.sendNotification(null);
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return userRepository.save(user);
-        }
-        throw new AppException(BaseConstants.ERROR_CREATE_STAFF, dictionaryService.get("ERROR.CREATE_ACCOUNT_FAIL"));
+        // send notification -> kafka -> notification-service
+        throw new AppException(BaseConstants.ERROR_CREATE_STAFF, dic.get("ERROR.CREATE_ACCOUNT_FAIL"));
     }
 
     @Override
     public Object forgotPassword(User user) {
         if (StringUtil.stringIsNullOrEmty(user.getUsername())) {
             throw new ValidationException(BaseConstants.ERROR_NOT_NULL,
-                    String.format(dictionaryService.get("ERROR.APP_IS_NOT_MANAGE"), ""));
+                    String.format(dic.get("ERROR.APP_IS_NOT_MANAGE"), ""));
         }
         String email = userRepository.findUserByUsernameOrEmail(user.getUsername()).getEmail();
         if (StringUtil.stringIsNullOrEmty(email)) {
-            throw new ValidationException(BaseConstants.ERROR_DATA_NOT_FOUND, dictionaryService.get("ERROR.NOT_FOUND_DATA"));
+            throw new ValidationException(BaseConstants.ERROR_DATA_NOT_FOUND, dic.get("ERROR.NOT_FOUND_DATA"));
         }
         Long otpTime = 0L;
         ApDomain apDomain = apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE);
         try {
             otpTime = Long.valueOf(apDomain.getValue());
         } catch (Exception e) {
+            // nếu không convert sang long được thì bắn message lên elastic search -> gán trực tiêp thời gian cũ
             otpTime = Constant.OTP_TIME;
         }
         OTPCache otpCache = new OTPCache(user.getUsername(), otpTime, StringUtil.generateString(Constant.OTP_LENGTH));
         otpCacheRepository.save(otpCache);
-        ResponseEntity response = notificationService.sendNotification(null);
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return null;
-        }
+        // send notification -> kafka -> notification-service
         throw new SystemException("", "");
     }
 
@@ -133,7 +128,7 @@ public class AuthenServiceImpl implements AuthenService {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             return userRepository.save(user);
         }
-        throw new ValidationException(Constant.ERROR_PASS_NOT_COMPARE, dictionaryService.get("ERROR.CHANGE_PASS.002"));
+        throw new ValidationException(Constant.ERROR_PASS_NOT_COMPARE, dic.get("ERROR.CHANGE_PASS.002"));
     }
 
     @Override
@@ -151,22 +146,22 @@ public class AuthenServiceImpl implements AuthenService {
 
         if (StringUtil.stringIsNullOrEmty(request.getUsername())) {
             throw new ValidationException(BaseConstants
-                    .ERROR_NOT_NULL, String.format(dictionaryService.get(""), ""));
+                    .ERROR_NOT_NULL, String.format(dic.get(""), ""));
         }
 
         if (StringUtil.stringIsNullOrEmty(request.getPassword())) {
             throw new ValidationException(BaseConstants.ERROR_PASSWORD_NOT_NULL
-                    , String.format(dictionaryService.get(""), ""));
+                    , String.format(dic.get(""), ""));
         }
 
         if (StringUtil.stringIsNullOrEmty(request.getConfirmPassword())) {
             throw new ValidationException(BaseConstants.ERROR_PASSWORD_NOT_NULL,
-                    String.format(dictionaryService.get("ERROR.CHANGE_PASS.001"), ""));
+                    String.format(dic.get("ERROR.CHANGE_PASS.001"), ""));
         }
 
         if (StringUtil.stringIsNullOrEmty(request.getBirthDay())) {
             throw new ValidationException(BaseConstants
-                    .ERROR_NOT_NULL, String.format(dictionaryService.get(""), ""));
+                    .ERROR_NOT_NULL, String.format(dic.get(""), ""));
         }
     }
 }

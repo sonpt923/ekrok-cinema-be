@@ -7,12 +7,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="subscription-service" />
         <module name="department-service" />
         <module name="streaming-service" />
         <module name="movie-service" />
         <module name="user-service" />
         <module name="notification-service" />
+        <module name="package-service" />
         <module name="recommendation-service" />
         <module name="core" />
         <module name="payment-service" />
@@ -47,6 +47,7 @@
       <module name="mail-service" options="-parameters" />
       <module name="movie-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />
+      <module name="package-service" options="-parameters" />
       <module name="payment-service" options="-parameters" />
       <module name="recommendation-service" options="-parameters" />
       <module name="saga-service" options="-parameters" />
@@ -54,7 +55,6 @@
       <module name="service-registry" options="-parameters" />
       <module name="streaming-service" options="-parameters" />
       <module name="subcription-service" options="-parameters" />
-      <module name="subscription-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>

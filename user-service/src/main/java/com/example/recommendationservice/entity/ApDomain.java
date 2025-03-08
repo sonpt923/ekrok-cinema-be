@@ -34,7 +34,7 @@ public class ApDomain {
     private String name;
 
     @Column(name = "status")
-    private Long status;
+    private Integer status;
 
     @Column(name = "value")
     private String value;

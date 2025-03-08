@@ -5,13 +5,17 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 
+// lưu lịch sử thông báo
 @Document(collection = "notifications")
 public class Notification {
 
     @Id
     private ObjectId id;
 
+    // USER, ALL
     private String type;
 
     private String title;
@@ -20,9 +24,9 @@ public class Notification {
 
     private String status;
 
-    private Date createdAt;
+    private Timestamp createdAt;
 
-    private Date createdBy;
+    private String createdBy;
 
 
 }

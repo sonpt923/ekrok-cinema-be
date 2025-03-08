@@ -9,15 +9,16 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>streaming-service</artifactId>
+	<artifactId>package-service</artifactId>
 	<version>1.0</version>
-	<name>streaming-service</name>
-	<description>streaming-service</description>
+	<name>package-service</name>
+	<description>package-service</description>
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>Hoxton.SR12</spring-cloud.version>
 	</properties>
 	<dependencies>
+
 		<dependency>
 			<artifactId>core</artifactId>
 			<version>1.0</version>
@@ -27,6 +28,11 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+		</dependency>
+		<!--kafka-->
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -41,19 +47,21 @@
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.kafka</groupId>
-			<artifactId>spring-kafka</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.28</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<artifactId>core</artifactId>
+			<version>1.0</version>
+			<groupId>com.example</groupId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>

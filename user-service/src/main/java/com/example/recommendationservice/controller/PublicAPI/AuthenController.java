@@ -3,7 +3,7 @@ package com.example.recommendationservice.controller.PublicAPI;
 import com.example.config.EnableWrapResponse;
 import com.example.recommendationservice.dto.request.UserRequest;
 import com.example.recommendationservice.entity.User;
-import com.example.recommendationservice.entity.google.UserInfo;
+import com.example.recommendationservice.entity.google.GoogleInfo;
 import com.example.recommendationservice.service.AuthenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,23 +32,18 @@ public class AuthenController {
     }
 
     @PostMapping("/register-by-google")
-    public ResponseEntity registerByGoogle(@RequestBody UserInfo userInfo) {
+    public ResponseEntity registerByGoogle(@RequestBody GoogleInfo userInfo) {
         return new ResponseEntity(authenService.loginByGoogle(userInfo), HttpStatus.OK);
     }
 
     @PostMapping("/login-by-google")
-    public ResponseEntity loginByGoogle(@RequestBody UserInfo userInfo) {
+    public ResponseEntity loginByGoogle(@RequestBody  GoogleInfo userInfo) {
         return new ResponseEntity(authenService.registerByGoogle(userInfo), HttpStatus.OK);
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity forgotPassword(@RequestBody User user) {
-        return new ResponseEntity(authenService.forgotPassword(user), HttpStatus.OK);
-    }
-
-    @PostMapping("/change-password")
-    public ResponseEntity changePassword(UserRequest user) {
-        return new ResponseEntity(authenService.changePassword(user), HttpStatus.OK);
+    public ResponseEntity forgotPassword(@RequestBody UserRequest request) {
+        return new ResponseEntity(authenService.forgotPassword(request), HttpStatus.OK);
     }
 
 }

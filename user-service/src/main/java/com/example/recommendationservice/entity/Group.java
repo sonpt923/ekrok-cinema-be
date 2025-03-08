@@ -30,6 +30,9 @@ public class Group {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "status")
+    private Integer status;
+
     @Column(name = "created_at")
     private Date createdAt;
 

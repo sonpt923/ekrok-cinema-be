@@ -3,25 +3,24 @@ package com.example.recommendationservice.service.impl;
 import com.example.exception.AppException;
 import com.example.exception.SystemException;
 import com.example.exception.ValidationException;
-import com.example.service.MydictionaryService;
 import com.example.recommendationservice.dto.request.UserRequest;
 import com.example.recommendationservice.entity.ApDomain;
 import com.example.recommendationservice.entity.User;
-import com.example.recommendationservice.entity.google.UserInfo;
+import com.example.recommendationservice.entity.google.GoogleInfo;
 import com.example.recommendationservice.entity.redisCache.OTPCache;
-import com.example.recommendationservice.entity.redisCache.SecurityCache;
+import com.example.recommendationservice.entity.redisCache.TokenCache;
+import com.example.recommendationservice.feign.NotificationFeign;
 import com.example.recommendationservice.repository.UserRepository;
 import com.example.recommendationservice.repository.redis.OTPCacheRepository;
 import com.example.recommendationservice.repository.redis.TokenCacheRepository;
 import com.example.recommendationservice.security.JwtProvider;
 import com.example.recommendationservice.service.ApDomainService;
 import com.example.recommendationservice.service.AuthenService;
-import com.example.recommendationservice.service.feign.NotificationService;
 import com.example.recommendationservice.utils.Constant;
+import com.example.service.MydictionaryService;
 import com.example.utils.BaseConstants;
 import com.example.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,7 +51,7 @@ public class AuthenServiceImpl implements AuthenService {
     private OTPCacheRepository otpCacheRepository;
 
     @Autowired
-    private SecurityCache securityCache;
+    private NotificationFeign notificationFeign;
 
     @Autowired
     private TokenCacheRepository tokenCacheRepository;
@@ -66,7 +65,7 @@ public class AuthenServiceImpl implements AuthenService {
                     String token = jwtProvider.generateTokenRSA(request.getEmail());
                     String key = UUID.randomUUID().toString();
                     Long ttl = Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE).getValue());
-                    SecurityCache cache = new SecurityCache(key, ttl, token);
+                    TokenCache cache = new TokenCache(key, ttl, token);
                     tokenCacheRepository.save(cache);
                     return new HashMap<>(Map.of("authen-key", key));
                 } catch (Exception e) {
@@ -94,27 +93,37 @@ public class AuthenServiceImpl implements AuthenService {
     }
 
     @Override
-    public Object forgotPassword(User user) {
-        if (StringUtil.stringIsNullOrEmty(user.getUsername())) {
-            throw new ValidationException(BaseConstants.ERROR_NOT_NULL,
-                    String.format(dic.get("ERROR.APP_IS_NOT_MANAGE"), ""));
+    public Object forgotPassword(UserRequest request) {
+        // case 1: gui otp
+        if (request.getFlag() == 0) {
+            if (StringUtil.stringIsNullOrEmty(request.getUsername())) {
+                throw new ValidationException(BaseConstants.ERROR_NOT_NULL,
+                        String.format(dic.get("ERROR.APP_IS_NOT_MANAGE"), ""));
+            }
+            Long otpTime = 0L;
+            ApDomain apDomain = apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE);
+            try {
+                otpTime = Long.valueOf(apDomain.getValue());
+            } catch (Exception e) {
+                otpTime = Constant.OTP_TIME;
+            }
+            OTPCache otpCache = new OTPCache(request.getUsername(), StringUtil.generateString(Constant.OTP_LENGTH), otpTime);
+            otpCacheRepository.save(otpCache);
+            // send otp ->  notification-service
+            request.setOtp(otpCache.getValue());
+            ResponseEntity response = notificationFeign.sendOTP(request);
+            return response;
+        } else { // case2: xu ly
+            OTPCache otp = otpCacheRepository.findById(request.getUsername()).get();
+            if (otp != null) {
+                if (otp.getValue().equals(request.getOtp())) {
+                    changePassword(request);
+                }
+                return null;
+            } else {
+                throw new SystemException(null);
+            }
         }
-        String email = userRepository.findUserByUsernameOrEmail(user.getUsername()).getEmail();
-        if (StringUtil.stringIsNullOrEmty(email)) {
-            throw new ValidationException(BaseConstants.ERROR_DATA_NOT_FOUND, dic.get("ERROR.NOT_FOUND_DATA"));
-        }
-        Long otpTime = 0L;
-        ApDomain apDomain = apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE);
-        try {
-            otpTime = Long.valueOf(apDomain.getValue());
-        } catch (Exception e) {
-            // nếu không convert sang long được thì bắn message lên elastic search -> gán trực tiêp thời gian cũ
-            otpTime = Constant.OTP_TIME;
-        }
-        OTPCache otpCache = new OTPCache(user.getUsername(), otpTime, StringUtil.generateString(Constant.OTP_LENGTH));
-        otpCacheRepository.save(otpCache);
-        // send notification -> kafka -> notification-service
-        throw new SystemException("", "");
     }
 
     @Override
@@ -132,12 +141,12 @@ public class AuthenServiceImpl implements AuthenService {
     }
 
     @Override
-    public Object loginByGoogle(UserInfo user) {
+    public Object loginByGoogle(GoogleInfo user) {
         return null;
     }
 
     @Override
-    public Object registerByGoogle(UserInfo user) {
+    public Object registerByGoogle(GoogleInfo user) {
         return null;
     }
 

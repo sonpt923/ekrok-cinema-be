@@ -2,6 +2,7 @@ package com.example.notificationservice.controller;
 
 import com.example.config.EnableWrapResponse;
 import com.example.notificationservice.dto.request.MailRequest;
+import com.example.notificationservice.model.Template;
 import com.example.notificationservice.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/email")
+@RequestMapping("/mail")
 @EnableWrapResponse
 public class MailController {
 
@@ -34,7 +35,7 @@ public class MailController {
     }
 
     @PostMapping("/create-template")
-    public ResponseEntity createTemplate(@RequestBody MailTemplate request) {
+    public ResponseEntity createTemplate(@RequestBody Template request) {
         return new ResponseEntity<>(mailService.createTemplate(request), HttpStatus.OK);
     }
 

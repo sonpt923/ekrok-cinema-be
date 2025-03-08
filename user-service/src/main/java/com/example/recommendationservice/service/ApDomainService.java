@@ -16,5 +16,4 @@ public interface ApDomainService {
     ApDomain getByCode(String code);
 
 
-
 }

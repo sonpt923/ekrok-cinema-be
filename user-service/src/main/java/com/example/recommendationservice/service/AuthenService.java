@@ -2,7 +2,7 @@ package com.example.recommendationservice.service;
 
 import com.example.recommendationservice.dto.request.UserRequest;
 import com.example.recommendationservice.entity.User;
-import com.example.recommendationservice.entity.google.UserInfo;
+import com.example.recommendationservice.entity.google.GoogleInfo;
 
 public interface AuthenService {
 
@@ -10,12 +10,12 @@ public interface AuthenService {
 
     Object register(UserRequest request);
 
-    Object forgotPassword(User user);
+    Object forgotPassword(UserRequest request);
 
     Object changePassword(UserRequest user);
 
-    Object loginByGoogle(UserInfo user);
+    Object loginByGoogle(GoogleInfo user);
 
-    Object registerByGoogle(UserInfo user);
+    Object registerByGoogle(GoogleInfo user);
 
 }

@@ -20,16 +20,15 @@ import javax.persistence.Table;
 @Builder
 public class MovieRole {
 
+
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "person_id")
+    private Long personId;
 
-    @Column(name = "id_person")
-    private Long person;
-
-    @Column(name = "id_movie")
-    private Long movie;
+    @Id
+    @Column(name = "movie_id")
+    private Long movieId;
 
     @Column(name = "role")
     private Integer role;

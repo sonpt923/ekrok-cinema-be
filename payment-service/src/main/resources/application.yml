@@ -30,10 +30,10 @@ spring:
         time-to-live: 3000
   data:
     redis:
-      host: redis-19160.c292.ap-southeast-1-1.ec2.redns.redis-cloud.com
-      port: 19160
+      host: redis-18468.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com
+      port: 18468
       username: default
-      password: UW1mVlhCWk5wakRxUkQ1MnZmdHlxYjVQZm9Ta0djYjk=
+      password: ajhzWlYzZ21hVWROaUcwU2lCcUxMdzlHR2hhZ0o0UnA=
       havePassword: "YES"
 cloudflare:
   r2:

@@ -3,6 +3,7 @@ package com.example.recommendationservice.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.checkerframework.checker.units.qual.C;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,14 +34,23 @@ public class ApDomain {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "status")
     private Integer status;
 
     @Column(name = "value")
     private String value;
 
-    @Column(name = "parent_id")
-    private Long parentId;
+    @Column(name = "domain_parent_id")
+    private Long domainParentId;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "created_at")
+    private Timestamp createdAt;
 
     @Column(name = "updated_at")
     private Timestamp updatedAt;
@@ -48,7 +58,8 @@ public class ApDomain {
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "deleted_at")
+    private Timestamp deletedAt;
+
 
 }

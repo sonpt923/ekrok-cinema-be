@@ -23,6 +23,6 @@ public class OTPCache {
     private String value;
 
     @TimeToLive
-    private Long ttl;
+    private Long timeToLive;
 
 }

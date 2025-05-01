@@ -16,7 +16,7 @@ public class PackageMovie {
     private Long subcriptionId;
 
     @Column(name = "movie_id")
-    private Long userId;
+    private Long movieId;
 
     @Column(name = "name")
     private String name;

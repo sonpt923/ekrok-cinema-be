@@ -1,42 +1,29 @@
 package com.example.recommendationservice.entity;
 
-import com.example.config.EnableWrapResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Data
 @Entity
-@EnableWrapResponse
-@Table(name = "group")
+@Data
+@Table(name = "group_role")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Group {
+public class GroupRole{
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "code")
-    private String code;
+    @Column(name = "role_id")
+    private Long roleId;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "status")
-    private Integer status;
+    @Column(name = "group_id")
+    private Long group_id;
 
     @Column(name = "created_by")
     private String createdBy;

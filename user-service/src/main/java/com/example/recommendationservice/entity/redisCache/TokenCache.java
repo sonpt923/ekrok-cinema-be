@@ -22,7 +22,7 @@ public class TokenCache {
     private String id;
 
     @TimeToLive
-    private Long ttl;
+    private Long timeToLive;
 
     private String value;
 

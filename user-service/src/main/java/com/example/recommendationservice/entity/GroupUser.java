@@ -6,44 +6,44 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "group_user")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class GroupUser {
+public class GroupUser{
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_group_table")
-    private Long group;
+    @Column(name = "group_id")
+    private Long groupId;
 
-    @Column(name = "user")
-    private Long user;
-
-    @Column(name = "created_at")
-    private Date createdAt;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "created_by")
     private String createdBy;
 
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private Timestamp updatedAt;
 
     @Column(name = "updated_by")
     private String updatedBy;
 
     @Column(name = "deleted_at")
-    private String deletedAt;
-
+    private Timestamp deletedAt;
 
 }

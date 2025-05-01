@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -19,12 +20,18 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User {
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "provider")
+    private String provider;
+
+    @Column(name = "provider_id")
+    private Long providerId;
 
     @Column(name = "username")
     private String username;
@@ -38,8 +45,11 @@ public class User {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "full_name")
-    private String fullName;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
 
     @Column(name = "birth_day")
     private Date birthDay;
@@ -54,15 +64,15 @@ public class User {
     private String createdBy;
 
     @Column(name = "created_at")
-    private Date createdAt;
+    private Timestamp createdAt;
+
+    @Column(name = "updated_at")
+    private Timestamp updatedAt;
 
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @Column(name = "updated_at")
-    private Date updatedAt;
-
     @Column(name = "deleted_at")
-    private Date deletedAt;
+    private Timestamp deletedAt;
 
 }

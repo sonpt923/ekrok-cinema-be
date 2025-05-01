@@ -1,25 +1,18 @@
 package com.example.recommendationservice.entity;
 
-import com.example.config.EnableWrapResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Data
 @Entity
-@EnableWrapResponse
-@Table(name = "group")
+@Table(name = "role")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Group {
+public class Role {
 
     @Id
     @Column(name = "id")
@@ -32,11 +25,15 @@ public class Group {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "status")
+    private Integer status;
+
     @Column(name = "description")
     private String description;
 
-    @Column(name = "status")
-    private Integer status;
+    //option
+    @Column(name = "parent_role_id")
+    private Long parentId;
 
     @Column(name = "created_by")
     private String createdBy;

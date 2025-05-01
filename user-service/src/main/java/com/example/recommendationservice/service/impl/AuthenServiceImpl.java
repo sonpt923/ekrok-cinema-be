@@ -6,7 +6,6 @@ import com.example.exception.ValidationException;
 import com.example.recommendationservice.dto.request.UserRequest;
 import com.example.recommendationservice.entity.ApDomain;
 import com.example.recommendationservice.entity.User;
-import com.example.recommendationservice.entity.google.GoogleInfo;
 import com.example.recommendationservice.entity.redisCache.OTPCache;
 import com.example.recommendationservice.entity.redisCache.TokenCache;
 import com.example.recommendationservice.feign.NotificationFeign;
@@ -85,10 +84,12 @@ public class AuthenServiceImpl implements AuthenService {
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .birthDay(request.getBirthDay())
-                .fullName(request.getFullName())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
                 .createdBy(request.getUsername())
                 .build();
-        // send notification -> kafka -> notification-service
+        //TODO: send notification -> kafka -> notification-service
+        //TODO: lưu hoàn thiện nốt luồng này
         throw new AppException(BaseConstants.ERROR_CREATE_STAFF, dic.get("ERROR.CREATE_ACCOUNT_FAIL"));
     }
 
@@ -111,8 +112,8 @@ public class AuthenServiceImpl implements AuthenService {
             otpCacheRepository.save(otpCache);
             // send otp ->  notification-service
             request.setOtp(otpCache.getValue());
-            ResponseEntity response = notificationFeign.sendOTP(request);
-            return response;
+//            ResponseEntity response = notificationFeign.sendOTP(request);
+            return null;
         } else { // case2: xu ly
             OTPCache otp = otpCacheRepository.findById(request.getUsername()).get();
             if (otp != null) {
@@ -139,17 +140,6 @@ public class AuthenServiceImpl implements AuthenService {
         }
         throw new ValidationException(Constant.ERROR_PASS_NOT_COMPARE, dic.get("ERROR.CHANGE_PASS.002"));
     }
-
-    @Override
-    public Object loginByGoogle(GoogleInfo user) {
-        return null;
-    }
-
-    @Override
-    public Object registerByGoogle(GoogleInfo user) {
-        return null;
-    }
-
 
     private void validateRegister(UserRequest request) {
 

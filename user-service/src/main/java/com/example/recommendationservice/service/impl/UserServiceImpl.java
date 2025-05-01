@@ -3,6 +3,7 @@ package com.example.recommendationservice.service.impl;
 import com.example.config.AwsConfig;
 import com.example.exception.SystemException;
 import com.example.exception.ValidationException;
+import com.example.recommendationservice.feign.NotificationFeign;
 import com.example.service.MydictionaryService;
 import com.example.recommendationservice.dto.request.UserRequest;
 import com.example.recommendationservice.entity.User;
@@ -10,7 +11,6 @@ import com.example.recommendationservice.repository.UserRepository;
 import com.example.recommendationservice.repository.customize.UserRepositoryCustom;
 import com.example.recommendationservice.service.GroupUserService;
 import com.example.recommendationservice.service.UserService;
-import com.example.recommendationservice.service.feign.NotificationService;
 import com.example.recommendationservice.utils.Constant;
 import com.example.utils.BaseConstants;
 import com.example.utils.StringUtil;
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private NotificationService notificationService;
+    private NotificationFeign notificationFeign;
 
     @Autowired
     private GroupUserService groupUserService;
@@ -52,19 +52,22 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public Object createUser(UserRequest userRequest) {
         validateCreateUser(userRequest);
+        String fullName = (userRequest.getFirstName() + " " + userRequest.getLastName());
         File file = new File(Base64.decodeBase64(userRequest.getImage()).toString());
-        String username = StringUtil.genUsernameFromFullname(userRequest.getFullName());
+        String username = StringUtil.genUsernameFromFullname(fullName);
         String password = passwordEncoder.encode(userRequest.getPassword());
         User user = User.builder()
                 .birthDay(userRequest.getBirthDay()).email(userRequest.getEmail())
-                .fullName(userRequest.getFullName()).image("")
+                .firstName(userRequest.getFirstName())
+                .lastName(userRequest.getLastName()).image("")
                 .status(userRequest.getStatus()).password(password)
                 .username(username).build();
-        ResponseEntity response = notificationService.sendNotification(null);
-        if (response.getStatusCode() != HttpStatus.OK) {
-            throw new SystemException("", "");
-        }
-        // them user vao nhom duoc chi dinh
+        //TODO: chuyen sang su dung luong su dung kafka: user-service -> kafka -> notification
+//        ResponseEntity response = notificationService.sendNotification(null);
+//        if (response.getStatusCode() != HttpStatus.OK) {
+//            throw new SystemException("", "");
+//        }
+        //TODO:  them user vao nhom duoc chi dinh
         user = repository.save(user);
         return user;
     }
@@ -74,17 +77,17 @@ public class UserServiceImpl implements UserService {
     public Object updateUser(UserRequest userRequest) {
         validateUpdateUser(userRequest);
         File file = new File(Base64.decodeBase64(userRequest.getImage()).toString());
-        String username = StringUtil.genUsernameFromFullname(userRequest.getFullName());
+        String username = StringUtil.genUsernameFromFullname(userRequest.getFirstName() + " " + userRequest.getLastName());
         String password = passwordEncoder.encode(userRequest.getPassword());
         User user = User.builder()
                 .birthDay(userRequest.getBirthDay()).email(userRequest.getEmail())
-                .fullName(userRequest.getFullName()).image("")
-                .status(Constant.user.ACTIVE).password(password)
+                .lastName(userRequest.getLastName()).firstName(userRequest.getFirstName())
+                .image("").status(Constant.user.ACTIVE).password(password)
                 .username(username).build();
-        ResponseEntity response = notificationService.sendNotification(null);
-        if (response.getStatusCode() != HttpStatus.OK) {
-            throw new SystemException("", "");
-        }
+//        ResponseEntity response = notificationFeign.sendNotification(null);
+//        if (response.getStatusCode() != HttpStatus.OK) {
+//            throw new SystemException("", "");
+//        }
         // them user vao nhom duoc chi dinh
         user = repository.save(user);
         return null;
@@ -93,6 +96,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Object deleteUser(UserRequest userRequest) {
+        // TODO:
         // lấy danh sách nhóm quyền từ cache
         // kiểm tra xem có được xóa hay không
         if (StringUtil.stringIsNullOrEmty(userRequest.getId())) {
@@ -102,6 +106,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Object findAccountByCondition(UserRequest userRequest) {
+        // TODO:
         // lây nhóm quyền từ cache
         // kiểm tra quyền search
         // kiểm tra xe được search đến đâu
@@ -126,8 +131,12 @@ public class UserServiceImpl implements UserService {
 
     private void validateCreateUser(UserRequest userRequest) {
 
-        if (StringUtil.stringIsNullOrEmty(userRequest.getFullName())) {
-            throw new ValidationException(BaseConstants.ERROR_NOT_NULL, String.format(dictionary.get(""), "full name"));
+        if (StringUtil.stringIsNullOrEmty(userRequest.getFirstName())) {
+            throw new ValidationException(BaseConstants.ERROR_NOT_NULL, String.format(dictionary.get(""), "first name"));
+        }
+
+        if (StringUtil.stringIsNullOrEmty(userRequest.getLastName())) {
+            throw new ValidationException(BaseConstants.ERROR_NOT_NULL, String.format(dictionary.get(""), "name name"));
         }
 
         if (StringUtil.stringIsNullOrEmty(userRequest.getEmail())) {
@@ -141,8 +150,12 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validateUpdateUser(UserRequest userRequest) {
-        if (StringUtil.stringIsNullOrEmty(userRequest.getFullName())) {
-            throw new ValidationException(BaseConstants.ERROR_NOT_NULL, String.format(dictionary.get(""), "full name"));
+        if (StringUtil.stringIsNullOrEmty(userRequest.getFirstName())) {
+            throw new ValidationException(BaseConstants.ERROR_NOT_NULL, String.format(dictionary.get(""), "first name"));
+        }
+
+        if (StringUtil.stringIsNullOrEmty(userRequest.getLastName())) {
+            throw new ValidationException(BaseConstants.ERROR_NOT_NULL, String.format(dictionary.get(""), "name name"));
         }
 
         if (StringUtil.stringIsNullOrEmty(userRequest.getEmail())) {

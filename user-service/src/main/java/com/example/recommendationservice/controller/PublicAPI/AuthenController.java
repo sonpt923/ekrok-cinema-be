@@ -3,7 +3,6 @@ package com.example.recommendationservice.controller.PublicAPI;
 import com.example.config.EnableWrapResponse;
 import com.example.recommendationservice.dto.request.UserRequest;
 import com.example.recommendationservice.entity.User;
-import com.example.recommendationservice.entity.google.GoogleInfo;
 import com.example.recommendationservice.service.AuthenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,16 +28,6 @@ public class AuthenController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody UserRequest request) {
         return new ResponseEntity(authenService.register(request), HttpStatus.OK);
-    }
-
-    @PostMapping("/register-by-google")
-    public ResponseEntity registerByGoogle(@RequestBody GoogleInfo userInfo) {
-        return new ResponseEntity(authenService.loginByGoogle(userInfo), HttpStatus.OK);
-    }
-
-    @PostMapping("/login-by-google")
-    public ResponseEntity loginByGoogle(@RequestBody  GoogleInfo userInfo) {
-        return new ResponseEntity(authenService.registerByGoogle(userInfo), HttpStatus.OK);
     }
 
     @PostMapping("/forgot-password")

@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@RedisHash(value = "TOKEN")
+@RedisHash(value = "user-session")
 public class TokenCache {
 
     @Id

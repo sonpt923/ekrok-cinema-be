@@ -5,10 +5,7 @@ import com.example.recommendationservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @EnableWrapResponse
@@ -26,6 +23,11 @@ public class UserInfoController {
     @PostMapping("/change-password")
     public ResponseEntity changePassword() {
         return new ResponseEntity(null, HttpStatus.OK);
+    }
+
+    @PostMapping("/clear-session")
+    public ResponseEntity clearSession(@RequestBody String[] session){
+        return new ResponseEntity(userService.revolkSession(session), HttpStatus.OK);
     }
 
     @PostMapping("/update-info")

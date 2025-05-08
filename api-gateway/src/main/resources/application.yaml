@@ -3,35 +3,38 @@ spring:
     name: api-gateway
   data:
     redis:
-      host: "redis-19160.c292.ap-southeast-1-1.ec2.redns.redis-cloud.com"
-      port: 19160
-      username: "default"
-      password: "UW1mVlhCWk5wakRxUkQ1MnZmdHlxYjVQZm9Ta0djYjk="
+      host: redis-15614.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com
+      port: 15614
+      username: default
+      password: UmZ4M0xlM3cweDV5cERHT0NzSEI3SW5SODhheGRBcVU=
       havePassword: "YES"
 zuul:
   prefix: /api
   routes:
-    cinema-service:
-      service-id: cinema-service
+    movie-service:
+      service-id: movie-service
       path: /cinema/**
-    booking-service:
-      service-id: booking-service
-      path: /booking/**
     notification-service:
       service-id: notification-service
       path: /notification/**
+    payment-service:
+      service-id: payment-service
+      path: /payment/**
     user-service:
       path: /user/**
       service-id: user-service
-    discount-service:
-      path: /discount/**
-      service-id: discount-service
-    movie-service:
-      path: /movie/**
-      service-id: movie-service
+    recommendation-service:
+      path: /recommendation/**
+      service-id: recommendation-service
     schedule-service:
       path: /schedule/**
       service-id: schedule-service
+    streaming-service:
+      path: /streaming/**
+      service-id: streaming-service
+    subcription-service:
+      path: /schedule/**
+      service-id: subcription-service
 cloudflare:
   r2:
     access-key-id: "NDg5MDEwY2MyNTc3NWY0M2IxMTMxNWRhOGM5ZThlY2Y="

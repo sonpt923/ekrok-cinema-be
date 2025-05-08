@@ -21,7 +21,7 @@ public class AuthenController {
     private AuthenService authenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody User user) throws Exception {
+    public ResponseEntity login(@RequestBody UserRequest user) throws Exception {
         return new ResponseEntity(authenService.login(user), HttpStatus.OK);
     }
 

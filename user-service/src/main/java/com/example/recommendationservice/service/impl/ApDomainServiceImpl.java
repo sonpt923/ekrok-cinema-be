@@ -17,8 +17,6 @@ import java.util.List;
 @Service
 public class ApDomainServiceImpl implements ApDomainService {
 
-    @Autowired
-    private JwtProvider jwtProvider;
 
     @Autowired
     private MyDictionaryServiceImpl dictionaryService;
@@ -44,14 +42,18 @@ public class ApDomainServiceImpl implements ApDomainService {
     @Override
     public ApDomain update(ApDomain apDomain, String token) {
         validate(apDomain);
-        String username = jwtProvider.getUsernameFromToken(token);
-        apDomain.setUpdatedBy(username);
+        apDomain.setUpdatedBy("username");
         apDomain.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         return domainRepository.save(apDomain);
     }
 
     @Override
     public ApDomain getByCode(String code) {
+        return null;
+    }
+
+    @Override
+    public ApDomain createApDomain(ApDomain apDomain) {
         return null;
     }
 

@@ -14,6 +14,10 @@ public class UserRequest {
 
     private Long id;
 
+    private String provider;
+
+    private String providerId;
+
     private String email;
 
     private String username;
@@ -24,11 +28,11 @@ public class UserRequest {
 
     private String phone;
 
+    private String image;
+
     private Date birthDay;
 
     private String password;
-
-    private String image;
 
     private Integer status;
 
@@ -43,5 +47,7 @@ public class UserRequest {
     private Group group;
 
     private Integer flag;
+
+    private Boolean isAdmin;
 
 }

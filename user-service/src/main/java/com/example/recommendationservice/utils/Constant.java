@@ -6,6 +6,8 @@ public class Constant extends BaseConstants {
 
     public static final Long OTP_TIME = 60L;
 
+    public static final Long TTL = 60L;
+
     public interface AP_DOMAIN {
 
         String OTP_CODE = "OTP";

@@ -5,7 +5,7 @@ import com.example.recommendationservice.entity.User;
 
 public interface AuthenService {
 
-    Object login(User user) throws Exception;
+    Object login(UserRequest user) throws Exception;
 
     Object register(UserRequest request);
 

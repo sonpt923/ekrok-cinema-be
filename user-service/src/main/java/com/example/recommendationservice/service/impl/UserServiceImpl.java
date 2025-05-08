@@ -16,6 +16,7 @@ import com.example.utils.BaseConstants;
 import com.example.utils.StringUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,6 +48,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepositoryCustom userRepositoryCustom;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     @Transactional
@@ -113,8 +117,10 @@ public class UserServiceImpl implements UserService {
         return userRepositoryCustom.findAccountByCondition(userRequest);
     }
 
-    @Override
-    public Object revolkToken(UserRequest userRequest) {
+
+    public Object revolkSession(String[] session) {
+        // kiem tra user id co quyen revolk khong? admin hoac user
+        
         return null;
     }
 

@@ -15,5 +15,7 @@ public interface ApDomainService {
 
     ApDomain getByCode(String code);
 
+    ApDomain createApDomain(ApDomain apDomain);
+
 
 }

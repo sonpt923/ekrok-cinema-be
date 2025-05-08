@@ -20,9 +20,11 @@ import com.example.service.MydictionaryService;
 import com.example.utils.BaseConstants;
 import com.example.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,21 +58,25 @@ public class AuthenServiceImpl implements AuthenService {
     private TokenCacheRepository tokenCacheRepository;
 
     @Override
-    public Object login(User request) {
+    public Object login(UserRequest request) {
+        Assert.isNull(request, "request can not be null or empty");
         User user = userRepository.findUserByUsername(request.getUsername());
-        if (!StringUtil.stringIsNullOrEmty(user)) {
-            if (passwordEncoder.matches(user.getPassword(), user.getPassword())) {
-                try {
-                    String token = jwtProvider.generateTokenRSA(request.getEmail());
-                    String key = UUID.randomUUID().toString();
-                    Long ttl = Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE).getValue());
-                    TokenCache cache = new TokenCache(key, ttl, token);
-                    tokenCacheRepository.save(cache);
-                    return new HashMap<>(Map.of("authen-key", key));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new AppException("", "");
+        if (passwordEncoder.matches(user.getPassword(), user.getPassword())) {
+            try {
+                String token = jwtProvider.generateTokenRSA(request.getEmail());
+                String key = UUID.randomUUID().toString();
+                Long ttl = Constant.TTL;
+                if (request.getIsAdmin()) {
+                    Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE).getValue());
+                } else {
+                    Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE).getValue());
                 }
+                TokenCache cache = new TokenCache(key, ttl, token);
+                tokenCacheRepository.save(cache);
+                return new HashMap<>(Map.of("authen-key", key));
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new AppException("", "");
             }
         }
         throw new ValidationException(BaseConstants.ERROR_DATA_NOT_FOUND,
@@ -80,16 +86,13 @@ public class AuthenServiceImpl implements AuthenService {
     @Override
     public Object register(UserRequest request) {
         validateRegister(request);
-        User user = User.builder()
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .birthDay(request.getBirthDay())
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .createdBy(request.getUsername())
-                .build();
-        //TODO: send notification -> kafka -> notification-service
-        //TODO: lưu hoàn thiện nốt luồng này
+        User user = User.builder().username(request.getUsername()).email(request.getEmail())
+                .birthDay(request.getBirthDay()).firstName(request.getFirstName()).lastName(request.getLastName())
+                .createdBy(request.getUsername()).build();
+        ResponseEntity response = notificationFeign.sendOTP(request);
+        if(response.getStatusCodeValue() == 200 && response.getStatusCode().equals(HttpStatus.OK)){
+            userRepository.save(user);
+        }
         throw new AppException(BaseConstants.ERROR_CREATE_STAFF, dic.get("ERROR.CREATE_ACCOUNT_FAIL"));
     }
 
@@ -159,6 +162,11 @@ public class AuthenServiceImpl implements AuthenService {
         }
 
         if (StringUtil.stringIsNullOrEmty(request.getBirthDay())) {
+            throw new ValidationException(BaseConstants
+                    .ERROR_NOT_NULL, String.format(dic.get(""), ""));
+        }
+
+        if (StringUtil.stringIsNullOrEmty(request.getEmail())) {
             throw new ValidationException(BaseConstants
                     .ERROR_NOT_NULL, String.format(dic.get(""), ""));
         }

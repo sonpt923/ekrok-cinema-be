@@ -13,7 +13,7 @@ public interface UserService {
 
     Object findAccountByCondition(UserRequest userRequest);
 
-    Object revolkToken(UserRequest userRequest);
+    Object revolkSession(String[] session);
 
     Object deleteAccount(UserRequest userRequest);
 

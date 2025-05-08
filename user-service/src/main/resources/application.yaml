@@ -10,7 +10,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     show-sql: false
   cache:
     type: redis
@@ -20,25 +20,27 @@ spring:
       time-to-live: 3000
   data:
     redis:
-      host: redis-19160.c292.ap-southeast-1-1.ec2.redns.redis-cloud.com
-      port: 19160
+      host: redis-15614.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com
+      port: 15614
       username: default
-      password: UW1mVlhCWk5wakRxUkQ1MnZmdHlxYjVQZm9Ta0djYjk=
+      password: UmZ4M0xlM3cweDV5cERHT0NzSEI3SW5SODhheGRBcVU=
       havePassword: "YES"
   rest:
+    movie-service:
+      name: movie-service
     notification-service:
       name: notification-service
-    booking-service:
-      name: booking-service
-    cinema-service:
-      name: cinema-service
+    payment-service:
+      name: payment-service
+    recommendation-service:
+      name: recommendation-service
+    streaming-service:
+      name: streaming-service
+    subcription-service:
+      name: subcription-service
   security:
     jwt:
       expiration_time: 1000 #hour
-frontend:
-  host: http://localhost:3000
-  url:
-    change-password: /forgot-password
 cloudflare:
   r2:
     access-key-id: NDg5MDEwY2MyNTc3NWY0M2IxMTMxNWRhOGM5ZThlY2Y=

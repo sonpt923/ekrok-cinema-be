@@ -21,14 +21,11 @@ import javax.persistence.Table;
 public class MovieGenre {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
-    @Column(name = "id_genre")
+    @Column(name = "genre_id")
     private Long genre;
 
-    @Column(name = "id_movie")
+    @Id
+    @Column(name = "movie_id")
     private Long movie;
 
 }

@@ -68,6 +68,10 @@ public class BaseConstants {
 
     public static final String ERROR_CREATE_STAFF = "API504";
 
+    public static final String USER_SESSION = "user-session";
+
+    public static final String AUTHEN_KEY = "authen-key";
+
     public interface STATUS {
 
         Long ACTIVE = 1L;
@@ -83,8 +87,6 @@ public class BaseConstants {
 
         String ERROR_WITH_PAR = "ERROR_WITH_PAR";
     }
-
-    public static final String TOKEN_TYPE = "Bearer ";
 
     public static final String TEMPLE_SPLIT = "|!@#$%^&*()|";
 

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: cinema-service
+    name: payment-service
   config:
     import: "optional:configserver:http://localhost:8888"
   datasource:
@@ -30,10 +30,10 @@ spring:
         time-to-live: 3000
   data:
     redis:
-      host: redis-19160.c292.ap-southeast-1-1.ec2.redns.redis-cloud.com
-      port: 19160
+      host: redis-15614.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com
+      port: 15614
       username: default
-      password: UW1mVlhCWk5wakRxUkQ1MnZmdHlxYjVQZm9Ta0djYjk=
+      password: UmZ4M0xlM3cweDV5cERHT0NzSEI3SW5SODhheGRBcVU=
       havePassword: "YES"
 cloudflare:
   r2:

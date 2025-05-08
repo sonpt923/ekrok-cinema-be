@@ -1,27 +1,32 @@
 package com.example.notificationservice.model;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 
+// lưu lịch sử thông báo
 @Document(collection = "notifications")
 public class Notification {
 
     @Id
-    private String id;
+    private ObjectId id;
 
-    private String content;
-
+    // USER, ALL
     private String type;
 
-    private String link;
+    private String title;
+
+    private String message;
 
     private String status;
 
-    private Date createdAt;
+    private Timestamp createdAt;
 
-    private Date createdBy;
+    private String createdBy;
 
 
 }

@@ -5,33 +5,54 @@ import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.sql.Timestamp;
+import java.util.Map;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @Document(collection = "template")
 public class Template {
 
-    @Id
-    private ObjectId id;
 
+    @Id
+    @Field("id")
+    private String id;
+
+    @Field("code")
     private String code;
 
+    @Field("name")
     private String name;
 
+    @Field("channel")
     private String channel;
 
+    @Field("subject")
     private String subject;
 
+    @Field("content")
     private String content;
 
+    @Field("placeholders")
+    private Map<String, String> placeholders;
+
+    @Field("createdAt")
     private Timestamp createdAt;
 
+    @Field("updatedAt")
     private Timestamp updatedAt;
 
-    private String craetedBy;
+    @Field("createdBy")
+    private String createdBy;
 
+    @Field("updatedBy")
     private String updatedBy;
+
+
+    @Field("isDeleted")
+    private Boolean isDeleted;
 
 }

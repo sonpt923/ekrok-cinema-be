@@ -3,20 +3,21 @@ package com.example.notificationservice.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Map;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Config {
 
-    private String apiKey;
+    private String provider;
 
-    private String from;
+    private String priority;
 
-    private String region;
+    private String status;
 
-    private Map<String, Object> params; // {"timeout": 5000, "trackingEnabled": true}
+    private Map<String, Object> config;
 
 }

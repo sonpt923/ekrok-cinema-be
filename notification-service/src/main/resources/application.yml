@@ -16,12 +16,12 @@ spring:
       username: default
       password: UmZ4M0xlM3cweDV5cERHT0NzSEI3SW5SODhheGRBcVU=
       havePassword: "YES"
-    mongodb:
-      host: localhost
-      port: 27017
-      database: notification-service
-      username: admin
-      password: Son191203
+  mongodb:
+    host: localhost
+    port: 27017
+    database: notification-service
+    username: admin
+    password: Son191203
 kafka:
   group-id: service-demo
   server-config: localhost:9092

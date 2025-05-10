@@ -7,7 +7,6 @@ import com.example.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -44,13 +43,16 @@ public class SecurityFilterChain extends OncePerRequestFilter {
                 throw new ValidationException("AUTHEN001", "Expected format authen-key");
             }
 
-            String redisKey = BaseConstants.USER_SESSION + parts[0];
+            String redisKey = BaseConstants.USER_SESSION + ":" + parts[0];
             String fieldKey = parts[1];
 
-            Object sessionInfo = redisTemplate.opsForHash().get(redisKey, fieldKey);
+            Map<String, Object> sessionInfo = (Map<String, Object>) redisTemplate.opsForHash().get(redisKey, fieldKey);
             if (sessionInfo == null) {
                 throw new ValidationException("SS001", "Session not found or expired");
             }
+
+
+
         }
         filterChain.doFilter(request, response);
     }

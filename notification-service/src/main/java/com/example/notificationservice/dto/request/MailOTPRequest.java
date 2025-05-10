@@ -5,22 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
-public class MailRequest {
+public class MailOTPRequest {
 
-    private Long id;
+    private String id;
 
-    private String code;
 
-    private String name;
-
-    private String channel;
-
-    private Long page;
-
-    private Long pageSize;
 
 }

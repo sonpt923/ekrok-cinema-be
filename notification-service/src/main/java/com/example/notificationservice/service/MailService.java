@@ -8,4 +8,6 @@ public interface MailService {
 
     Object sendOTP(MailOTPRequest request);
 
+    
+
 }

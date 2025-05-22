@@ -2,6 +2,7 @@ package com.example.userservice.repository.customize.impl;
 
 import com.example.dto.base.ListDataResponse;
 import com.example.userservice.dto.request.UserRequest;
+import com.example.userservice.dto.response.UserResponse;
 import com.example.userservice.repository.customize.UserRepositoryCustom;
 import org.springframework.stereotype.Repository;
 

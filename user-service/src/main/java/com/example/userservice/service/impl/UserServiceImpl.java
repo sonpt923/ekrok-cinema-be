@@ -2,10 +2,11 @@ package com.example.userservice.service.impl;
 
 import com.example.config.AwsConfig;
 import com.example.exception.ValidationException;
-import com.example.userservice.feign.NotificationFeign;
 import com.example.service.MydictionaryService;
 import com.example.userservice.dto.request.UserRequest;
+import com.example.userservice.dto.response.UserResponse;
 import com.example.userservice.entity.User;
+import com.example.userservice.feign.NotificationFeign;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.repository.customize.UserRepositoryCustom;
 import com.example.userservice.service.GroupUserService;
@@ -50,6 +51,11 @@ public class UserServiceImpl implements UserService {
     private RedisTemplate redisTemplate;
 
     @Override
+    public UserResponse userInfo(String username) {
+        return convertUserToResponse(repository.findUserByUsername(username));
+    }
+
+    @Override
     @Transactional
     public Object createUser(UserRequest userRequest) {
         validateCreateUser(userRequest);
@@ -58,7 +64,7 @@ public class UserServiceImpl implements UserService {
         String username = StringUtil.genUsernameFromFullname(fullName);
         String password = passwordEncoder.encode(userRequest.getPassword());
         User user = User.builder()
-                .birthDay(userRequest.getBirthDay()).email(userRequest.getEmail())
+                .birthDay(null).email(userRequest.getEmail())
                 .firstName(userRequest.getFirstName())
                 .lastName(userRequest.getLastName()).image("")
                 .status(userRequest.getStatus()).password(password)
@@ -81,7 +87,7 @@ public class UserServiceImpl implements UserService {
         String username = StringUtil.genUsernameFromFullname(userRequest.getFirstName() + " " + userRequest.getLastName());
         String password = passwordEncoder.encode(userRequest.getPassword());
         User user = User.builder()
-                .birthDay(userRequest.getBirthDay()).email(userRequest.getEmail())
+//                .birthDay(userRequest.getBirthDay()).email(userRequest.getEmail())
                 .lastName(userRequest.getLastName()).firstName(userRequest.getFirstName())
                 .image("").status(Constant.user.ACTIVE).password(password)
                 .username(username).build();
@@ -117,7 +123,7 @@ public class UserServiceImpl implements UserService {
 
     public Object revolkSession(String[] session) {
         // kiem tra user id co quyen revolk khong? admin hoac user
-        
+
         return null;
     }
 
@@ -168,6 +174,13 @@ public class UserServiceImpl implements UserService {
         if (StringUtil.stringIsNullOrEmty(userRequest.getPhone())) {
 //            throw new ValidationException(BaseConstants.ERROR_NOT_NULL, String.format(dictionary))
         }
+    }
+
+    private UserResponse convertUserToResponse(User user) {
+        return UserResponse.builder()
+                .id(user.getId()).username(user.getUsername())
+                .firstName(user.getFirstName()).lastName(user.getLastName())
+                .build();
     }
 
 }

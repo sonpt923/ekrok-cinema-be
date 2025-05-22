@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "notification-service", url = "${spring.rest.notification-service.name}")
 public interface NotificationFeign {
 
-    @PostMapping("/send-otp")
+    @PostMapping("/mail/send-otp")
     ResponseEntity sendOTP(@RequestBody UserRequest request);
 
 }

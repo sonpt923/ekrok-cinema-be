@@ -1,4 +1,4 @@
-package com.example.notificationservice.dto.request;
+package com.example.userservice.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,15 +9,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MailOTPRequest {
+public class UserResponse {
+
+    private Long id;
 
     private String username;
 
     private String firstName;
 
-    private String LastName;
+    private String lastName;
 
-    // reset, delete...
-    private Integer type;
+    private String email;
+
+    private String phone;
 
 }

@@ -1,8 +1,11 @@
 package com.example.userservice.service;
 
 import com.example.userservice.dto.request.UserRequest;
+import com.example.userservice.dto.response.UserResponse;
 
 public interface UserService {
+
+    UserResponse userInfo(String authenKey);
 
     Object createUser(UserRequest userRequest);
 

@@ -15,23 +15,26 @@ public class Channel {
     @Id
     private String id;
 
-    @Field("channelType")
-    private String channelType;
+    @Field("code")
+    private String code;
+
+    @Field("priority")
+    private Long priority;
 
     @Field("provider")
     private String provider;
 
     @Field("configs")
-    private List<Config> configs;
+    private Map<String, Object> configs;
 
     @Field("status")
     private String status;
 
     @Field("createdAt")
-    private String createdAt;
+    private Timestamp createdAt;
 
     @Field("createdBy")
-    private Timestamp createdBy;
+    private String createdBy;
 
     @Field("updatedBy")
     private String updatedBy;

@@ -30,7 +30,7 @@ public class UserRequest {
 
     private String image;
 
-    private Date birthDay;
+    private String birthDay;
 
     private String password;
 

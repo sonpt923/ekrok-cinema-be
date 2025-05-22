@@ -3,6 +3,7 @@ package com.example.userservice.service.impl;
 import com.example.exception.AppException;
 import com.example.exception.SystemException;
 import com.example.exception.ValidationException;
+import com.example.service.MydictionaryService;
 import com.example.userservice.dto.request.UserRequest;
 import com.example.userservice.entity.ApDomain;
 import com.example.userservice.entity.User;
@@ -16,8 +17,8 @@ import com.example.userservice.security.JwtProvider;
 import com.example.userservice.service.ApDomainService;
 import com.example.userservice.service.AuthenService;
 import com.example.userservice.utils.Constant;
-import com.example.service.MydictionaryService;
 import com.example.utils.BaseConstants;
+import com.example.utils.DateUtil;
 import com.example.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -87,10 +88,13 @@ public class AuthenServiceImpl implements AuthenService {
     public Object register(UserRequest request) {
         validateRegister(request);
         User user = User.builder().username(request.getUsername()).email(request.getEmail())
-                .birthDay(request.getBirthDay()).firstName(request.getFirstName()).lastName(request.getLastName())
-                .createdBy(request.getUsername()).build();
+                .birthDay(DateUtil.convertDateToTimestamp(DateUtil.stringToDate(request.getBirthDay())))
+                .phone(request.getPhone())
+                .firstName(request.getFirstName()).lastName(request.getLastName())
+                .createdBy(Constant.SELF_CREATE).build();
+        // TODO: register user
         ResponseEntity response = notificationFeign.sendOTP(request);
-        if(response.getStatusCodeValue() == 200 && response.getStatusCode().equals(HttpStatus.OK)){
+        if (response.getStatusCodeValue() == 200 && response.getStatusCode().equals(HttpStatus.OK)) {
             userRepository.save(user);
         }
         throw new AppException(BaseConstants.ERROR_CREATE_STAFF, dic.get("ERROR.CREATE_ACCOUNT_FAIL"));
@@ -170,5 +174,23 @@ public class AuthenServiceImpl implements AuthenService {
             throw new ValidationException(BaseConstants
                     .ERROR_NOT_NULL, String.format(dic.get(""), ""));
         }
+
+        if (StringUtil.stringIsNullOrEmty(request.getPhone())) {
+            throw new ValidationException(BaseConstants.ERROR_NOT_NULL, String.format(dic.get(""), ""));
+        }
+
+        if (userRepository.findUserByUsername(request.getUsername()) != null) {
+            throw new ValidationException(BaseConstants.ERROR_NOT_NULL, String.format(""));
+        }
+
+        if (!DateUtil.isDate(request.getBirthDay())) {
+            throw new ValidationException(null);
+        }
+
+        if (userRepository.findUserByPhone(request.getPhone()) != null) {
+            throw new ValidationException(null);
+        }
+
+
     }
 }

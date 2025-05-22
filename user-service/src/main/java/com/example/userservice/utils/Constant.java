@@ -8,6 +8,8 @@ public class Constant extends BaseConstants {
 
     public static final Long TTL = 60L;
 
+    public static final String SELF_CREATE = "default";
+
     public interface AP_DOMAIN {
 
         String OTP_CODE = "OTP";

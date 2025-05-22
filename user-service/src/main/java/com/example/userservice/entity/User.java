@@ -52,7 +52,7 @@ public class User{
     private String lastName;
 
     @Column(name = "birth_day")
-    private Date birthDay;
+    private Timestamp birthDay;
 
     @Column(name = "status")
     private Integer status;

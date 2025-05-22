@@ -21,6 +21,7 @@ public class Template {
     @Field("id")
     private String id;
 
+    // MAIL, SMS
     @Field("code")
     private String code;
 

@@ -50,9 +50,7 @@ public class SecurityFilterChain extends OncePerRequestFilter {
             if (sessionInfo == null) {
                 throw new ValidationException("SS001", "Session not found or expired");
             }
-
-
-
+            request.setAttribute("username", sessionInfo.get("username"));
         }
         filterChain.doFilter(request, response);
     }

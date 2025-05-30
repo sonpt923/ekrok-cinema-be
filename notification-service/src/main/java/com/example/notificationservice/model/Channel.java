@@ -2,8 +2,12 @@ package com.example.notificationservice.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Document(collection = "channel")
 public class Channel {
@@ -11,25 +15,35 @@ public class Channel {
     @Id
     private String id;
 
-    private String channelType;
+    @Field("code")
+    private String code;
 
+    @Field("priority")
+    private Long priority;
+
+    @Field("provider")
     private String provider;
 
-    private Config config;
+    @Field("configs")
+    private Map<String, Object> configs;
 
+    @Field("status")
     private String status;
 
-    private Integer priority; // nếu lỗi thì có sử dụng channel khác cùng type không
+    @Field("createdAt")
+    private Timestamp createdAt;
 
-    private String createdAt;
+    @Field("createdBy")
+    private String createdBy;
 
-    private Timestamp createdBy;
-
+    @Field("updatedBy")
     private String updatedBy;
 
+    @Field("updatedAt")
     private Timestamp updatedAt;
 
-    private Timestamp deletedAt;
+    @Field("deleted")
+    private Boolean deleted;
 
 
 

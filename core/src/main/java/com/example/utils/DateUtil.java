@@ -1,5 +1,6 @@
 package com.example.utils;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -33,6 +34,11 @@ public class DateUtil {
     public static final String FORMAT_MONTH = "MM/yyyy";
 
     public static final String TIME_ZONE = "GMT+7";
+
+
+    public static Timestamp convertDateToTimestamp(Date date){
+        return new Timestamp(date.getTime());
+    }
 
     public static Long stringHMSToMillis(String strHMS) {
         if (strHMS == null)

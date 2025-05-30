@@ -1,13 +1,12 @@
 package com.example.apigateway.filter;
 
 import com.example.exception.ValidationException;
-import com.example.security.BaseJwtProvider;
 import com.example.utils.BaseConstants;
 import com.example.utils.StringUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -26,9 +25,6 @@ public class SecurityFilterChain extends OncePerRequestFilter {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @Autowired
-    private BaseJwtProvider jwtProvider;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -44,13 +40,14 @@ public class SecurityFilterChain extends OncePerRequestFilter {
                 throw new ValidationException("AUTHEN001", "Expected format authen-key");
             }
 
-            String redisKey = BaseConstants.USER_SESSION + parts[0];
+            String redisKey = BaseConstants.USER_SESSION + ":" + parts[0];
             String fieldKey = parts[1];
 
-            Object sessionInfo = redisTemplate.opsForHash().get(redisKey, fieldKey);
+            Map<String, Object> sessionInfo = new ObjectMapper().readValue(redisTemplate.opsForValue().get(redisKey + ":" + fieldKey).toString(), Map.class);
             if (sessionInfo == null) {
                 throw new ValidationException("SS001", "Session not found or expired");
             }
+            request.setAttribute("username", sessionInfo.get("username"));
         }
         filterChain.doFilter(request, response);
     }

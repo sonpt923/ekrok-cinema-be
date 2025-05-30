@@ -5,10 +5,7 @@ import com.example.userservice.service.ApDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/ap-domain")
@@ -19,21 +16,26 @@ public class ApDomainController {
 
     @PostMapping("create-ap-domain")
     public ResponseEntity createApDomain(ApDomainRequest request) {
-        return new ResponseEntity(apDomainService.createApDomain(null), HttpStatus.OK);
+        return new ResponseEntity(apDomainService.createApDomain(request), HttpStatus.OK);
     }
 
     @PostMapping("/update-ap-domain")
     public ResponseEntity updateApDomain(ApDomainRequest request) {
-        return new ResponseEntity(null, HttpStatus.OK);
+        return new ResponseEntity(apDomainService.update(request), HttpStatus.OK);
     }
 
     @GetMapping("/get-ap-domain-by-code")
-    public ResponseEntity getApDomain(ApDomainRequest request){
-        return new ResponseEntity(apDomainService.getByCode(request.getCode()), HttpStatus.OK);
+    public ResponseEntity getApDomain(@RequestParam("code") String code) {
+        return new ResponseEntity(apDomainService.getByCode(code), HttpStatus.OK);
     }
 
-    @GetMapping("/get-list-app-domain")
-    public ResponseEntity getListApDomain(ApDomainRequest request){
+//    @GetMapping("/get-list-app-domain")
+//    public ResponseEntity getListApDomain(@RequestAttribute ApDomainRequest request) {
+//        return new ResponseEntity(apDomainService., HttpStatus.OK);
+//    }
+
+    @PostMapping("/add-parent-to-app-domain")
+    public ResponseEntity addParentToAppDomain(@RequestBody ApDomainRequest request) {
         return new ResponseEntity(null, HttpStatus.OK);
     }
 

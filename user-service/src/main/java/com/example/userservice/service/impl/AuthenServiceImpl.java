@@ -1,41 +1,32 @@
 package com.example.userservice.service.impl;
 
 import com.example.exception.AppException;
-import com.example.exception.SystemException;
 import com.example.exception.ValidationException;
 import com.example.service.MydictionaryService;
 import com.example.userservice.dto.request.UserRequest;
 import com.example.userservice.entity.ApDomain;
 import com.example.userservice.entity.User;
-import com.example.userservice.entity.redisCache.OTPCache;
-import com.example.userservice.entity.redisCache.TokenCache;
 import com.example.userservice.feign.NotificationFeign;
 import com.example.userservice.repository.UserRepository;
-import com.example.userservice.repository.redis.OTPCacheRepository;
-import com.example.userservice.repository.redis.TokenCacheRepository;
-import com.example.userservice.security.JwtProvider;
 import com.example.userservice.service.ApDomainService;
 import com.example.userservice.service.AuthenService;
 import com.example.userservice.utils.Constant;
 import com.example.utils.BaseConstants;
 import com.example.utils.DateUtil;
 import com.example.utils.StringUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class AuthenServiceImpl implements AuthenService {
-
-    @Autowired
-    private JwtProvider jwtProvider;
 
     @Autowired
     private UserRepository userRepository;
@@ -50,31 +41,29 @@ public class AuthenServiceImpl implements AuthenService {
     private MydictionaryService dic;
 
     @Autowired
-    private OTPCacheRepository otpCacheRepository;
-
-    @Autowired
     private NotificationFeign notificationFeign;
 
     @Autowired
-    private TokenCacheRepository tokenCacheRepository;
+    private RedisTemplate redisTemplate;
 
     @Override
     public Object login(UserRequest request) {
-        Assert.isNull(request, "request can not be null or empty");
         User user = userRepository.findUserByUsername(request.getUsername());
-        if (passwordEncoder.matches(user.getPassword(), user.getPassword())) {
+        if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             try {
-                String token = jwtProvider.generateTokenRSA(request.getEmail());
-                String key = UUID.randomUUID().toString();
+                String key = Constant.USER_SESSION + ":" + request.getUsername() + ":" + UUID.randomUUID();
                 Long ttl = Constant.TTL;
                 if (request.getIsAdmin()) {
                     Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE).getValue());
                 } else {
                     Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE).getValue());
                 }
-                TokenCache cache = new TokenCache(key, ttl, token);
-                tokenCacheRepository.save(cache);
-                return new HashMap<>(Map.of("authen-key", key));
+                HashMap<String, Object> jsonValue = this.userToJsonValue(user);
+                redisTemplate.opsForValue().set(key, new ObjectMapper().writeValueAsString(jsonValue), ttl, TimeUnit.MINUTES);
+                boolean isSetRedis = redisTemplate.hasKey(key);
+                if (isSetRedis) {
+                    return new HashMap<>(Map.of("authen-key", key));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new AppException("", "");
@@ -87,15 +76,18 @@ public class AuthenServiceImpl implements AuthenService {
     @Override
     public Object register(UserRequest request) {
         validateRegister(request);
-        User user = User.builder().username(request.getUsername()).email(request.getEmail())
+        User user = User.builder().provider("DEMO").providerId(1L)
+                .username(request.getUsername()).email(request.getEmail())
                 .birthDay(DateUtil.convertDateToTimestamp(DateUtil.stringToDate(request.getBirthDay())))
                 .phone(request.getPhone())
                 .firstName(request.getFirstName()).lastName(request.getLastName())
                 .createdBy(Constant.SELF_CREATE).build();
-        // TODO: register user
-        ResponseEntity response = notificationFeign.sendOTP(request);
-        if (response.getStatusCodeValue() == 200 && response.getStatusCode().equals(HttpStatus.OK)) {
+        if (request.getPassword().equals(request.getConfirmPassword())) {
+//            ResponseEntity response = notificationFeign.sendOTP(request);
+//        if (response.getStatusCodeValue() == 200 && response.getStatusCode().equals(HttpStatus.OK)) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
             userRepository.save(user);
+//        }
         }
         throw new AppException(BaseConstants.ERROR_CREATE_STAFF, dic.get("ERROR.CREATE_ACCOUNT_FAIL"));
     }
@@ -115,23 +107,23 @@ public class AuthenServiceImpl implements AuthenService {
             } catch (Exception e) {
                 otpTime = Constant.OTP_TIME;
             }
-            OTPCache otpCache = new OTPCache(request.getUsername(), StringUtil.generateString(Constant.OTP_LENGTH), otpTime);
-            otpCacheRepository.save(otpCache);
+            ;
             // send otp ->  notification-service
-            request.setOtp(otpCache.getValue());
+//            request.setOtp(otpCache.getValue());
 //            ResponseEntity response = notificationFeign.sendOTP(request);
             return null;
         } else { // case2: xu ly
-            OTPCache otp = otpCacheRepository.findById(request.getUsername()).get();
-            if (otp != null) {
-                if (otp.getValue().equals(request.getOtp())) {
-                    changePassword(request);
-                }
-                return null;
-            } else {
-                throw new SystemException(null);
-            }
+//            OTPCache otp = otpCacheRepository.findById(request.getUsername()).get();
+//            if (otp != null) {
+//                if (otp.getValue().equals(request.getOtp())) {
+//                    changePassword(request);
+//                }
+//                return null;
+//            } else {
+//                throw new SystemException(null);
+//            }
         }
+        return null;
     }
 
     @Override
@@ -183,14 +175,26 @@ public class AuthenServiceImpl implements AuthenService {
             throw new ValidationException(BaseConstants.ERROR_NOT_NULL, String.format(""));
         }
 
-        if (!DateUtil.isDate(request.getBirthDay())) {
-            throw new ValidationException(null);
-        }
+//        if (!DateUtil.isDate(request.getBirthDay())) {
+//            throw new ValidationException(null);
+//        }
 
         if (userRepository.findUserByPhone(request.getPhone()) != null) {
             throw new ValidationException(null);
         }
-
-
     }
+
+
+    private HashMap<String, Object> userToJsonValue(User user) {
+        HashMap<String, Object> jsonValue = new HashMap<>();
+        jsonValue.put("username", user.getUsername());
+        jsonValue.put("roles", "");
+        jsonValue.put("group", "");
+        jsonValue.put("email", user.getEmail());
+        jsonValue.put("image", user.getImage());
+        jsonValue.put("fristName", user.getFirstName());
+        jsonValue.put("lastName", user.getLastName());
+        return jsonValue;
+    }
+
 }

@@ -2,15 +2,16 @@ package com.example.userservice.service.impl;
 
 import com.example.exception.ValidationException;
 import com.example.service.impl.MyDictionaryServiceImpl;
+import com.example.userservice.dto.request.ApDomainRequest;
 import com.example.userservice.entity.ApDomain;
 import com.example.userservice.repository.ApDomainRepository;
 import com.example.userservice.service.ApDomainService;
 import com.example.userservice.utils.Constant;
 import com.example.utils.StringUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -39,24 +40,24 @@ public class ApDomainServiceImpl implements ApDomainService {
     }
 
     @Override
-    public ApDomain update(ApDomain apDomain, String token) {
-        validate(apDomain);
-        apDomain.setUpdatedBy("username");
-        apDomain.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-        return domainRepository.save(apDomain);
+    public ApDomain update(ApDomainRequest request) {
+        validate(request);
+        ApDomain ap = ApDomain.builder().build();
+        return domainRepository.save(ap);
     }
 
     @Override
     public ApDomain getByCode(String code) {
-        return null;
+        return domainRepository.getByCode(code);
     }
 
     @Override
-    public ApDomain createApDomain(ApDomain apDomain) {
+    public ApDomain createApDomain(ApDomainRequest request) {
+        validate(request);
         return null;
     }
 
-    private void validate(ApDomain apDomain) {
+    private void validate(ApDomainRequest apDomain) {
 
         if (StringUtil.stringIsNullOrEmty(apDomain.getCode())) {
             throw new ValidationException(Constant.ERROR_NOT_NULL,

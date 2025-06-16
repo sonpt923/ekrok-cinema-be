@@ -11,8 +11,8 @@
     <groupId>com.example</groupId>
     <artifactId>payment-service</artifactId>
     <version>1.0</version>
-    <name>cinema-service</name>
-    <description>cinema-service</description>
+    <name>payment-service</name>
+    <description>payment-service</description>
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
@@ -23,10 +23,6 @@
             <version>1.0</version>
             <groupId>com.example</groupId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-websocket</artifactId>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>

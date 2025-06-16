@@ -1,30 +1,25 @@
 spring:
   application:
-    name: user-service
+    name: recommendation-service
   config:
     import: "optional:configserver:http://localhost:8088"
-  datasource:
-    url: jdbc:mysql://localhost:3306/user-service?useSSL=true
-    username: root
-    password: Son191203
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    show-sql: false
-  cache:
-    type: redis
-    redis:
-      cache-null-values: false
-      use-key-prefix: true
-      time-to-live: 3000
+  spark:
+    app:
+      name: recommendation-engine
+    master: spark://localhost:7077
   data:
     redis:
       host: redis-19160.c292.ap-southeast-1-1.ec2.redns.redis-cloud.com
       port: 19160
       username: default
       password: UW1mVlhCWk5wakRxUkQ1MnZmdHlxYjVQZm9Ta0djYjk=
-      havePassword: "YES"
+      havePassword: YES
+    mongodb:
+      host: localhost
+      port: 27017
+      database: notification-service
+      username: admin
+      password: Son191203
   rest:
     notification-service:
       name: notification-service
@@ -35,10 +30,6 @@ spring:
   security:
     jwt:
       expiration_time: 1000 #hour
-frontend:
-  host: http://localhost:3000
-  url:
-    change-password: /forgot-password
 cloudflare:
   r2:
     access-key-id: NDg5MDEwY2MyNTc3NWY0M2IxMTMxNWRhOGM5ZThlY2Y=

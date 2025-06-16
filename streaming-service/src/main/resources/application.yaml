@@ -1,6 +1,6 @@
 spring:
   application:
-    name: booking-service
+    name: streaming-service
   config:
     import: "optional:configserver:http://localhost:8088"
   datasource:

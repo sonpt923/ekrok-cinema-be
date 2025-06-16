@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: api-gateway
+  data:
+    redis:
+      host: "redis-19160.c292.ap-southeast-1-1.ec2.redns.redis-cloud.com"
+      port: 19160
+      username: "default"
+      password: "UW1mVlhCWk5wakRxUkQ1MnZmdHlxYjVQZm9Ta0djYjk="
+      havePassword: "YES"
+zuul:
+  prefix: /api
+  routes:
+    cinema-service:
+      service-id: cinema-service
+      path: /cinema/**
+    booking-service:
+      service-id: booking-service
+      path: /booking/**
+    notification-service:
+      service-id: notification-service
+      path: /notification/**
+    user-service:
+      path: /user/**
+      service-id: user-service
+    discount-service:
+      path: /discount/**
+      service-id: discount-service
+    movie-service:
+      path: /movie/**
+      service-id: movie-service
+    schedule-service:
+      path: /schedule/**
+      service-id: schedule-service
+cloudflare:
+  r2:
+    access-key-id: "NDg5MDEwY2MyNTc3NWY0M2IxMTMxNWRhOGM5ZThlY2Y="
+    secret-access-key: "ODNjZmI2ZmMyNDg1YjJiZGJjNjUyNDc4ZWM0ZGFiNGVhNjlmNTQ2ZjM2MmRjM2Y0ODNiZmRhN2E1M2Y3ZDg2Zg=="
+    bucket-name: "ekrok-cinema"
+    region: "auto"
+    endpoint: "https://d06c0f7e9f2d0c33fee98a0934f64d09.r2.cloudflarestorage.com"

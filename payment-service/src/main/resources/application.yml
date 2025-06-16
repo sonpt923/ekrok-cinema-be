@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: cinema-service
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  datasource:
+    url: jdbc:mysql://localhost:3306/cinema-service
+    username: root
+    password: Son191203
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      read-only: false
+      leak-detection-threshold: 30000
+      pool-name: Admin_Pool
+      idleTimeout: 60000
+      maxLifetime: 60000
+      connectionTimeout: 60000
+      minimumIdle: 5
+      maximum-pool-size: 30
+      connection-test-query: SELECT 1 FROM DUAL
+    jpa:
+      hibernate:
+        ddl-auto: create
+      show-sql: true
+    cache:
+      type: redis
+      redis:
+        cache-null-values: false
+        use-key-prefix: true
+        time-to-live: 3000
+  data:
+    redis:
+      host: redis-19160.c292.ap-southeast-1-1.ec2.redns.redis-cloud.com
+      port: 19160
+      username: default
+      password: UW1mVlhCWk5wakRxUkQ1MnZmdHlxYjVQZm9Ta0djYjk=
+      havePassword: "YES"
+cloudflare:
+  r2:
+    access-key-id: NDg5MDEwY2MyNTc3NWY0M2IxMTMxNWRhOGM5ZThlY2Y=
+    secret-access-key: ODNjZmI2ZmMyNDg1YjJiZGJjNjUyNDc4ZWM0ZGFiNGVhNjlmNTQ2ZjM2MmRjM2Y0ODNiZmRhN2E1M2Y3ZDg2Zg==
+    bucket-name: ekrok-cinema
+    region: auto
+    endpoint: https://d06c0f7e9f2d0c33fee98a0934f64d09.r2.cloudflarestorage.com
+kafka:
+  server-config: localhost:9092
+  group-id: service

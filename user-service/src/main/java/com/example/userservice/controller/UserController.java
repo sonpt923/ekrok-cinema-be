@@ -1,23 +1,13 @@
 package com.example.userservice.controller;
 
-import com.example.config.EnableWrapResponse;
 import com.example.userservice.dto.request.UserRequest;
-import com.example.userservice.entity.User;
 import com.example.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@EnableWrapResponse
 @RequestMapping("/user")
 public class UserController {
 
@@ -40,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/find-account-by-condition")
-    public ResponseEntity findAll(@RequestBody UserRequest request){
+    public ResponseEntity findAll(@RequestBody UserRequest request) {
         return new ResponseEntity(null, HttpStatus.OK);
     }
 

@@ -1,10 +1,10 @@
 package com.example.userservice.utils;
 
-import com.example.utils.BaseConstants;
-
-public class Constant extends BaseConstants {
+public class Constant {
 
     public static final Long OTP_TIME = 60L;
+
+    public static final String YES = "yes";
 
     public interface AP_DOMAIN {
 

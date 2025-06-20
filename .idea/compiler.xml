@@ -14,7 +14,6 @@
         <module name="user-service" />
         <module name="notification-service" />
         <module name="recommendation-service" />
-        <module name="core" />
         <module name="payment-service" />
         <module name="schedule-service" />
         <module name="discount-service" />
@@ -26,6 +25,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="chat-service" target="17" />
+      <module name="core" target="1.8" />
       <module name="discount-service (1)" target="11" />
       <module name="discount-service (2)" target="11" />
       <module name="employee-service" target="17" />
@@ -40,7 +40,7 @@
       <module name="config-sever" options="-parameters" />
       <module name="core" options="-parameters" />
       <module name="department-service" options="-parameters" />
-      <module name="discount-service" options="" />
+      <module name="discount-service" options="-parameters" />
       <module name="discount-service (1)" options="-parameters" />
       <module name="discount-service (2)" options="-parameters" />
       <module name="employee-service" options="-parameters" />

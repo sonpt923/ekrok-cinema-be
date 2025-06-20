@@ -1,7 +1,5 @@
 package com.example.movieservice.controller;
 
-import com.example.config.EnableWrapResponse;
-import com.example.movieservice.dto.request.GenreRequest;
 import com.example.movieservice.dto.request.MovieRequest;
 import com.example.movieservice.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/movie")
-@EnableWrapResponse
 public class MovieController {
 
     @Autowired

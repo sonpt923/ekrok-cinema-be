@@ -8,6 +8,9 @@ spring:
       username: "default"
       password: "UW1mVlhCWk5wakRxUkQ1MnZmdHlxYjVQZm9Ta0djYjk="
       havePassword: "YES"
+kafka:
+  server-config: localhost:9092
+  group-id: service
 zuul:
   prefix: /api
   routes:

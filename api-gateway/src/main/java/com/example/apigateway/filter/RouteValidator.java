@@ -1,6 +1,5 @@
 package com.example.apigateway.filter;
 
-import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;

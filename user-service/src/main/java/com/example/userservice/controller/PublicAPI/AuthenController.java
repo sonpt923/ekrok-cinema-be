@@ -1,24 +1,18 @@
 package com.example.userservice.controller.PublicAPI;
 
-import com.example.config.EnableWrapResponse;
 import com.example.userservice.dto.request.UserRequest;
 import com.example.userservice.entity.User;
 import com.example.userservice.entity.google.UserInfo;
-import com.example.userservice.entity.redisCache.OTPCache;
-import com.example.userservice.repository.redis.OTPCacheRepository;
 import com.example.userservice.service.AuthenService;
-import com.example.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@EnableWrapResponse
 @RequestMapping("/auth")
 public class AuthenController {
 

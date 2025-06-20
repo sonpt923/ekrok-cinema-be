@@ -4,8 +4,6 @@ import com.example.userservice.dto.request.UserRequest;
 import com.example.userservice.entity.User;
 import com.example.userservice.entity.google.UserInfo;
 import com.example.userservice.repository.UserRepository;
-import com.example.userservice.repository.redis.OTPCacheRepository;
-import com.example.userservice.repository.redis.TokenCacheRepository;
 import com.example.userservice.service.ApDomainService;
 import com.example.userservice.service.AuthenService;
 import com.example.userservice.service.feign.NotificationService;
@@ -26,13 +24,7 @@ public class AuthenServiceImpl implements AuthenService {
     private ApDomainService apDomainService;
 
     @Autowired
-    private OTPCacheRepository otpCacheRepository;
-
-    @Autowired
     private NotificationService notificationService;
-
-    @Autowired
-    private TokenCacheRepository tokenCacheRepository;
 
     @Override
     public Object login(User request) {

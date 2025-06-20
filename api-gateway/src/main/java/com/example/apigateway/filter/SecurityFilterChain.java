@@ -1,44 +1,30 @@
 package com.example.apigateway.filter;
 
-import com.example.apigateway.repository.TokenCacheRepository;
-import com.example.apigateway.service.feign.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
+//@Component
+//public class SecurityFilterChain extends OncePerRequestFilter {
+public class SecurityFilterChain {
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-@Component
-public class SecurityFilterChain extends OncePerRequestFilter {
-
-    private static final Logger log = LoggerFactory.getLogger(SecurityFilterChain.class);
-
-    @Autowired
-    private RouteValidator validator;
-
-    @Autowired
-    private RedisTemplate redisTemplate;
-
-
-    @Autowired
-    private TokenCacheRepository tokenCacheRepository;
-
-    @Autowired
-    private UserService userService;
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        if (validator.isSecure.test(request)) {
-        }
-        filterChain.doFilter(request, response);
-    }
+//    private static final Logger log = LoggerFactory.getLogger(SecurityFilterChain.class);
+//
+//    @Autowired
+//    private RouteValidator validator;
+//
+//    @Autowired
+//    private RedisTemplate redisTemplate;
+//
+//
+//    @Autowired
+//    private TokenCacheRepository tokenCacheRepository;
+//
+//    @Autowired
+//    private UserService userService;
+//
+//    @Override
+//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+//            throws ServletException, IOException {
+//        if (validator.isSecure.test(request)) {
+//        }
+//        filterChain.doFilter(request, response);
+//    }
 
 }

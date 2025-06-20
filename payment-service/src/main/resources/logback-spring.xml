@@ -1,12 +1,27 @@
 <configuration>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <property name="LOG_PATTERN"
+              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} %clr(---){faint} %clr([%15.15t]){cyan} %clr(%-40.40logger{39}){blue} : %m%n%wEx"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Logstash TCP appender -->
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>logstash:5000</destination>
+        <destination>localhost:5000</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <customFields>{"service":"payment-service"}</customFields>
         </encoder>
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="LOGSTASH" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOGSTASH"/>
     </root>
+
 </configuration>

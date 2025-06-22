@@ -4,7 +4,13 @@ public class Constant {
 
     public static final Long OTP_TIME = 60L;
 
+    public static final Long TTL = 60L;
+
     public static final String YES = "yes";
+
+    public static final String SELF_CREATE = "default";
+
+    public static final String USER_SESSION = "user-session";
 
     public interface AP_DOMAIN {
 

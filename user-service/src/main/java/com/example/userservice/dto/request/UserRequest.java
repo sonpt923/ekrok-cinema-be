@@ -14,19 +14,25 @@ public class UserRequest {
 
     private Long id;
 
+    private String provider;
+
+    private String providerId;
+
     private String email;
 
     private String username;
 
-    private String fullName;
+    private String lastName;
+
+    private String firstName;
 
     private String phone;
 
-    private Date birthDay;
+    private String image;
+
+    private String birthDay;
 
     private String password;
-
-    private String image;
 
     private Integer status;
 
@@ -39,5 +45,10 @@ public class UserRequest {
     private String confirmPassword;
 
     private Group group;
+
+    private Integer flag;
+
+    private Boolean isAdmin;
+
 
 }

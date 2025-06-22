@@ -13,4 +13,14 @@ public class MailRequest {
 
     private Long id;
 
+    private String code;
+
+    private String name;
+
+    private String channel;
+
+    private Long page;
+
+    private Long pageSize;
+
 }

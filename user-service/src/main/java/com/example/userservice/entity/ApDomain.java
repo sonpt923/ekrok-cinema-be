@@ -1,22 +1,19 @@
 package com.example.userservice.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "ap_domain")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class ApDomain {
 
     @Id
@@ -33,14 +30,23 @@ public class ApDomain {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "status")
-    private Long status;
+    private Integer status;
 
     @Column(name = "value")
     private String value;
 
-    @Column(name = "parent_id")
-    private Long parentId;
+    @Column(name = "domain_parent_id")
+    private Long domainParentId;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "created_at")
+    private Timestamp createdAt;
 
     @Column(name = "updated_at")
     private Timestamp updatedAt;
@@ -48,7 +54,8 @@ public class ApDomain {
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "deleted")
+    private Boolean deleted;
+
 
 }

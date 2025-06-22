@@ -1,6 +1,6 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.entity.ApDomain;
+import com.example.userservice.dto.request.ApDomainRequest;
 import com.example.userservice.service.ApDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,14 +14,29 @@ public class ApDomainController {
     @Autowired
     private ApDomainService apDomainService;
 
-    @GetMapping("/get-ap-domain")
-    public ResponseEntity getApDomainByCode(@RequestParam("code") String code, @RequestHeader("Authorization") String token) {
-        return new ResponseEntity(apDomainService.getByCodeAndPermission(code, token), HttpStatus.OK);
+    @PostMapping("create-ap-domain")
+    public ResponseEntity createApDomain(ApDomainRequest request) {
+        return new ResponseEntity(apDomainService.createApDomain(request), HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity updateApDomain(@RequestBody ApDomain apDomain, @RequestHeader("Authorization") String token) {
-        return new ResponseEntity(apDomainService.update(apDomain, token), HttpStatus.OK);
+    @PostMapping("/update-ap-domain")
+    public ResponseEntity updateApDomain(ApDomainRequest request) {
+        return new ResponseEntity(apDomainService.update(request), HttpStatus.OK);
+    }
+
+    @GetMapping("/get-ap-domain-by-code")
+    public ResponseEntity getApDomain(@RequestParam("code") String code) {
+        return new ResponseEntity(apDomainService.getByCode(code), HttpStatus.OK);
+    }
+
+    @GetMapping("/get-list-app-domain")
+    public ResponseEntity getListApDomain(@RequestAttribute ApDomainRequest request) {
+        return new ResponseEntity(apDomainService.getApDomainByCondition(request), HttpStatus.OK);
+    }
+
+    @PostMapping("/add-parent-to-app-domain")
+    public ResponseEntity addParentToAppDomain(@RequestBody ApDomainRequest request) {
+        return new ResponseEntity(null, HttpStatus.OK);
     }
 
 

@@ -1,20 +1,18 @@
 package com.example.userservice.entity;
 
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.sql.Date;
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Data
 @Entity
-@Table(name = "user_group_table")
+@Builder
+@Table(name = "group")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Group {
@@ -30,19 +28,25 @@ public class Group {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "created_at")
-    private Date createdAt;
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "status")
+    private Integer status;
 
     @Column(name = "created_by")
     private String createdBy;
 
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private Timestamp updatedAt;
 
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @Column(name = "deleted_at")
-    private String deletedAt;
+    @Column(name = "deleted")
+    private Boolean deleted;
 
 }

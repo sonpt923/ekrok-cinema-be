@@ -1,31 +1,32 @@
 package com.example.userservice.entity;
 
-
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-
-@Entity
-@Table(name = "group_user")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class GroupUser {
+@Builder
+@Entity
+@Table(name = "group_role")
+public class GroupRole {
+
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "group_id")
-    private Long groupId;
+    @Column(name = "role_id")
+    private Long roleId;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "group_id")
+    private Long group_id;
 
     @Column(name = "created_by")
     private String createdBy;

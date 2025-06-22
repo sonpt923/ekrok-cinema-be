@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableZuulProxy
 @EnableDiscoveryClient
 @EnableFeignClients
-@SpringBootApplication(scanBasePackages = {"com.example"})
+@SpringBootApplication
 public class ApiGatewayApplication {
 
     public static void main(String[] args) {

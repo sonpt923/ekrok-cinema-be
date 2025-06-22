@@ -9,18 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class MailRequest {
-
-    private Long id;
+public class TemplateRequest {
 
     private String code;
 
     private String name;
 
     private String channel;
-
-    private Long page;
-
-    private Long pageSize;
 
 }

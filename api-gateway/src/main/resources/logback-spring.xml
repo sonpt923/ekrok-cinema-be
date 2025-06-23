@@ -15,7 +15,7 @@
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <destination>localhost:5000</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <customFields>{"service":"user-service"}</customFields>
+            <customFields>{"service":"api-gateway"}</customFields>
             <includeMdcKeyName>traceId</includeMdcKeyName>
             <includeMdcKeyName>userId</includeMdcKeyName>
         </encoder>

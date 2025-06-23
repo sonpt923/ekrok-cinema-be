@@ -2,6 +2,10 @@ package com.example.apigateway.util;
 
 public class Constant {
 
+    public static final String TRACE_ID_HEADER = "X-Trace-Id";
+
+    public static final String CORRE_LATION_ID = "Corre-Lation-Id";
+
     public static final String YES = "yes";
     public static final String SUCCESSFUL = "API000";
 

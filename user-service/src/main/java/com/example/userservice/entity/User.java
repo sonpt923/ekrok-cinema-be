@@ -16,7 +16,7 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "user")
+@Table(name = "`user`")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

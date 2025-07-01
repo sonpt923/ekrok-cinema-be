@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "group_role")
+@Table(name = "`group_role`")
 public class GroupRole {
 
 

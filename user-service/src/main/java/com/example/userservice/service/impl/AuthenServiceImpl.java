@@ -137,6 +137,7 @@ public class AuthenServiceImpl implements AuthenService {
 //            return userRepository.save(user);
 //        }
 //        throw new ValidationException(Constant.ERROR_PASS_NOT_COMPARE, dic.get("ERROR.CHANGE_PASS.002"));
+        return null;
     }
 
     private void validateRegister(UserRequest request) {

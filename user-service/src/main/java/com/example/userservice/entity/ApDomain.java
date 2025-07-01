@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Builder
-@Table(name = "ap_domain")
+@Table(name = "`ap_domain`")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

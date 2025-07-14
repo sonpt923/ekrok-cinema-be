@@ -1,16 +1,14 @@
-package com.example.streamingservice.config;
+package com.example.core.aop;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
+import org.aspectj.lang.annotation.*;
+import org.slf4j.*;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.UUID;
+import org.slf4j.MDC;
 
 @Aspect
 @Component
@@ -19,7 +17,7 @@ public class LoggingAspect {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Around("execution(* com.example.streamingservice.service..*(..))")
+    @Around("execution(* com.example.userservice.service..*(..))")
     public Object logExecution(ProceedingJoinPoint joinPoint) throws Throwable {
         String traceId = UUID.randomUUID().toString();
         MDC.put("traceId", traceId);

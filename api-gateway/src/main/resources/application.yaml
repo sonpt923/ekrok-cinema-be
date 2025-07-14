@@ -1,12 +1,15 @@
 spring:
   application:
     name: api-gateway
+  messages:
+    basename: messages
+    encoding: UTF-8
   data:
     redis:
-      host: redis-19160.c292.ap-southeast-1-1.ec2.redns.redis-cloud.com
-      port: 19160
+      host: redis-10592.c1.ap-southeast-1-1.ec2.redns.redis-cloud.com
+      port: 10592
       username: default
-      password: UW1mVlhCWk5wakRxUkQ1MnZmdHlxYjVQZm9Ta0djYjk=
+      password: RWw0Y29hak1Ec3dsaXlBUHZIa01SNUVtcFZKUmhZOFo=
       havePassword: "YES"
 kafka:
   server-config: localhost:9092
@@ -35,6 +38,15 @@ zuul:
     schedule-service:
       path: /schedule/**
       service-id: schedule-service
+    payment-service:
+      path: /payment/**
+      service-id: payment-service
+    recommendation-service:
+      path: /recommendation/**
+      service-id: recommendation-service
+    streaming-service:
+      path: /streaming/**
+      service-id: streaming-service
 cloudflare:
   r2:
     access-key-id: "NDg5MDEwY2MyNTc3NWY0M2IxMTMxNWRhOGM5ZThlY2Y="

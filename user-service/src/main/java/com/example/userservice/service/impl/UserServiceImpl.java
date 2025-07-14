@@ -1,6 +1,6 @@
 package com.example.userservice.service.impl;
 
-import com.example.userservice.config.AwsConfig;
+import com.example.core.config.AwsConfig;
 import com.example.userservice.dto.request.UserRequest;
 import com.example.userservice.dto.respond.UserResponse;
 import com.example.userservice.entity.User;
@@ -46,6 +46,11 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Override
+    public User findUserByUsername(String username) {
+        return repository.findUserByUsername(username);
+    }
 
     @Override
     public UserResponse userInfo(String username) {

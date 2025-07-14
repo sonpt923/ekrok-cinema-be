@@ -4,21 +4,19 @@ import com.example.userservice.dto.request.UserRequest;
 import com.example.userservice.entity.ApDomain;
 import com.example.userservice.entity.User;
 import com.example.userservice.fiegn.NotificationFeign;
-import com.example.userservice.repository.UserRepository;
 import com.example.userservice.service.ApDomainService;
 import com.example.userservice.service.AuthenService;
 import com.example.userservice.service.MydictionaryService;
+import com.example.userservice.service.UserService;
 import com.example.userservice.utils.Constant;
 import com.example.userservice.utils.DateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.util.Asserts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -29,7 +27,7 @@ public class AuthenServiceImpl implements AuthenService {
 
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -48,7 +46,7 @@ public class AuthenServiceImpl implements AuthenService {
 
     @Override
     public Object login(UserRequest request) {
-        User user = userRepository.findUserByUsername(request.getUsername());
+        User user = userService.findUserByUsername(request.getUsername());
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             try {
                 String key = Constant.USER_SESSION + ":" + request.getUsername() + ":" + UUID.randomUUID();
@@ -83,30 +81,28 @@ public class AuthenServiceImpl implements AuthenService {
                 .phone(request.getPhone())
                 .firstName(request.getFirstName()).lastName(request.getLastName())
                 .createdBy(Constant.SELF_CREATE).build();
+
         if (request.getPassword().equals(request.getConfirmPassword())) {
 //            ResponseEntity response = notificationFeign.sendOTP(request);
 //        if (response.getStatusCodeValue() == 200 && response.getStatusCode().equals(HttpStatus.OK)) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
-            userRepository.save(user);
+            userService.createUser(request);
 //        }
         }
-//        throw new Exception("", dic.get("ERROR.CREATE_ACCOUNT_FAIL"));
         return null;
     }
 
     @Override
     public Object forgotPassword(UserRequest request) {
-        // case 1: gui otp
+        // case 1: set otp
         if (request.getFlag() == 0) {
             Assert.isNull(request.getUsername(), dic.get("ERROR.APP_IS_NOT_MANAGE"));
-            Long otpTime = 0L;
+            Long otpTime = Constant.OTP_TIME;
             ApDomain apDomain = apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE);
-            try {
+            if(apDomain != null){
                 otpTime = Long.valueOf(apDomain.getValue());
-            } catch (Exception e) {
-                otpTime = Constant.OTP_TIME;
             }
-            ;
+            redisTemplate.opsForValue().set("", "", otpTime, TimeUnit.SECONDS);
             // send otp ->  notification-service
 //            request.setOtp(otpCache.getValue());
 //            ResponseEntity response = notificationFeign.sendOTP(request);
@@ -122,66 +118,49 @@ public class AuthenServiceImpl implements AuthenService {
 //                throw new SystemException(null);
 //            }
         }
+        Assert.isNull(request.getFlag(), "Khong duoc bo trong truong flag");
         return null;
     }
 
     @Override
     public Object changePassword(UserRequest request) {
-//        if (StringUtil.stringIsNullOrEmty(request.getPassword())
-//                || StringUtil.stringIsNullOrEmty(request.getConfirmPassword())) {
-//            throw new ValidationException(BaseConstants.ERROR_NOT_NULL, String.format(Constant.ERROR_NOT_NULL, "password"));
-//        }
-//        if (request.getPassword().equals(request.getConfirmPassword())) {
-//            User user = userRepository.findUserByUsername(request.getUsername());
-//            user.setPassword(passwordEncoder.encode(request.getPassword()));
-//            return userRepository.save(user);
-//        }
-//        throw new ValidationException(Constant.ERROR_PASS_NOT_COMPARE, dic.get("ERROR.CHANGE_PASS.002"));
+        Assert.isNull(request.getPassword(), "password is not null");
+        Assert.isNull(request.getConfirmPassword(), "confirm password is not null");
+        if (request.getPassword().equals(request.getConfirmPassword())) {
+            request.setPassword(passwordEncoder.encode(request.getPassword()));
+            // TODO: send to notification
+            return userService.createUser(request);
+        }
         return null;
     }
 
     private void validateRegister(UserRequest request) {
 
-//        if (StringUtil.stringIsNullOrEmty(request.getUsername())) {
-//            throw new ValidationException(BaseConstants
-//                    .ERROR_NOT_NULL, String.format(dic.get(""), ""));
-//        }
-//
-//        if (StringUtil.stringIsNullOrEmty(request.getPassword())) {
-//            throw new ValidationException(BaseConstants.ERROR_PASSWORD_NOT_NULL
-//                    , String.format(dic.get(""), ""));
-//        }
-//
-//        if (StringUtil.stringIsNullOrEmty(request.getConfirmPassword())) {
-//            throw new ValidationException(BaseConstants.ERROR_PASSWORD_NOT_NULL,
-//                    String.format(dic.get("ERROR.CHANGE_PASS.001"), ""));
-//        }
-//
-//        if (StringUtil.stringIsNullOrEmty(request.getBirthDay())) {
-//            throw new ValidationException(BaseConstants
-//                    .ERROR_NOT_NULL, String.format(dic.get(""), ""));
-//        }
-//
-//        if (StringUtil.stringIsNullOrEmty(request.getEmail())) {
-//            throw new ValidationException(BaseConstants
-//                    .ERROR_NOT_NULL, String.format(dic.get(""), ""));
-//        }
-//
-//        if (StringUtil.stringIsNullOrEmty(request.getPhone())) {
-//            throw new ValidationException(BaseConstants.ERROR_NOT_NULL, String.format(dic.get(""), ""));
-//        }
-//
-//        if (userRepository.findUserByUsername(request.getUsername()) != null) {
-//            throw new ValidationException(BaseConstants.ERROR_NOT_NULL, String.format(""));
-//        }
-//
-////        if (!DateUtil.isDate(request.getBirthDay())) {
-////            throw new ValidationException(null);
-////        }
-//
-//        if (userRepository.findUserByPhone(request.getPhone()) != null) {
-//            throw new ValidationException(null);
-//        }
+        Assert.hasText(request.getUsername(),
+                String.format(dic.get("ERROR.USERNAME.EXISTS"), "username"));
+
+        Assert.hasText(request.getPassword(),
+                String.format(dic.get("ERROR.PASSWORD.NOT_NULL"), "password"));
+
+        Assert.hasText(request.getConfirmPassword(),
+                String.format(dic.get("ERROR.CONFIRM_PASSWORD.NOT_NULL"), "confirmPassword"));
+
+        Assert.hasText(request.getBirthDay(),
+                String.format(dic.get("ERROR.BIRTHDAY.NOT_NULL"), "birthDay"));
+
+        Assert.hasText(request.getEmail(),
+                String.format(dic.get("ERROR.EMAIL.NOT_NULL"), "email"));
+
+        Assert.hasText(request.getPhone(),
+                String.format(dic.get("ERROR.PHONE.NOT_NULL"), "phone"));
+
+        Assert.isNull(userService.findUserByUsername(request.getUsername()),
+                String.format(dic.get("ERROR.USERNAME.EXISTS"), request.getUsername()));
+
+//        Assert.isNull(userService.findUserByPhone(request.getPhone()),
+//                String.format(dic.get("ERROR.PHONE.EXISTS"), request.getPhone()));
+
+
     }
 
 

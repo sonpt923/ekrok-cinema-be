@@ -1,143 +1,59 @@
-CREATE SCHEMA `cinema-service`;
-
-use
-`cinema-service`;
-
-CREATE TABLE `province`
+-- 1. Bảng payment_method
+CREATE TABLE payment_method
 (
-    `id`         bigint       NOT NULL AUTO_INCREMENT,
-    `code`       varchar(45)  NOT NULL unique,
-    `name`       varchar(45)  NOT NULL unique,
-    `image`      varchar(145) NOT NULL,
-    `status`     INT          NOT NULL,
-    `created_by` VARCHAR(45)  NOT NULL,
-    `created_at` DATETIME     NOT NULL default NOW(),
-    `updated_by` VARCHAR(45) NULL,
-    `updated_at` DATETIME NULL,
-    `deleted_at` DATETIME NULL,
-    PRIMARY KEY (`id`)
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    code       VARCHAR(50)  NOT NULL UNIQUE, -- e.g. 'VNPAY', 'MOMO', 'STRIPE'
+    name       VARCHAR(100) NOT NULL,        -- human-readable
+    config     JSON,                         -- cấu hình (API key, secret…)
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-
-CREATE TABLE `cinema-service`.`cinema`
+-- 2. Bảng payment (giao dịch chính)
+-- 'PENDING','PROCESSING','SUCCESS','FAILED','REFUNDED'
+CREATE TABLE payment
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT,
-    `code`        VARCHAR(45)  NOT NULL unique,
-    `id_province` BIGINT       NOT NULL,
-    `name`        VARCHAR(145) NOT NULL,
-    `address`     VARCHAR(245) NOT NULL,
-    `status`      INT          NOT NULL,
-    `created_by`  VARCHAR(45)  NOT NULL,
-    `created_at`  DATETIME     NOT NULL default NOW(),
-    `updated_by`  VARCHAR(45) NULL,
-    `updated_at`  DATETIME NULL,
-    `deleted_at`  DATETIME NULL,
-    PRIMARY KEY (`id`),
-    INDEX         `FK_CINEMA_PROVINCE_idx` (`id_province` ASC) VISIBLE,
-    CONSTRAINT `FK_CINEMA_PROVINCE`
-        FOREIGN KEY (`id_province`)
-            REFERENCES `cinema-service`.`province` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
+    id              CHAR(36) PRIMARY KEY,              -- UUID
+    user_id         BIGINT         NOT NULL,           -- FK sang user-service (không enforce FK trên DB)
+    amount          DECIMAL(14, 2) NOT NULL,
+    currency        CHAR(3)        NOT NULL,
+    status          INT            NOT NULL,
+    method_id       BIGINT         NOT NULL,           -- FK → payment_method.id
+    attempt_count   INT            NOT NULL DEFAULT 0, -- số lần retry
+    last_error_code VARCHAR(50),                       -- lỗi cuối (nếu có)
+    created_at      DATETIME                DEFAULT CURRENT_TIMESTAMP,
+    updated_at      DATETIME                DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX           idx_status (status),
+    INDEX           idx_user (user_id),
+    CONSTRAINT fk_payment_method FOREIGN KEY (method_id)
+        REFERENCES payment_method (id)
 );
 
-
-CREATE TABLE `room_type`
+-- 3. Bảng transaction_log (ghi lại mọi bước)
+-- 'CREATED','REQUEST_SENT','CALLBACK_RECEIVED','STATUS_UPDATED','RETRY','ERROR'
+CREATE TABLE transaction_log
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT,
-    `id_cinema`   BIGINT       NOT NULL,
-    `code`        VARCHAR(45)  NOT NULL unique,
-    `name`        VARCHAR(145) NOT NULL unique,
-    `price`       DECIMAL      NOT NULL,
-    `image`       VARCHAR(45)  NOT NULL,
-    `trailer`     VARCHAR(45)  NOT NULL,
-    `description` VARCHAR(345) NOT NULL,
-    `status`      INT          NOT NULL,
-    `created_by`  VARCHAR(45)  NOT NULL,
-    `created_at`  DATETIME     NOT NULL default NOW(),
-    `updated_by`  VARCHAR(45) NULL,
-    `updated_at`  DATETIME NULL,
-    `deleted_at`  DATETIME NULL,
-    PRIMARY KEY (`id`)
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    payment_id CHAR(36) NOT NULL, -- FK → payment.id
+    event_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    event_type INT NOT NULL,
+    detail     JSON,              -- chi tiết payload, error message…
+    INDEX      idx_payment_event (payment_id, event_type),
+    CONSTRAINT fk_log_payment FOREIGN KEY (payment_id)
+        REFERENCES payment (id)
 );
 
-
-
-CREATE TABLE `cinema-service`.`room`
+-- 4. Bảng refund (hoàn tiền)
+-- 'REQUESTED','PROCESSING','SUCCESS','FAILED'
+CREATE TABLE refund
 (
-    `id`           BIGINT       NOT NULL AUTO_INCREMENT,
-    `id_cinema`    BIGINT       NOT NULL,
-    `id_room_type` BIGINT       NOT NULL,
-    `code`         VARCHAR(45)  NOT NULL unique,
-    `name`         VARCHAR(145) NOT NULL,
-    `price`        DECIMAL      NOT NULL,
-    `status`       INT          NOT NULL,
-    `created_by`   VARCHAR(45)  NOT NULL,
-    `created_at`   DATETIME     NOT NULL default NOW(),
-    `updated_by`   VARCHAR(45) NULL,
-    `updated_at`   DATETIME NULL,
-    `deleted_at`   DATETIME NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE,
-    UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-    INDEX          `FK_ROOM_CINEMA_idx` (`id_cinema` ASC) VISIBLE,
-    CONSTRAINT `FK_ROOM_CINEMA`
-        FOREIGN KEY (`id_cinema`)
-            REFERENCES `cinema-service`.`cinema` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
-    INDEX          `FK_ROOM_ROOM_TYPE_idx` (`id_room_type` ASC) VISIBLE,
-    CONSTRAINT `FK_ROOM_ROOM_TYPE`
-        FOREIGN KEY (`id_room_type`)
-            REFERENCES `cinema-service`.`room_type` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
-
+    id         CHAR(36) PRIMARY KEY,    -- UUID
+    payment_id CHAR(36)       NOT NULL, -- FK → payment.id
+    amount     DECIMAL(14, 2) NOT NULL,
+    status     INT            NOT NULL,
+    reason     VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_refund_payment FOREIGN KEY (payment_id)
+        REFERENCES payment (id)
 );
-
-CREATE TABLE `cinema-service`.`chair_type`
-(
-    `id`         BIGINT       NOT NULL AUTO_INCREMENT,
-    `code`       VARCHAR(45)  NOT NULL unique,
-    `name`       VARCHAR(145) NOT NULL unique,
-    `status`     INT          NOT NULL,
-    `price`      DECIMAL      NOT NULL,
-    `created_by` VARCHAR(45)  NOT NULL,
-    `created_at` DATETIME     NOT NULL default NOW(),
-    `updated_by` VARCHAR(45) NULL,
-    `updated_at` DATETIME NULL,
-    `deleted_at` DATETIME NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE,
-    UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE
-);
-
-CREATE TABLE `cinema-service`.`chair`
-(
-    `id`            BIGINT      NOT NULL AUTO_INCREMENT,
-    `id_room`       BIGINT      NOT NULL,
-    `id_chair_type` BIGINT      NOT NULL,
-    `code`          VARCHAR(45) NOT NULL unique,
-    `position`      VARCHAR(45) NOT NULL unique,
-    `status`        INT         NOT NULL,
-    `created_by`    VARCHAR(45) NOT NULL,
-    `created_at`    DATETIME    NOT NULL default NOW(),
-    `updated_by`    VARCHAR(45) NULL,
-    `updated_at`    DATETIME NULL,
-    `deleted_at`    DATETIME NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-    INDEX           `FK_CHAIR_CHAIRTYPE_idx` (`id_chair_type` ASC) VISIBLE,
-    CONSTRAINT `FK_CHAIR_ROOM`
-        FOREIGN KEY (`id_room`)
-            REFERENCES `cinema-service`.`room` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
-    CONSTRAINT `FK_CHAIR_CHAIRTYPE`
-        FOREIGN KEY (`id_chair_type`)
-            REFERENCES `cinema-service`.`chair_type` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
-);
-
-

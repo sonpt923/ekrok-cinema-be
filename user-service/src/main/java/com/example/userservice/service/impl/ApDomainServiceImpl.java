@@ -1,5 +1,6 @@
 package com.example.userservice.service.impl;
 
+import com.example.core.exception.ValidateException;
 import com.example.userservice.dto.request.ApDomainRequest;
 import com.example.userservice.entity.ApDomain;
 import com.example.userservice.repository.ApDomainRepository;

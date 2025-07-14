@@ -1,15 +1,13 @@
 package com.example.apigateway.filter;
 
 import com.example.apigateway.util.Constant;
+import com.example.core.exception.ValidateException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.util.Asserts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -34,54 +32,41 @@ public class SecurityFilterChain extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        try {
-            if (validator.isSecure.test(request)) {
-                String authenKey = request.getHeader(Constant.AUTHEN_KEY);
 
-                if (authenKey == null || authenKey.isBlank()) {
-                    reject(response, "Missing authen-key");
-                    return;
-                }
+        if (validator.isSecure.test(request)) {
+            String authenKey = request.getHeader(Constant.AUTHEN_KEY);
 
-                String[] parts = authenKey.split(":");
-                if (parts.length != 2) {
-                    reject(response, "Invalid authen-key format. Expected userId:token");
-                    return;
-                }
-
-                String userId = parts[0];
-                String token = parts[1];
-                String redisKey = Constant.USER_SESSION + ":" + userId + ":" + token;
-
-                String sessionJson = redisTemplate.opsForValue().get(redisKey).toString();
-                if (sessionJson == null) {
-                    reject(response, "Session not found or expired");
-                    return;
-                }
-
-                Map<String, Object> sessionInfo = new ObjectMapper().readValue(sessionJson, Map.class);
-                String username = (String) sessionInfo.get("username");
-
-                request.setAttribute("username", username);
-                request.setAttribute("userId", userId);
-
-                MDC.put("userId", userId);
-                MDC.put("username", username);
-
-                log.info("Authenticated user: {} with token={}", username, token);
+            if (request.getLocale() == null) {
+                throw new ValidateException("GW-006");
             }
 
-            filterChain.doFilter(request, response);
-        } finally {
-            MDC.remove("userId");
-            MDC.remove("username");
-        }
-    }
+            if (authenKey == null || authenKey.isBlank()) {
+                throw new ValidateException("GW-001");
+            }
 
-    private void reject(HttpServletResponse response, String message) throws IOException {
-        log.warn("Rejected request: {}", message);
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType("application/json");
-        response.getWriter().write("{\"error\": \"" + message + "\"}");
+            String[] parts = authenKey.split(":");
+            if (parts.length != 2) {
+                throw new ValidateException("GW-002");
+            }
+
+            String userId = parts[0];
+            String token = parts[1];
+            String redisKey = Constant.USER_SESSION + ":" + userId + ":" + token;
+
+            Object sessionJson = redisTemplate.opsForValue().get(redisKey);
+            if (sessionJson == null) {
+                throw new ValidateException("GW-003");
+            }
+
+            Map<String, Object> sessionInfo = new ObjectMapper().readValue(sessionJson.toString(), Map.class);
+            String username = (String) sessionInfo.get("username");
+
+            request.setAttribute("username", username);
+            request.setAttribute("userId", userId);
+
+            log.info("Authenticated user: {} with token={}", username, token);
+        }
+
+        filterChain.doFilter(request, response);
     }
 }

@@ -2,8 +2,11 @@ package com.example.userservice.service;
 
 import com.example.userservice.dto.request.UserRequest;
 import com.example.userservice.dto.respond.UserResponse;
+import com.example.userservice.entity.User;
 
 public interface UserService {
+
+    User findUserByUsername(String username);
 
     UserResponse userInfo(String authenKey);
 

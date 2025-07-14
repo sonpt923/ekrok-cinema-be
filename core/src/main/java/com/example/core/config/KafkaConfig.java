@@ -1,4 +1,4 @@
-package com.example.streamingservice.config;
+package com.example.core.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;

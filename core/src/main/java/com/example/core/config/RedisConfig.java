@@ -1,7 +1,7 @@
-package com.example.userservice.config;
+package com.example.core.config;
 
-import com.example.userservice.utils.Constant;
-import org.apache.commons.codec.binary.Base64;
+import com.example.core.utils.Constant;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,6 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @Configuration
-@PropertySource("classpath:application.yaml")
 public class RedisConfig {
 
     @Value("${spring.data.redis.host}")

@@ -13,7 +13,7 @@ VOLUME /tmp
 # Cấu hình JVM options để tối ưu tài nguyên (phù hợp với 512MB RAM của Render)
 ENV JAVA_OPTS="-Xmx256m -Xms128m"
 
-# Cổng mặc định của Eureka (thay đổi nếu dùng cổng khác trong application.properties)
+# Cổng mặc định của Eure(thay đổi nếu dùng cổng khác trong application.properties)
 EXPOSE 8761
 
 # Chạy ứng dụng với JAVA_OPTS

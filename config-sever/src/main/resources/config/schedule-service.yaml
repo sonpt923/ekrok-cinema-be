@@ -8,7 +8,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: https://service-registry-n69h.onrender.com/
+      defaultZone: https://service-registry-n69h.onrender.com/eureka/
 
 management:
   tracing:

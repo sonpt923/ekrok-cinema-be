@@ -1,8 +1,10 @@
 spring:
   application:
     name: api-gateway
-  config:
-    import: "optional:configserver:http://localhost:8088"
+  cloud:
+    config:
+      uri: https://config-sever.onrender.com
+      fail-fast: false
   messages:
     basename: messages
     encoding: UTF-8

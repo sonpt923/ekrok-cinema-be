@@ -1,8 +1,6 @@
 spring:
   application:
     name: api-gateway
-  config:
-    import: "optional:configserver:https://localhost:8888"
   messages:
     basename: messages
     encoding: UTF-8

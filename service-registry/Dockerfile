@@ -5,7 +5,7 @@ FROM openjdk:11-jdk-slim
 WORKDIR /app
 
 # Copy file JAR từ target vào container
-COPY target/service-registry.jar app.jar
+COPY target/service-registry-1.0.jar app.jar
 
 # Cấu hình volume cho dữ liệu tạm (nếu cần)
 VOLUME /tmp

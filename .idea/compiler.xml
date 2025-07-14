@@ -38,7 +38,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
       <module name="config-sever" options="-parameters" />
-      <module name="core" options="-parameters" />
+      <module name="core" options="" />
       <module name="department-service" options="-parameters" />
       <module name="discount-service" options="-parameters" />
       <module name="discount-service (1)" options="-parameters" />

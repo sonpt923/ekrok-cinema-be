@@ -11,5 +11,5 @@ COPY --from=builder /app/target/config-sever-1.0.jar app.jar
 
 VOLUME /tmp
 ENV JAVA_OPTS="-Xmx256m -Xms128m"
-EXPOSE 8761
+EXPOSE 8888
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]

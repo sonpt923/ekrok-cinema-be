@@ -1,14 +1,13 @@
-# Stage 1: Build jar từ Maven
+# Stage 1: Build JAR
 FROM maven:3.9.6-eclipse-temurin-17 AS builder
 WORKDIR /app
-COPY service-registry /app/service-registry
-WORKDIR /app/service-registry
+COPY . .
 RUN mvn clean package -DskipTests
 
-# Stage 2: Run app với OpenJDK
+# Stage 2: Run JAR
 FROM openjdk:11-jdk-slim
 WORKDIR /app
-COPY --from=builder /app/service-registry/target/service-registry-1.0.jar app.jar
+COPY --from=builder /app/target/service-registry-1.0.jar app.jar
 
 VOLUME /tmp
 ENV JAVA_OPTS="-Xmx256m -Xms128m"

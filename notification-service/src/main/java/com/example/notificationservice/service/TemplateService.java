@@ -12,5 +12,5 @@ public interface TemplateService {
 
     Object updateTemplate(TemplateRequest request);
 
-    Object deleteTemplate(TemplateRequest request);
+    Object deleteTemplate(String id);
 }

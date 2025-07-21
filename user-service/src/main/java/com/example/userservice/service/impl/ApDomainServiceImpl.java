@@ -16,9 +16,6 @@ import java.util.List;
 public class ApDomainServiceImpl implements ApDomainService {
 
     @Autowired
-    private MyDictionaryServiceImpl dictionaryService;
-
-    @Autowired
     private ApDomainRepository domainRepository;
 
 
@@ -41,7 +38,6 @@ public class ApDomainServiceImpl implements ApDomainService {
 
     @Override
     public ApDomain getByCode(String code) {
-        Assert.isNull(code, "code khong duoc bo trong");
         return domainRepository.getByCode(code);
     }
 

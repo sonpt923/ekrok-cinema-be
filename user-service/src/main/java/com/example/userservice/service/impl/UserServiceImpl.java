@@ -1,6 +1,6 @@
 package com.example.userservice.service.impl;
 
-import com.example.core.config.AwsConfig;
+import com.example.core.config.S3Config;
 import com.example.userservice.dto.request.UserRequest;
 import com.example.userservice.dto.respond.UserResponse;
 import com.example.userservice.entity.User;
@@ -8,7 +8,6 @@ import com.example.userservice.fiegn.NotificationFeign;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.repository.customize.UserRepositoryCustom;
 import com.example.userservice.service.GroupUserService;
-import com.example.userservice.service.MydictionaryService;
 import com.example.userservice.service.UserService;
 import com.example.userservice.utils.Constant;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -27,10 +26,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository repository;
 
     @Autowired
-    private AwsConfig awsConfig;
-
-    @Autowired
-    private MydictionaryService dictionary;
+    private S3Config awsConfig;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -62,7 +58,7 @@ public class UserServiceImpl implements UserService {
     public Object createUser(UserRequest userRequest) {
         validateCreateUser(userRequest);
         String fullName = (userRequest.getFirstName() + " " + userRequest.getLastName());
-        File file = new File(Base64.decodeBase64(userRequest.getImage()).toString());
+//        File file = new File(Base64.decodeBase64(userRequest.getImage()).toString());
         String username = this.genUsernameFromFullname(fullName);
         String password = passwordEncoder.encode(userRequest.getPassword());
         User user = User.builder()

@@ -2,13 +2,16 @@ package com.example.core.aop;
 
 import com.example.core.dto.response.ErrorResponse;
 import com.example.core.exception.BaseCodeException;
+import com.example.core.exception.BusinessException;
 import com.example.core.exception.SystemException;
+import com.example.core.exception.ValidateException;
 import com.example.core.i18n.MessageResolver;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -21,6 +24,7 @@ public class ExceptionHandlingAspect {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final HttpServletRequest request;
+
     private final MessageResolver messageResolver;
 
     public ExceptionHandlingAspect(HttpServletRequest request, MessageResolver messageResolver) {
@@ -29,7 +33,7 @@ public class ExceptionHandlingAspect {
     }
 
     @Around("execution(* com.example..controller..*(..))")
-    public Object handleException(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object handleException(ProceedingJoinPoint joinPoint) {
         try {
             return joinPoint.proceed();
         } catch (BaseCodeException bce) {
@@ -39,6 +43,10 @@ public class ExceptionHandlingAspect {
 
             if (bce instanceof SystemException) {
                 log.error("SystemException: code={}, msg={}", code, message, bce);
+            } else if (bce instanceof ValidateException) {
+                log.error("ValidateException: code={}, msg={}", code, message, bce);
+            } else if (bce instanceof BusinessException) {
+                log.error("BuinessException: code={}, msg={}", code, message, bce);
             } else {
                 log.warn("{}: code={}, msg={}", bce.getClass().getSimpleName(), code, message);
             }
@@ -47,10 +55,10 @@ public class ExceptionHandlingAspect {
                     .status(bce.getHttpStatus())
                     .body(err);
         } catch (Throwable t) {
-            log.error("Unhandled exception", t);
+            log.error("Unhandled exception: {}", t);
             ErrorResponse err = ErrorResponse.of(
-                    "9999",
-                    messageResolver.resolve("9999", request.getLocale()),
+                    "9125",
+                    messageResolver.resolve("unhandle exception", request.getLocale()),
                     request.getRequestURI());
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)

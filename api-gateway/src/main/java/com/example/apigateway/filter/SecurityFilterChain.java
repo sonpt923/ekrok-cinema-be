@@ -1,6 +1,7 @@
 package com.example.apigateway.filter;
 
 import com.example.apigateway.util.Constant;
+import com.example.core.exception.BusinessException;
 import com.example.core.exception.ValidateException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Map;
 
 @Component
@@ -55,14 +57,24 @@ public class SecurityFilterChain extends OncePerRequestFilter {
 
             Object sessionJson = redisTemplate.opsForValue().get(redisKey);
             if (sessionJson == null) {
-                throw new ValidateException("GW-003");
+                throw new BusinessException("GW-003");
             }
 
             Map<String, Object> sessionInfo = new ObjectMapper().readValue(sessionJson.toString(), Map.class);
             String username = (String) sessionInfo.get("username");
 
-            request.setAttribute("username", username);
-            request.setAttribute("userId", userId);
+            if (username == null || username.trim().isEmpty()){
+                throw new BusinessException("GW-005");
+            }
+
+            boolean exprireSession = redisTemplate.expire(redisKey, Duration.ofMinutes(30L));
+            if (!exprireSession){
+                throw new BusinessException("GW-003");
+            }
+
+            request.setAttribute("X-Username", username);
+            request.setAttribute("X-User-Id", userId);
+            request.setAttribute("X-Session-Key", redisKey);
 
             log.info("Authenticated user: {} with token={}", username, token);
         }

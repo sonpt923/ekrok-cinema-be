@@ -1,6 +1,7 @@
 package com.example.notificationservice.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,6 +13,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @Document(collection = "template")
+@Builder
 public class Template {
 
 
@@ -38,6 +40,9 @@ public class Template {
     @Field("placeholders")
     private Map<String, String> placeholders;
 
+    @Field("description")
+    private String description;
+
     @Field("createdAt")
     private Timestamp createdAt;
 
@@ -50,6 +55,8 @@ public class Template {
     @Field("updatedBy")
     private String updatedBy;
 
+    @Field("isActive")
+    private Boolean isActive;
 
     @Field("isDeleted")
     private Boolean isDeleted;

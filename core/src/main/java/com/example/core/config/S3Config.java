@@ -12,7 +12,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import java.net.URI;
 
 @Configuration
-public class AwsConfig {
+public class S3Config {
 
     @Value("${cloudflare.r2.access-key-id}")
     private String accessKey;

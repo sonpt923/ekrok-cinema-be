@@ -9,8 +9,8 @@ spring:
       host: redis-10592.c1.ap-southeast-1-1.ec2.redns.redis-cloud.com
       port: 10592
       username: default
-      password: El4coajMDswliyAPvHkMR5EmpVJRhY8Z
-      ssl: true
+      password: RWw0Y29hak1Ec3dsaXlBUHZIa01SNUVtcFZKUmhZOFo=
+      havePassword: "YES"
 kafka:
   server-config: localhost:9092
   group-id: service

@@ -1,6 +1,7 @@
 package com.example.notificationservice.controller;
 
 import com.example.notificationservice.dto.request.TemplateRequest;
+import com.example.notificationservice.dto.response.TemplateResponse;
 import com.example.notificationservice.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,25 +15,24 @@ public class TemplateController {
     @Autowired
     private TemplateService templateService;
 
-    @GetMapping("/get-templates")
-    public ResponseEntity getAllTemplate(TemplateRequest templateRequest) {
-        return new ResponseEntity(templateService.getTemplates(templateRequest), HttpStatus.OK);
+    @PostMapping("create-template")
+    public ResponseEntity<Object> createTemplate(@RequestBody TemplateRequest request) {
+        return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/create-template")
-    public ResponseEntity createTemplate(@RequestBody TemplateRequest request) {
-        return new ResponseEntity<>(templateService.createTemplate(request), HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getTemplates(@RequestAttribute String id) {
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 
-    @PostMapping("/update-template")
-    public ResponseEntity updateTemplate(@RequestBody TemplateRequest request) {
-        return new ResponseEntity<>(templateService.updateTemplate(request), HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateTemplate(@PathVariable String id, @RequestBody TemplateRequest request) {
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 
-    @PostMapping("/delete-template")
-    public ResponseEntity deleteTemplate(@RequestBody TemplateRequest request) {
-        return new ResponseEntity<>(templateService.deleteTemplate(request), HttpStatus.OK);
+    @DeleteMapping("delte-template")
+    public ResponseEntity<Object> deleteTemplate(@PathVariable("id") String id){
+        return new ResponseEntity<>(templateService.deleteTemplate(id), HttpStatus.OK);
     }
-
 
 }

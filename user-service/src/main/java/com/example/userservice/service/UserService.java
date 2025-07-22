@@ -8,6 +8,10 @@ public interface UserService {
 
     User findUserByUsername(String username);
 
+    User findUserByEmail(String email);
+
+    User findUserByPhone(String phone);
+
     UserResponse userInfo(String authenKey);
 
     Object createUser(UserRequest userRequest);

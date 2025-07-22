@@ -36,9 +36,9 @@ public class BaseConstant {
         String PASSWORD_NOT_NULL = "APP302";
         String APP_NOT_COMPARE = "APP303";
         String PERMIT = "APP304";
-        String APP305 = "APP305";
+        String INVALID_FORMAT = "APP305";
         String APP306 = "APP306";
-        String PASS_001 = "APP003";
+        String DATA_NOT_MATCH = "APP003";
         String PASS_002 = "APP004";
         String PASS_003 = "APP005";
         String PASS_004 = "APP006";

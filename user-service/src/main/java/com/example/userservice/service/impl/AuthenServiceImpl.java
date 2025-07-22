@@ -1,6 +1,10 @@
 package com.example.userservice.service.impl;
 
+import com.example.core.exception.BusinessException;
+import com.example.core.exception.SystemException;
 import com.example.core.exception.ValidateException;
+import com.example.core.i18n.Dictionary;
+import com.example.core.utils.BaseConstant;
 import com.example.userservice.dto.request.UserRequest;
 import com.example.userservice.entity.ApDomain;
 import com.example.userservice.entity.User;
@@ -15,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,33 +44,41 @@ public class AuthenServiceImpl implements AuthenService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private Dictionary dic;
+
 
     @Override
     public Object login(UserRequest request) {
-        if (request.getUsername() == null || request.getUsername().isEmpty()) {
-            throw new ValidateException("", "");
+        if (request.getUsername() == null || request.getUsername().isEmpty() || request.getPassword().isEmpty()) {
+            throw new ValidateException(BaseConstant.ERORRS.NOT_NULL, String.format(dic.get("SYS-001")));
         }
         User user = userService.findUserByUsername(request.getUsername());
+        if(user == null ){
+            throw new SystemException(BaseConstant.ERORRS.DATA_NOT_FOUND, dic.get("SYS-002"));
+        }
+
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             try {
                 String key = Constant.USER_SESSION + ":" + request.getUsername() + ":" + UUID.randomUUID();
                 Long ttl = Constant.TTL;
                 if (request.getIsAdmin()) {
-                    Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.ADM_OTP_CODE).getValue());
+                    ttl = Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.ADM_OTP_CODE).getValue());
                 } else {
-                    Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.CLIENT_OTP_CODE).getValue());
+                    ttl = Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.CLIENT_OTP_CODE).getValue());
                 }
                 HashMap<String, Object> jsonValue = this.userToJsonValue(user);
                 redisTemplate.opsForValue().set(key, new ObjectMapper().writeValueAsString(jsonValue), ttl, TimeUnit.MINUTES);
                 boolean isSetRedis = redisTemplate.hasKey(key);
                 if (isSetRedis) {
-                    return new HashMap<>(Map.of("authen-key", key));
+                    return new HashMap<>(Map.of("X-Authen-Key", key));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                throw new BusinessException(BaseConstant.ERORRS.SYSTEM, dic.get(""));
             }
         }
-        throw new ValidateException("SYS-001", "");
+        throw new ValidateException(BaseConstant.ERORRS.DATA_NOT_MATCH, dic.get(""));
     }
 
     @Override
@@ -98,7 +109,7 @@ public class AuthenServiceImpl implements AuthenService {
                 throw new ValidateException("", "");
             }
             Long otpTime = Constant.OTP_TIME;
-            String domainCode = request.getIsAdmin() ? Constant.AP_DOMAIN.ADM_OTP_CODE: Constant.AP_DOMAIN.CLIENT_OTP_CODE;
+            String domainCode = request.getIsAdmin() ? Constant.AP_DOMAIN.ADM_OTP_CODE : Constant.AP_DOMAIN.CLIENT_OTP_CODE;
             ApDomain apDomain = apDomainService.getByCode(domainCode);
             if (apDomain != null) {
                 otpTime = Long.parseLong(apDomain.getValue());
@@ -122,8 +133,6 @@ public class AuthenServiceImpl implements AuthenService {
 
     @Override
     public Object changePassword(UserRequest request) {
-        Assert.isNull(request.getPassword(), "password is not null");
-        Assert.isNull(request.getConfirmPassword(), "confirm password is not null");
         if (request.getPassword().equals(request.getConfirmPassword())) {
             request.setPassword(passwordEncoder.encode(request.getPassword()));
             // TODO: send to notification
@@ -133,38 +142,38 @@ public class AuthenServiceImpl implements AuthenService {
     }
 
     private void validateRegister(UserRequest request) {
-//
-//        if (request.getUsername() == null || request.getUsername().isEmpty()) {
-//            throw new ValidateException("");
-//        }
 
-//        if (request.getPassword() == null || request.getPassword().isEmpty()) {
-//            throw new ValidateException("");
-//        }
-//
-//        if (request.getConfirmPassword() == null || request.getConfirmPassword().isEmpty()) {
-//            throw new ValidateException("");
-//        }
-//
-//        if (request.getBirthDay() == null || request.getBirthDay().isEmpty()) {
-//            throw new ValidateException("");
-//        }
-//
-//        if (request.getEmail() == null || request.getEmail().isEmpty()) {
-//            throw new ValidateException("");
-//        }
-//
-//        if (request.getEmail() == null || request.getEmail().isEmpty()) {
-//            throw new ValidateException("");
-//        }
-//
-//        if (request.getPhone() == null || request.getPhone().isEmpty()) {
-//            throw new ValidateException("");
-//        }
+        if (request.getUsername() == null || request.getUsername().isEmpty()) {
+            throw new ValidateException("", String.format(dic.get("")));
+        }
 
-//        Assert.isNull(userService.findUserByPhone(request.getPhone()),
-//                String.format(dic.get("ERROR.PHONE.EXISTS"), request.getPhone()));
+        if (request.getPassword() == null || request.getPassword().isEmpty()) {
+            throw new ValidateException("", String.format(dic.get("")));
+        }
 
+        if (request.getConfirmPassword() == null || request.getConfirmPassword().isEmpty()) {
+            throw new ValidateException("",String.format(dic.get("")));
+        }
+
+        if (request.getBirthDay() == null || request.getBirthDay().isEmpty()) {
+            throw new ValidateException("",String.format(dic.get("")));
+        }
+
+        if (request.getEmail() == null || request.getEmail().isEmpty()) {
+            throw new ValidateException("",String.format(dic.get("")));
+        }
+
+        if (request.getEmail() == null || request.getEmail().isEmpty()) {
+            throw new ValidateException("",String.format(dic.get("")));
+        }
+
+        if (request.getPhone() == null || request.getPhone().isEmpty()) {
+            throw new ValidateException("",String.format(dic.get("")));
+        }
+
+        if (userService.findUserByUsername(request.getUsername()) != null){
+            throw new ValidateException(BaseConstant.ERORRS.DATA_USING, String.format(dic.get("")));
+        }
 
     }
 

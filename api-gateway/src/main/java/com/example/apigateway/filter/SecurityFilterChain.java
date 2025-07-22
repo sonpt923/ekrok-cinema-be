@@ -17,6 +17,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.HttpMethod;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
@@ -48,12 +49,12 @@ public class SecurityFilterChain extends OncePerRequestFilter {
             }
 
             if (authenKey == null || authenKey.isBlank()) {
-                throw new ValidateException("GW-001", "");
+                throw new ValidateException(BaseConstant.ERORRS.NOT_NULL, String.format(dic.get("GW-001")));
             }
 
             String[] parts = authenKey.split(":");
             if (parts.length != 2) {
-                throw new ValidateException("GW-002", "");
+                throw new ValidateException(BaseConstant.ERORRS.INVALID_FORMAT, String.format(dic.get("GW-002")));
             }
 
             String userId = parts[0];
@@ -62,19 +63,19 @@ public class SecurityFilterChain extends OncePerRequestFilter {
 
             Object sessionJson = redisTemplate.opsForValue().get(redisKey);
             if (sessionJson == null) {
-                throw new BusinessException("GW-003", "");
+                throw new BusinessException(BaseConstant.ERORRS.DATA_NOT_FOUND, String.format(dic.get("GW-003")));
             }
 
             Map<String, Object> sessionInfo = new ObjectMapper().readValue(sessionJson.toString(), Map.class);
             String username = (String) sessionInfo.get("username");
 
             if (username == null || username.trim().isEmpty()) {
-                throw new BusinessException("GW-005", "");
+                throw new BusinessException(BaseConstant.ERORRS.DATA_NOT_FOUND, String.format(dic.get("GW-005")));
             }
 
             boolean exprireSession = redisTemplate.expire(redisKey, Duration.ofMinutes(30L));
             if (!exprireSession) {
-                throw new BusinessException("GW-003", "");
+                throw new BusinessException(BaseConstant.ERORRS.LOGIC, String.format(dic.get("GW-007")));
             }
 
             request.setAttribute("X-Username", username);

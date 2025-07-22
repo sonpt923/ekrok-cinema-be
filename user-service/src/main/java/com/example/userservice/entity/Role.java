@@ -32,7 +32,7 @@ public class Role {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "parent_role_id")
+    @Column(name = "parent_id")
     private Long parentId;
 
     @Column(name = "created_by")
@@ -47,7 +47,7 @@ public class Role {
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @Column(name = "deleted")
-    private Boolean deleted;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
 }

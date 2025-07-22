@@ -1,7 +1,10 @@
 package com.example.apigateway.filter;
 
 import com.example.apigateway.util.Constant;
+import com.example.core.exception.BusinessException;
 import com.example.core.exception.ValidateException;
+import com.example.core.i18n.Dictionary;
+import com.example.core.utils.BaseConstant;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +17,9 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.HttpMethod;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Map;
 
 @Component
@@ -25,6 +30,9 @@ public class SecurityFilterChain extends OncePerRequestFilter {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private Dictionary dic;
 
     private static final Logger log = LoggerFactory.getLogger(SecurityFilterChain.class);
 
@@ -37,16 +45,16 @@ public class SecurityFilterChain extends OncePerRequestFilter {
             String authenKey = request.getHeader(Constant.AUTHEN_KEY);
 
             if (request.getLocale() == null) {
-                throw new ValidateException("GW-006");
+                throw new ValidateException(BaseConstant.ERORRS.LOGIC, dic.get(""));
             }
 
             if (authenKey == null || authenKey.isBlank()) {
-                throw new ValidateException("GW-001");
+                throw new ValidateException(BaseConstant.ERORRS.NOT_NULL, String.format(dic.get("GW-001")));
             }
 
             String[] parts = authenKey.split(":");
             if (parts.length != 2) {
-                throw new ValidateException("GW-002");
+                throw new ValidateException(BaseConstant.ERORRS.INVALID_FORMAT, String.format(dic.get("GW-002")));
             }
 
             String userId = parts[0];
@@ -55,14 +63,24 @@ public class SecurityFilterChain extends OncePerRequestFilter {
 
             Object sessionJson = redisTemplate.opsForValue().get(redisKey);
             if (sessionJson == null) {
-                throw new ValidateException("GW-003");
+                throw new BusinessException(BaseConstant.ERORRS.DATA_NOT_FOUND, String.format(dic.get("GW-003")));
             }
 
             Map<String, Object> sessionInfo = new ObjectMapper().readValue(sessionJson.toString(), Map.class);
             String username = (String) sessionInfo.get("username");
 
-            request.setAttribute("username", username);
-            request.setAttribute("userId", userId);
+            if (username == null || username.trim().isEmpty()) {
+                throw new BusinessException(BaseConstant.ERORRS.DATA_NOT_FOUND, String.format(dic.get("GW-005")));
+            }
+
+            boolean exprireSession = redisTemplate.expire(redisKey, Duration.ofMinutes(30L));
+            if (!exprireSession) {
+                throw new BusinessException(BaseConstant.ERORRS.LOGIC, String.format(dic.get("GW-007")));
+            }
+
+            request.setAttribute("X-Username", username);
+            request.setAttribute("X-User-Id", userId);
+            request.setAttribute("X-Session-Key", redisKey);
 
             log.info("Authenticated user: {} with token={}", username, token);
         }

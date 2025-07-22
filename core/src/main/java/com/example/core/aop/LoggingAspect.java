@@ -17,11 +17,10 @@ public class LoggingAspect {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Around("execution(* com.example.userservice.service..*(..))")
+    @Around("execution(* com.example.*.service..*(..))")
     public Object logExecution(ProceedingJoinPoint joinPoint) throws Throwable {
         String traceId = UUID.randomUUID().toString();
         MDC.put("traceId", traceId);
-        MDC.put("service", "user-service");
 
         String method = joinPoint.getSignature().toShortString();
         Object[] args = joinPoint.getArgs();

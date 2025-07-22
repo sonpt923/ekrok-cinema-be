@@ -16,17 +16,17 @@ public class Channel {
     @Field("code")
     private String code;
 
+    @Field("type")
+    private String type;
+
     @Field("priority")
     private Long priority;
-
-    @Field("provider")
-    private String provider;
 
     @Field("configs")
     private Map<String, Object> configs;
 
-    @Field("status")
-    private String status;
+    @Field("isActive")
+    private Boolean isActive;
 
     @Field("createdAt")
     private Timestamp createdAt;
@@ -40,6 +40,6 @@ public class Channel {
     @Field("updatedAt")
     private Timestamp updatedAt;
 
-    @Field("deleted")
-    private Boolean deleted;
+    @Field("isDeleted")
+    private Boolean isDeleted;
 }

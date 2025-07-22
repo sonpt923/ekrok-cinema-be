@@ -1,12 +1,16 @@
 package com.example.userservice.service.impl;
 
+import com.example.core.exception.BusinessException;
+import com.example.core.exception.SystemException;
+import com.example.core.exception.ValidateException;
+import com.example.core.i18n.Dictionary;
+import com.example.core.utils.BaseConstant;
 import com.example.userservice.dto.request.UserRequest;
 import com.example.userservice.entity.ApDomain;
 import com.example.userservice.entity.User;
 import com.example.userservice.fiegn.NotificationFeign;
 import com.example.userservice.service.ApDomainService;
 import com.example.userservice.service.AuthenService;
-import com.example.userservice.service.MydictionaryService;
 import com.example.userservice.service.UserService;
 import com.example.userservice.utils.Constant;
 import com.example.userservice.utils.DateUtil;
@@ -15,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,34 +45,40 @@ public class AuthenServiceImpl implements AuthenService {
     private RedisTemplate redisTemplate;
 
     @Autowired
-    private MydictionaryService dic;
+    private Dictionary dic;
+
 
     @Override
     public Object login(UserRequest request) {
+        if (request.getUsername() == null || request.getUsername().isEmpty() || request.getPassword().isEmpty()) {
+            throw new ValidateException(BaseConstant.ERORRS.NOT_NULL, String.format(dic.get("SYS-001")));
+        }
         User user = userService.findUserByUsername(request.getUsername());
+        if(user == null ){
+            throw new SystemException(BaseConstant.ERORRS.DATA_NOT_FOUND, dic.get("SYS-002"));
+        }
+
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             try {
                 String key = Constant.USER_SESSION + ":" + request.getUsername() + ":" + UUID.randomUUID();
                 Long ttl = Constant.TTL;
                 if (request.getIsAdmin()) {
-                    Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE).getValue());
+                    ttl = Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.ADM_OTP_CODE).getValue());
                 } else {
-                    Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE).getValue());
+                    ttl = Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.CLIENT_OTP_CODE).getValue());
                 }
                 HashMap<String, Object> jsonValue = this.userToJsonValue(user);
                 redisTemplate.opsForValue().set(key, new ObjectMapper().writeValueAsString(jsonValue), ttl, TimeUnit.MINUTES);
                 boolean isSetRedis = redisTemplate.hasKey(key);
                 if (isSetRedis) {
-                    return new HashMap<>(Map.of("authen-key", key));
+                    return new HashMap<>(Map.of("X-Authen-Key", key));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-//                throw new AppException("", "");
+                throw new BusinessException(BaseConstant.ERORRS.SYSTEM, dic.get(""));
             }
         }
-//        throw new ValidationException(BaseConstants.ERROR_DATA_NOT_FOUND,
-//                dic.get("ERROR.DATA_IS_EXIST"));
-        return null;
+        throw new ValidateException(BaseConstant.ERORRS.DATA_NOT_MATCH, dic.get(""));
     }
 
     @Override
@@ -96,11 +105,14 @@ public class AuthenServiceImpl implements AuthenService {
     public Object forgotPassword(UserRequest request) {
         // case 1: set otp
         if (request.getFlag() == 0) {
-            Assert.isNull(request.getUsername(), dic.get("ERROR.APP_IS_NOT_MANAGE"));
+            if (request.getUsername() == null || request.getUsername().isEmpty()) {
+                throw new ValidateException("", "");
+            }
             Long otpTime = Constant.OTP_TIME;
-            ApDomain apDomain = apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE);
-            if(apDomain != null){
-                otpTime = Long.valueOf(apDomain.getValue());
+            String domainCode = request.getIsAdmin() ? Constant.AP_DOMAIN.ADM_OTP_CODE : Constant.AP_DOMAIN.CLIENT_OTP_CODE;
+            ApDomain apDomain = apDomainService.getByCode(domainCode);
+            if (apDomain != null) {
+                otpTime = Long.parseLong(apDomain.getValue());
             }
             redisTemplate.opsForValue().set("", "", otpTime, TimeUnit.SECONDS);
             // send otp ->  notification-service
@@ -108,24 +120,19 @@ public class AuthenServiceImpl implements AuthenService {
 //            ResponseEntity response = notificationFeign.sendOTP(request);
             return null;
         } else { // case2: xu ly
-//            OTPCache otp = otpCacheRepository.findById(request.getUsername()).get();
-//            if (otp != null) {
-//                if (otp.getValue().equals(request.getOtp())) {
+//            String otp = redisTemplate.opsForValue().get(new Object());
+//            if (otp != null && !otp.isEmpty()) {
+//                if (otp.equals(request.getOtp())) {
 //                    changePassword(request);
 //                }
 //                return null;
-//            } else {
-//                throw new SystemException(null);
 //            }
         }
-        Assert.isNull(request.getFlag(), "Khong duoc bo trong truong flag");
-        return null;
+        throw new ValidateException("", "");
     }
 
     @Override
     public Object changePassword(UserRequest request) {
-        Assert.isNull(request.getPassword(), "password is not null");
-        Assert.isNull(request.getConfirmPassword(), "confirm password is not null");
         if (request.getPassword().equals(request.getConfirmPassword())) {
             request.setPassword(passwordEncoder.encode(request.getPassword()));
             // TODO: send to notification
@@ -136,30 +143,37 @@ public class AuthenServiceImpl implements AuthenService {
 
     private void validateRegister(UserRequest request) {
 
-        Assert.hasText(request.getUsername(),
-                String.format(dic.get("ERROR.USERNAME.EXISTS"), "username"));
+        if (request.getUsername() == null || request.getUsername().isEmpty()) {
+            throw new ValidateException("", String.format(dic.get("")));
+        }
 
-        Assert.hasText(request.getPassword(),
-                String.format(dic.get("ERROR.PASSWORD.NOT_NULL"), "password"));
+        if (request.getPassword() == null || request.getPassword().isEmpty()) {
+            throw new ValidateException("", String.format(dic.get("")));
+        }
 
-        Assert.hasText(request.getConfirmPassword(),
-                String.format(dic.get("ERROR.CONFIRM_PASSWORD.NOT_NULL"), "confirmPassword"));
+        if (request.getConfirmPassword() == null || request.getConfirmPassword().isEmpty()) {
+            throw new ValidateException("",String.format(dic.get("")));
+        }
 
-        Assert.hasText(request.getBirthDay(),
-                String.format(dic.get("ERROR.BIRTHDAY.NOT_NULL"), "birthDay"));
+        if (request.getBirthDay() == null || request.getBirthDay().isEmpty()) {
+            throw new ValidateException("",String.format(dic.get("")));
+        }
 
-        Assert.hasText(request.getEmail(),
-                String.format(dic.get("ERROR.EMAIL.NOT_NULL"), "email"));
+        if (request.getEmail() == null || request.getEmail().isEmpty()) {
+            throw new ValidateException("",String.format(dic.get("")));
+        }
 
-        Assert.hasText(request.getPhone(),
-                String.format(dic.get("ERROR.PHONE.NOT_NULL"), "phone"));
+        if (request.getEmail() == null || request.getEmail().isEmpty()) {
+            throw new ValidateException("",String.format(dic.get("")));
+        }
 
-        Assert.isNull(userService.findUserByUsername(request.getUsername()),
-                String.format(dic.get("ERROR.USERNAME.EXISTS"), request.getUsername()));
+        if (request.getPhone() == null || request.getPhone().isEmpty()) {
+            throw new ValidateException("",String.format(dic.get("")));
+        }
 
-//        Assert.isNull(userService.findUserByPhone(request.getPhone()),
-//                String.format(dic.get("ERROR.PHONE.EXISTS"), request.getPhone()));
-
+        if (userService.findUserByUsername(request.getUsername()) != null){
+            throw new ValidateException(BaseConstant.ERORRS.DATA_USING, String.format(dic.get("")));
+        }
 
     }
 
@@ -167,12 +181,6 @@ public class AuthenServiceImpl implements AuthenService {
     private HashMap<String, Object> userToJsonValue(User user) {
         HashMap<String, Object> jsonValue = new HashMap<>();
         jsonValue.put("username", user.getUsername());
-        jsonValue.put("roles", "");
-        jsonValue.put("group", "");
-        jsonValue.put("email", user.getEmail());
-        jsonValue.put("image", user.getImage());
-        jsonValue.put("fristName", user.getFirstName());
-        jsonValue.put("lastName", user.getLastName());
         return jsonValue;
     }
 

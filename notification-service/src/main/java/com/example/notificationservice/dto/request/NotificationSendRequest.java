@@ -9,15 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MailOTPRequest {
+public class NotificationSendRequest {
 
-    private String username;
+    private String tempalteCode;
 
-    private String firstName;
+    private String channel;
 
-    private String LastName;
 
-    // reset, delete...
-    private Integer type;
 
 }

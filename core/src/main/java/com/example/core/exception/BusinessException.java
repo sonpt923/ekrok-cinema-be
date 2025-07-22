@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 
 public class BusinessException extends BaseCodeException {
 
-    public BusinessException(String code) {
-        super(code);
+    public BusinessException(String code, String message) {
+        super(code, message);
     }
 
     @Override

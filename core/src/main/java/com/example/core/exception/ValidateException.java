@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 
 public class ValidateException extends BaseCodeException {
 
-    public ValidateException(String code) {
-        super(code);
+    public ValidateException(String code, String message) {
+        super(code, message);
     }
 
     @Override

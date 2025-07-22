@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Builder
-@Table(name = "`ap_domain`")
+@Table(name = "ap_domain")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -54,8 +54,8 @@ public class ApDomain {
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @Column(name = "deleted")
-    private Boolean deleted;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
 
 }

@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MailTemplateRepository extends MongoRepository<Template, Long> {
+public interface TemplateRepository extends MongoRepository<Template, String> {
+
+    Template findTemplateByCodeAndIsDeleted(String code, boolean isDeletet);
 
 }

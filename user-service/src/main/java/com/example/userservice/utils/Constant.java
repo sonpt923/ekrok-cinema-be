@@ -14,7 +14,9 @@ public class Constant {
 
     public interface AP_DOMAIN {
 
-        String OTP_CODE = "OTP";
+        String ADM_OTP_CODE = "ADM_OTP";
+
+        String CLIENT_OTP_CODE = "CLIENT_OTP";
 
     }
 

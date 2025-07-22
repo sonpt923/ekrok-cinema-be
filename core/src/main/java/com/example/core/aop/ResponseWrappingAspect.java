@@ -2,7 +2,7 @@ package com.example.core.aop;
 
 import com.example.core.dto.response.BaseResponse;
 import com.example.core.dto.response.ErrorResponse;
-import com.example.core.i18n.MessageResolver;
+import com.example.core.i18n.Dictionary;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.springframework.http.HttpStatus;
@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 public class ResponseWrappingAspect {
 
     private final HttpServletRequest request;
-    private final MessageResolver messageResolver;
+    private final Dictionary dictionary;
 
-    public ResponseWrappingAspect(HttpServletRequest request, MessageResolver messageResolver) {
+    public ResponseWrappingAspect(HttpServletRequest request, Dictionary dictionary) {
         this.request = request;
-        this.messageResolver = messageResolver;
+        this.dictionary = dictionary;
     }
 
     @Around("execution(* com.example..controller..*(..))")
@@ -32,7 +32,7 @@ public class ResponseWrappingAspect {
             BaseResponse<Object> wrapped = BaseResponse.of(
                     status,
                     body,
-                    messageResolver.resolve("SUCCESS.GENERIC", request.getLocale()),
+                    dictionary.get("SUCCESS.GENERIC"),
                     request.getRequestURI()
             );
             return ResponseEntity.status(status).body(wrapped);
@@ -42,7 +42,7 @@ public class ResponseWrappingAspect {
         BaseResponse<Object> wrapped = BaseResponse.of(
                 HttpStatus.OK,
                 result,
-                messageResolver.resolve("SUCCESS.GENERIC", request.getLocale()),
+                dictionary.get("SUCCESS.GENERIC"),
                 request.getRequestURI()
         );
         return ResponseEntity.ok(wrapped);

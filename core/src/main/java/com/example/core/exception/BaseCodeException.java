@@ -6,9 +6,16 @@ public abstract class BaseCodeException extends RuntimeException {
 
     private final String code;
 
-    public BaseCodeException(String code) {
-        super(code);
+    private final String messageOverride;
+
+    public BaseCodeException(String code, String messageOverride) {
+        super(messageOverride != null ? messageOverride : code); // để `getMessage()` return override
         this.code = code;
+        this.messageOverride = messageOverride;
+    }
+
+    public String getMessageOverride() {
+        return messageOverride;
     }
 
     public String getCode() {

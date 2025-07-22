@@ -3,6 +3,8 @@ package com.example.apigateway.filter;
 import com.example.apigateway.util.Constant;
 import com.example.core.exception.BusinessException;
 import com.example.core.exception.ValidateException;
+import com.example.core.i18n.Dictionary;
+import com.example.core.utils.BaseConstant;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,9 @@ public class SecurityFilterChain extends OncePerRequestFilter {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private Dictionary dic;
+
     private static final Logger log = LoggerFactory.getLogger(SecurityFilterChain.class);
 
     @Override
@@ -39,16 +44,16 @@ public class SecurityFilterChain extends OncePerRequestFilter {
             String authenKey = request.getHeader(Constant.AUTHEN_KEY);
 
             if (request.getLocale() == null) {
-                throw new ValidateException("GW-006");
+                throw new ValidateException(BaseConstant.ERORRS.LOGIC, dic.get(""));
             }
 
             if (authenKey == null || authenKey.isBlank()) {
-                throw new ValidateException("GW-001");
+                throw new ValidateException("GW-001", "");
             }
 
             String[] parts = authenKey.split(":");
             if (parts.length != 2) {
-                throw new ValidateException("GW-002");
+                throw new ValidateException("GW-002", "");
             }
 
             String userId = parts[0];
@@ -57,19 +62,19 @@ public class SecurityFilterChain extends OncePerRequestFilter {
 
             Object sessionJson = redisTemplate.opsForValue().get(redisKey);
             if (sessionJson == null) {
-                throw new BusinessException("GW-003");
+                throw new BusinessException("GW-003", "");
             }
 
             Map<String, Object> sessionInfo = new ObjectMapper().readValue(sessionJson.toString(), Map.class);
             String username = (String) sessionInfo.get("username");
 
-            if (username == null || username.trim().isEmpty()){
-                throw new BusinessException("GW-005");
+            if (username == null || username.trim().isEmpty()) {
+                throw new BusinessException("GW-005", "");
             }
 
             boolean exprireSession = redisTemplate.expire(redisKey, Duration.ofMinutes(30L));
-            if (!exprireSession){
-                throw new BusinessException("GW-003");
+            if (!exprireSession) {
+                throw new BusinessException("GW-003", "");
             }
 
             request.setAttribute("X-Username", username);

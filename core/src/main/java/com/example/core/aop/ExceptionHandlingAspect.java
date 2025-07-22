@@ -5,7 +5,7 @@ import com.example.core.exception.BaseCodeException;
 import com.example.core.exception.BusinessException;
 import com.example.core.exception.SystemException;
 import com.example.core.exception.ValidateException;
-import com.example.core.i18n.MessageResolver;
+import com.example.core.i18n.Dictionary;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -25,11 +25,11 @@ public class ExceptionHandlingAspect {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final HttpServletRequest request;
 
-    private final MessageResolver messageResolver;
+    @Autowired
+    private Dictionary dictionary;
 
-    public ExceptionHandlingAspect(HttpServletRequest request, MessageResolver messageResolver) {
+    public ExceptionHandlingAspect(HttpServletRequest request) {
         this.request = request;
-        this.messageResolver = messageResolver;
     }
 
     @Around("execution(* com.example..controller..*(..))")
@@ -38,7 +38,7 @@ public class ExceptionHandlingAspect {
             return joinPoint.proceed();
         } catch (BaseCodeException bce) {
             String code = bce.getCode();
-            String message = messageResolver.resolve(code, request.getLocale());
+            String message = bce.getMessageOverride();
             ErrorResponse err = ErrorResponse.of(code, message, request.getRequestURI());
 
             if (bce instanceof SystemException) {
@@ -58,7 +58,7 @@ public class ExceptionHandlingAspect {
             log.error("Unhandled exception: {}", t);
             ErrorResponse err = ErrorResponse.of(
                     "9125",
-                    messageResolver.resolve("unhandle exception", request.getLocale()),
+                    dictionary.get("unhandle exception"),
                     request.getRequestURI());
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)

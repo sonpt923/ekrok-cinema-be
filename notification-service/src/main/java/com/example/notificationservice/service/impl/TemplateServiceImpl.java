@@ -63,7 +63,7 @@ public class TemplateServiceImpl implements TemplateService {
     public Object deleteTemplate(String id) {
         Template template = templateRepo.findById(id).get();
         if (template == null && template.getIsDeleted() == false) {
-            throw new ValidateException("");
+            throw new ValidateException("", "");
         }
         template.setIsDeleted(true);
         template = templateRepo.save(template);
@@ -76,7 +76,7 @@ public class TemplateServiceImpl implements TemplateService {
     private void validateCreate(TemplateRequest request) {
 
         if (templateRepo.findTemplateByCodeAndIsDeleted(request.getCode(), false) != null) {
-            throw new BusinessException("");
+            throw new BusinessException("", "");
         }
 
     }

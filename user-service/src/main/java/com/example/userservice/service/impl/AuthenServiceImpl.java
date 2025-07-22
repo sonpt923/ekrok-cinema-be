@@ -44,8 +44,8 @@ public class AuthenServiceImpl implements AuthenService {
 
     @Override
     public Object login(UserRequest request) {
-        if(request.getUsername() == null || request.getUsername().isEmpty()){
-            throw new ValidateException("");
+        if (request.getUsername() == null || request.getUsername().isEmpty()) {
+            throw new ValidateException("", "");
         }
         User user = userService.findUserByUsername(request.getUsername());
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -53,9 +53,9 @@ public class AuthenServiceImpl implements AuthenService {
                 String key = Constant.USER_SESSION + ":" + request.getUsername() + ":" + UUID.randomUUID();
                 Long ttl = Constant.TTL;
                 if (request.getIsAdmin()) {
-                    Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE).getValue());
+                    Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.ADM_OTP_CODE).getValue());
                 } else {
-                    Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE).getValue());
+                    Long.valueOf(apDomainService.getByCode(Constant.AP_DOMAIN.CLIENT_OTP_CODE).getValue());
                 }
                 HashMap<String, Object> jsonValue = this.userToJsonValue(user);
                 redisTemplate.opsForValue().set(key, new ObjectMapper().writeValueAsString(jsonValue), ttl, TimeUnit.MINUTES);
@@ -67,7 +67,7 @@ public class AuthenServiceImpl implements AuthenService {
                 e.printStackTrace();
             }
         }
-        throw new ValidateException("");
+        throw new ValidateException("SYS-001", "");
     }
 
     @Override
@@ -95,12 +95,13 @@ public class AuthenServiceImpl implements AuthenService {
         // case 1: set otp
         if (request.getFlag() == 0) {
             if (request.getUsername() == null || request.getUsername().isEmpty()) {
-                throw new ValidateException("");
+                throw new ValidateException("", "");
             }
             Long otpTime = Constant.OTP_TIME;
-            ApDomain apDomain = apDomainService.getByCode(Constant.AP_DOMAIN.OTP_CODE);
+            String domainCode = request.getIsAdmin() ? Constant.AP_DOMAIN.ADM_OTP_CODE: Constant.AP_DOMAIN.CLIENT_OTP_CODE;
+            ApDomain apDomain = apDomainService.getByCode(domainCode);
             if (apDomain != null) {
-                otpTime = Long.valueOf(apDomain.getValue());
+                otpTime = Long.parseLong(apDomain.getValue());
             }
             redisTemplate.opsForValue().set("", "", otpTime, TimeUnit.SECONDS);
             // send otp ->  notification-service
@@ -108,18 +109,15 @@ public class AuthenServiceImpl implements AuthenService {
 //            ResponseEntity response = notificationFeign.sendOTP(request);
             return null;
         } else { // case2: xu ly
-//            OTPCache otp = otpCacheRepository.findById(request.getUsername()).get();
-//            if (otp != null) {
-//                if (otp.getValue().equals(request.getOtp())) {
+//            String otp = redisTemplate.opsForValue().get(new Object());
+//            if (otp != null && !otp.isEmpty()) {
+//                if (otp.equals(request.getOtp())) {
 //                    changePassword(request);
 //                }
 //                return null;
-//            } else {
-//                throw new SystemException(null);
 //            }
         }
-        Assert.isNull(request.getFlag(), "Khong duoc bo trong truong flag");
-        return null;
+        throw new ValidateException("", "");
     }
 
     @Override
@@ -135,34 +133,34 @@ public class AuthenServiceImpl implements AuthenService {
     }
 
     private void validateRegister(UserRequest request) {
+//
+//        if (request.getUsername() == null || request.getUsername().isEmpty()) {
+//            throw new ValidateException("");
+//        }
 
-        if (request.getUsername() == null || request.getUsername().isEmpty()) {
-            throw new ValidateException("");
-        }
-
-        if (request.getPassword() == null || request.getPassword().isEmpty()) {
-            throw new ValidateException("");
-        }
-
-        if (request.getConfirmPassword() == null || request.getConfirmPassword().isEmpty()) {
-            throw new ValidateException("");
-        }
-
-        if (request.getBirthDay() == null || request.getBirthDay().isEmpty()) {
-            throw new ValidateException("");
-        }
-
-        if (request.getEmail() == null || request.getEmail().isEmpty()) {
-            throw new ValidateException("");
-        }
-
-        if (request.getEmail() == null || request.getEmail().isEmpty()) {
-            throw new ValidateException("");
-        }
-
-        if (request.getPhone() == null || request.getPhone().isEmpty()) {
-            throw new ValidateException("");
-        }
+//        if (request.getPassword() == null || request.getPassword().isEmpty()) {
+//            throw new ValidateException("");
+//        }
+//
+//        if (request.getConfirmPassword() == null || request.getConfirmPassword().isEmpty()) {
+//            throw new ValidateException("");
+//        }
+//
+//        if (request.getBirthDay() == null || request.getBirthDay().isEmpty()) {
+//            throw new ValidateException("");
+//        }
+//
+//        if (request.getEmail() == null || request.getEmail().isEmpty()) {
+//            throw new ValidateException("");
+//        }
+//
+//        if (request.getEmail() == null || request.getEmail().isEmpty()) {
+//            throw new ValidateException("");
+//        }
+//
+//        if (request.getPhone() == null || request.getPhone().isEmpty()) {
+//            throw new ValidateException("");
+//        }
 
 //        Assert.isNull(userService.findUserByPhone(request.getPhone()),
 //                String.format(dic.get("ERROR.PHONE.EXISTS"), request.getPhone()));

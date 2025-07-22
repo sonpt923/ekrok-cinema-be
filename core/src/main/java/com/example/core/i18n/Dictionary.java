@@ -18,4 +18,10 @@ public class MessageResolver {
         return messageSource.getMessage(code, null, code, locale);
     }
 
+
+    public String get(String code) {
+        return messageSource.getMessage(code, null, Locale.getDefault());
+    }
+
+
 }

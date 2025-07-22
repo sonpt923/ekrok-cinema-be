@@ -2,6 +2,10 @@ package com.example.core.utils;
 
 public class Constant {
 
+    public interface ERORRS {
+        
+    }
+
     public static final Long OTP_TIME = 60L;
 
     public static final Long TTL = 60L;

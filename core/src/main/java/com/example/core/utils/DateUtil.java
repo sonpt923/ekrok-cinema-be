@@ -1,4 +1,4 @@
-package com.example.subcriptionservice.util;
+package com.example.core.utils;
 
 
 import java.sql.Timestamp;

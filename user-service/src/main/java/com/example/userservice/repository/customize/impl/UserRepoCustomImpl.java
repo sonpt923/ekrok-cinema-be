@@ -2,7 +2,7 @@ package com.example.userservice.repository.customize.impl;
 
 import com.example.userservice.dto.request.UserRequest;
 import com.example.userservice.dto.respond.ListDataResponse;
-import com.example.userservice.repository.customize.UserRepositoryCustom;
+import com.example.userservice.repository.customize.UserRepoCustom;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class UserRepositoryCustomImpl implements UserRepositoryCustom {
+public class UserRepoCustomImpl implements UserRepoCustom {
 
     @PersistenceContext
     private EntityManager entityManager;

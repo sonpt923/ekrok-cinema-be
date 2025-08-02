@@ -2,8 +2,14 @@ package com.example.sagaservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-@SpringBootApplication(scanBasePackages = {"com.example"})
+@EnableDiscoveryClient
+@SpringBootApplication(scanBasePackages = "com.example")
+@EnableFeignClients
+@EnableAspectJAutoProxy
 public class SagaServiceApplication {
 
     public static void main(String[] args) {

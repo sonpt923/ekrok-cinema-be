@@ -1,13 +1,12 @@
 package com.example.userservice.controller;
 
+import com.example.userservice.dto.request.GroupRequest;
+import com.example.userservice.entity.Group;
 import com.example.userservice.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/group")
@@ -17,32 +16,27 @@ public class GroupController {
     private GroupService groupService;
 
     @PostMapping("/create-group")
-    public ResponseEntity createGroup() {
-        return new ResponseEntity(null, HttpStatus.OK);
+    public ResponseEntity createGroup(@RequestBody GroupRequest request) {
+        return new ResponseEntity(groupService.createGroup(request), HttpStatus.OK);
     }
 
     @PostMapping("/update-group")
-    public ResponseEntity updateGroup() {
-        return new ResponseEntity(null, HttpStatus.OK);
+    public ResponseEntity updateGroup(@RequestBody GroupRequest request) {
+        return new ResponseEntity(groupService.updateGroup(request), HttpStatus.OK);
     }
 
     @GetMapping("/get-group")
-    public ResponseEntity getGroup() {
-        return new ResponseEntity(null, HttpStatus.OK);
+    public ResponseEntity getGroup(@RequestAttribute Long groupId) {
+        return new ResponseEntity(groupService.getGroup(groupId), HttpStatus.OK);
     }
 
-    @PostMapping("/")
-    public ResponseEntity getGroups() {
-        return new ResponseEntity(null, HttpStatus.OK);
+    @PostMapping("/get-groups")
+    public ResponseEntity getGroups(@RequestAttribute GroupRequest request) {
+        return new ResponseEntity(groupService.getGroups(request), HttpStatus.OK);
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/delete-group")
     public ResponseEntity deleteGroup() {
-        return new ResponseEntity(null, HttpStatus.OK);
-    }
-
-    @GetMapping()
-    public ResponseEntity listGroups() {
         return new ResponseEntity(null, HttpStatus.OK);
     }
 

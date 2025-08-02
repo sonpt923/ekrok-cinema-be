@@ -6,8 +6,9 @@ import com.example.userservice.dto.respond.UserResponse;
 import com.example.userservice.entity.User;
 import com.example.userservice.fiegn.NotificationFeign;
 import com.example.userservice.repository.UserRepository;
-import com.example.userservice.repository.customize.UserRepositoryCustom;
+import com.example.userservice.repository.customize.UserRepoCustom;
 import com.example.userservice.service.GroupUserService;
+import com.example.userservice.service.RoleService;
 import com.example.userservice.service.UserService;
 import com.example.userservice.utils.Constant;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -38,7 +39,10 @@ public class UserServiceImpl implements UserService {
     private GroupUserService groupUserService;
 
     @Autowired
-    private UserRepositoryCustom userRepositoryCustom;
+    private RoleService roleService;
+
+    @Autowired
+    private UserRepoCustom userRepositoryCustom;
 
     @Autowired
     private RedisTemplate redisTemplate;

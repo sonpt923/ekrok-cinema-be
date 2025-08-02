@@ -22,6 +22,9 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "parent_code")
+    private Long parentCode;
+
     @Column(name = "code")
     private String code;
 
@@ -46,7 +49,7 @@ public class Group {
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @Column(name = "deleted")
-    private Boolean deleted;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
 }

@@ -4,7 +4,7 @@ import com.example.userservice.dto.request.GroupRequest;
 
 public interface GroupService {
 
-    Object createGroup(GroupRequest request);
+    Object createGroup(GroupRequest request, String username);
 
     Object updateGroup(GroupRequest request);
 

@@ -1,28 +1,23 @@
 package com.example.userservice.dto.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GroupRequest {
+@Builder
+public class RoleRequest {
 
     private String code;
 
     private String name;
 
-    private String parentCode;
+    private Integer status;
 
     private String description;
 
-    private List<RoleRequest> roleRequest;
-
-    private Integer page;
-
-    private Integer pageSize;
-
+    private String parentCode;
 }

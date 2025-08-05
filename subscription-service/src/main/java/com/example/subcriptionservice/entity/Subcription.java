@@ -1,5 +1,4 @@
-package com.example.userservice.entity;
-
+package com.example.subcriptionservice.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,46 +9,47 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
-@Entity
-@Builder
-@Table(name = "`group`")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Group {
+@Builder
+@Entity
+@Table(name = "subcription")
+public class Subcription {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "parent_code")
-    private String parentCode;
+    @Column(name = "user_id")
+    private Long userId;
 
-    @Column(name = "code")
-    private String code;
+    @Column(name = "plan_id")
+    private Long planId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "start_date")
+    private Timestamp startDate;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "end_date")
+    private Timestamp endDate;
 
     @Column(name = "status")
     private Integer status;
 
+    // tự động gia hạn phục vụ luồng saga
+    @Column(name = "auto_renew")
+    private Boolean autoRenew;
+
     @Column(name = "created_by")
     private String createdBy;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
 
     @Column(name = "created_at")
     private Timestamp createdAt;
 
     @Column(name = "updated_at")
     private Timestamp updatedAt;
-
-    @Column(name = "updated_by")
-    private String updatedBy;
-
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
 
 }

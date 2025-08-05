@@ -26,7 +26,7 @@ public class GroupRole {
     private Long roleId;
 
     @Column(name = "group_id")
-    private Long group_id;
+    private Long groupId;
 
     @Column(name = "created_by")
     private String createdBy;
@@ -40,7 +40,7 @@ public class GroupRole {
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @Column(name = "deleted")
-    private Boolean deleted;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
 }

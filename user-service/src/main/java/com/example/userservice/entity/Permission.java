@@ -20,14 +20,17 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "role_id")
+    private Long roleId;
+
     @Column(name = "path")
     private String path;
 
     @Column(name = "method")
     private String method;
 
-    @Column(name = "role_code")
-    private String roleCode;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
 
 }

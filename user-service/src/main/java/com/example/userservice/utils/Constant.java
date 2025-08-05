@@ -28,13 +28,13 @@ public class Constant {
 
     }
 
-    public interface mail_type {
+    public interface METHOD {
 
-        String CREATE = "C";
+        String POST = "POST";
 
-        String UPDATE = "U";
+        String GET = "GET";
 
-        String IN_ACTIVE = "I";
+        String DELETE = "DELETE";
 
     }
 

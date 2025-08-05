@@ -5,11 +5,15 @@ import com.example.core.dto.response.ErrorResponse;
 import com.example.core.i18n.Dictionary;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Aspect
+@Configuration
 public class ResponseWrappingAspect {
 
     private final HttpServletRequest request;
@@ -20,8 +24,9 @@ public class ResponseWrappingAspect {
         this.dictionary = dictionary;
     }
 
-    @Around("execution(* com.example..controller..*(..))")
+    @Around("execution(* *..controller..*(..))")
     public Object wrapResponse(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.println("⚡ AOP wrapResponse triggered: " + joinPoint.getSignature());
         Object result = joinPoint.proceed();
 
         if (result instanceof ResponseEntity) {

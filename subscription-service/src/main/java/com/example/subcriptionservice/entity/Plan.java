@@ -1,4 +1,4 @@
-package com.example.userservice.entity;
+package com.example.subcriptionservice.entity;
 
 
 import lombok.AllArgsConstructor;
@@ -10,23 +10,18 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
-@Entity
-@Builder
-@Table(name = "`group`")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Group {
+@Builder
+@Entity
+@Table(name = "plan")
+// goi phim
+public class Plan {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "parent_code")
-    private String parentCode;
-
-    @Column(name = "code")
-    private String code;
 
     @Column(name = "name")
     private String name;
@@ -34,11 +29,23 @@ public class Group {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "status")
-    private Integer status;
+    @Column(name = "price")
+    private String price;
+
+    @Column(name = "duration_days")
+    private String durationDays;
+
+    @Column(name = "max_devices")
+    private String maxDevices;
+
+    @Column(name = "resolution")
+    private String resolution;
 
     @Column(name = "created_by")
     private String createdBy;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
 
     @Column(name = "created_at")
     private Timestamp createdAt;
@@ -46,10 +53,11 @@ public class Group {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
-    @Column(name = "updated_by")
-    private String updatedBy;
+    @Column(name = "is_active")
+    private Boolean isActive;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
+
 
 }

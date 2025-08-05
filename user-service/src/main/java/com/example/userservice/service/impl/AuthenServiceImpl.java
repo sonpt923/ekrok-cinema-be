@@ -54,7 +54,7 @@ public class AuthenServiceImpl implements AuthenService {
             throw new ValidateException(BaseConstant.ERORRS.NOT_NULL, String.format(dic.get("SYS-001")));
         }
         User user = userService.findUserByUsername(request.getUsername());
-        if(user == null ){
+        if (user == null) {
             throw new SystemException(BaseConstant.ERORRS.DATA_NOT_FOUND, dic.get("SYS-002"));
         }
 
@@ -90,7 +90,6 @@ public class AuthenServiceImpl implements AuthenService {
                 .phone(request.getPhone())
                 .firstName(request.getFirstName()).lastName(request.getLastName())
                 .createdBy(Constant.SELF_CREATE).build();
-
         if (request.getPassword().equals(request.getConfirmPassword())) {
 //            ResponseEntity response = notificationFeign.sendOTP(request);
 //        if (response.getStatusCodeValue() == 200 && response.getStatusCode().equals(HttpStatus.OK)) {
@@ -98,7 +97,7 @@ public class AuthenServiceImpl implements AuthenService {
             userService.createUser(request);
 //        }
         }
-        return null;
+        throw new ValidateException("", String.format(dic.get("")));
     }
 
     @Override
@@ -144,35 +143,43 @@ public class AuthenServiceImpl implements AuthenService {
     private void validateRegister(UserRequest request) {
 
         if (request.getUsername() == null || request.getUsername().isEmpty()) {
-            throw new ValidateException("", String.format(dic.get("")));
+            throw new ValidateException(BaseConstant.ERORRS.NOT_NULL, String.format(dic.get("SYS-003"), "username"));
         }
 
         if (request.getPassword() == null || request.getPassword().isEmpty()) {
-            throw new ValidateException("", String.format(dic.get("")));
+            throw new ValidateException(BaseConstant.ERORRS.NOT_NULL, String.format(dic.get("SYS-003"), "password"));
         }
 
         if (request.getConfirmPassword() == null || request.getConfirmPassword().isEmpty()) {
-            throw new ValidateException("",String.format(dic.get("")));
+            throw new ValidateException(BaseConstant.ERORRS.NOT_NULL, String.format(dic.get("SYS-003"), "confirm password"));
         }
 
         if (request.getBirthDay() == null || request.getBirthDay().isEmpty()) {
-            throw new ValidateException("",String.format(dic.get("")));
+            throw new ValidateException(BaseConstant.ERORRS.NOT_NULL, String.format(dic.get("SYS-003"), "birthday"));
         }
 
         if (request.getEmail() == null || request.getEmail().isEmpty()) {
-            throw new ValidateException("",String.format(dic.get("")));
-        }
-
-        if (request.getEmail() == null || request.getEmail().isEmpty()) {
-            throw new ValidateException("",String.format(dic.get("")));
+            throw new ValidateException(BaseConstant.ERORRS.NOT_NULL, String.format(dic.get("SYS-003"), "email"));
         }
 
         if (request.getPhone() == null || request.getPhone().isEmpty()) {
-            throw new ValidateException("",String.format(dic.get("")));
+            throw new ValidateException(BaseConstant.ERORRS.NOT_NULL, String.format(dic.get("SYS-003"), "phone"));
         }
 
-        if (userService.findUserByUsername(request.getUsername()) != null){
-            throw new ValidateException(BaseConstant.ERORRS.DATA_USING, String.format(dic.get("")));
+        if (request.getEmail() == null || request.getEmail().isEmpty()) {
+            throw new ValidateException(BaseConstant.ERORRS.NOT_NULL, String.format(dic.get("SYS-003"), "email"));
+        }
+
+        if (userService.findUserByEmail(request.getEmail()) != null) {
+            throw new ValidateException(BaseConstant.ERORRS.DATA_USING, String.format(dic.get("email")));
+        }
+
+        if (userService.findUserByEmail(request.getPhone()) != null) {
+            throw new ValidateException(BaseConstant.ERORRS.DATA_USING, String.format(dic.get("phone")));
+        }
+
+        if (userService.findUserByUsername(request.getUsername()) != null) {
+            throw new ValidateException(BaseConstant.ERORRS.DATA_USING, String.format(dic.get("username")));
         }
 
     }

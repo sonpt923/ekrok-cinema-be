@@ -10,6 +10,7 @@ import com.example.userservice.entity.Group;
 import com.example.userservice.entity.Role;
 import com.example.userservice.fiegn.NotificationFeign;
 import com.example.userservice.repository.GroupRepository;
+import com.example.userservice.repository.customize.GroupRepoCustom;
 import com.example.userservice.service.GroupRoleService;
 import com.example.userservice.service.GroupService;
 import com.example.userservice.service.RoleService;
@@ -32,6 +33,9 @@ public class GroupServiceImpl implements GroupService {
     private GroupRoleService groupRoleService;
 
     @Autowired
+    private GroupRepoCustom groupRepoCustom;
+
+    @Autowired
     private Dictionary dic;
 
     @Autowired
@@ -45,7 +49,6 @@ public class GroupServiceImpl implements GroupService {
     @Transactional
     public Object createGroup(GroupRequest request, String username) {
         validateCreate(request);
-
         Group group = Group.builder()
                 .code(request.getCode())
                 .name(request.getName())
@@ -53,6 +56,7 @@ public class GroupServiceImpl implements GroupService {
                 .createdAt(Timestamp.from(Instant.now()))
                 .createdBy(username)
                 .isDeleted(false)
+                .status(request.getStatus())
                 .parentCode(request.getParentCode())
                 .build();
         group = groupRepository.save(group);
@@ -60,21 +64,22 @@ public class GroupServiceImpl implements GroupService {
         for (RoleRequest roleRequest : request.getRoleRequest()) {
             Role role = roleService.findByRoleByCodeAndIsDeleted(roleRequest.getCode(), false);
             if (!ObjectUtil.objectIsNullorEmpty(role)) {
-              roles.add(role);
+                roles.add(role);
             }
         }
-        groupRoleService.createGroupRole(request)
-        return group;
+        return groupRoleService.createByGroupAndRole(List.of(group), roles);
     }
 
     @Override
     public Object updateGroup(GroupRequest request) {
+        validateUpdate(request);
         return null;
     }
 
     @Override
     public Object getGroups(GroupRequest request) {
-        return null;
+        request.setIsDeleted(false);
+        return groupRepoCustom.findGroups(request);
     }
 
     @Override

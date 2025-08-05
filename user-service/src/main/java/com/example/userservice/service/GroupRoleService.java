@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface GroupRoleService {
 
-    Object createByListRole(Group group, Role role);
-
-    Object createByListGroup(List<Group> groups, Role role);
+    Object createByGroupAndRole(List<Group> groups, List<Role> roles);
 
 }

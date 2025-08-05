@@ -1,7 +1,7 @@
 package com.example.userservice.repository.customize;
 
 import com.example.userservice.dto.request.UserRequest;
-import com.example.userservice.dto.respond.ListDataResponse;
+import com.example.core.dto.response.ListDataResponse;
 
 public interface UserRepoCustom {
 

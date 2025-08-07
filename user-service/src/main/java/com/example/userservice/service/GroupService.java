@@ -6,12 +6,12 @@ public interface GroupService {
 
     Object createGroup(GroupRequest request, String username);
 
-    Object updateGroup(GroupRequest request);
+    Object updateGroup(GroupRequest request, String username);
 
-    Object getGroups(GroupRequest request);
+    Object getGroups(GroupRequest request, String username);
 
-    Object deleteGroup(Long id);
+    Object deleteGroup(Long id, String username);
 
-    Object getGroup(Long id);
+    Object getGroup(Long id, String username);
 
 }

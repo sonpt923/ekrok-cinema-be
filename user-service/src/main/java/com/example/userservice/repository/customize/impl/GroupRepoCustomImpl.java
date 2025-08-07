@@ -24,7 +24,18 @@ public class GroupRepoCustomImpl implements GroupRepoCustom {
         StringBuilder sql = new StringBuilder();
         Map<String, Object> params = new HashMap<>();
 
-        sql.append("SELECT gr FROM group gr WHERE 1 = 1");
+        sql.append("WITH RECURSIVE `group_tree` AS ( " +
+                "    SELECT id, name, parent_id" +
+                "    FROM `group`" +
+                "    WHERE id = :group_id   " +
+                "    UNION ALL " +
+                "    SELECT c.id, c.name, c.parent_id " +
+                "    FROM `group` c " +
+                "    INNER JOIN `group` ct ON c.parent_id = ct.id " +
+                ") " +
+                "SELECT * FROM `group_tree` WHERE 1 = 1");
+
+        params.put("groupId", request.getId());
 
         if (ObjectUtil.objectIsNullorEmpty(request.getCode())) {
             sql.append(" AND gr.code like :code ");
@@ -36,22 +47,22 @@ public class GroupRepoCustomImpl implements GroupRepoCustom {
             params.put("name", request.getName());
         }
 
-        if(ObjectUtil.objectIsNullorEmpty(request.getParentCode())){
-            sql.append(" AND gr.parent_code like :parentCode ");
-            params.put("parentCode", request.getParentCode());
+        if (ObjectUtil.objectIsNullorEmpty(request.getParentId())) {
+            sql.append(" AND gr.parent_id like :parentId ");
+            params.put("parentCode", request.getParentId());
         }
 
-        if(ObjectUtil.objectIsNullorEmpty(request.getStatus())){
+        if (ObjectUtil.objectIsNullorEmpty(request.getStatus())) {
             sql.append(" AND gr.status = :status ");
             params.put("status", request.getStatus());
         }
 
-        if(ObjectUtil.objectIsNullorEmpty(request.getCreatedBy())){
+        if (ObjectUtil.objectIsNullorEmpty(request.getCreatedBy())) {
             sql.append(" AND gr.created_by = :createdBy ");
             params.put("createdBy", request.getCreatedBy());
         }
 
-        if(ObjectUtil.objectIsNullorEmpty(request.getUpdatedBy())){
+        if (ObjectUtil.objectIsNullorEmpty(request.getUpdatedBy())) {
             sql.append(" AND gr.updated_by = :updated_by ");
             params.put("updatedBy", request.getUpdatedBy());
         }
@@ -77,7 +88,18 @@ public class GroupRepoCustomImpl implements GroupRepoCustom {
         sql.setLength(0);
         params.clear();
 
-        sql.append("SELECT COUNT(gr.*) FROM group gr WHERE 1 = 1");
+        sql.append("WITH RECURSIVE `group_tree` AS ( " +
+                "    SELECT id, name, parent_id" +
+                "    FROM `group`" +
+                "    WHERE id = :group_id   " +
+                "    UNION ALL " +
+                "    SELECT c.id, c.name, c.parent_id " +
+                "    FROM `group` c " +
+                "    INNER JOIN `group` ct ON c.parent_id = ct.id " +
+                ") " +
+                "SELECT * FROM `group_tree` WHERE 1 = 1");
+
+        params.put("groupId", request.getId());
 
         if (ObjectUtil.objectIsNullorEmpty(request.getCode())) {
             sql.append(" AND gr.code like :code ");
@@ -89,22 +111,22 @@ public class GroupRepoCustomImpl implements GroupRepoCustom {
             params.put("name", request.getName());
         }
 
-        if(ObjectUtil.objectIsNullorEmpty(request.getParentCode())){
-            sql.append(" AND gr.parent_code like :parentCode ");
-            params.put("parentCode", request.getParentCode());
+        if (ObjectUtil.objectIsNullorEmpty(request.getParentId())) {
+            sql.append(" AND gr.parent_id like :parentId ");
+            params.put("parentCode", request.getParentId());
         }
 
-        if(ObjectUtil.objectIsNullorEmpty(request.getStatus())){
+        if (ObjectUtil.objectIsNullorEmpty(request.getStatus())) {
             sql.append(" AND gr.status = :status ");
             params.put("status", request.getStatus());
         }
 
-        if(ObjectUtil.objectIsNullorEmpty(request.getCreatedBy())){
+        if (ObjectUtil.objectIsNullorEmpty(request.getCreatedBy())) {
             sql.append(" AND gr.created_by = :createdBy ");
             params.put("createdBy", request.getCreatedBy());
         }
 
-        if(ObjectUtil.objectIsNullorEmpty(request.getUpdatedBy())){
+        if (ObjectUtil.objectIsNullorEmpty(request.getUpdatedBy())) {
             sql.append(" AND gr.updated_by = :updated_by ");
             params.put("updatedBy", request.getUpdatedBy());
         }

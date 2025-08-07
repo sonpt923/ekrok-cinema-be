@@ -21,23 +21,23 @@ public class GroupController {
     }
 
     @PostMapping("/update-group")
-    public ResponseEntity updateGroup(@RequestBody GroupRequest request) {
-        return new ResponseEntity(groupService.updateGroup(request), HttpStatus.OK);
+    public ResponseEntity updateGroup(@RequestBody GroupRequest request, @RequestAttribute("X-Username") String username) {
+        return new ResponseEntity(groupService.updateGroup(request, username), HttpStatus.OK);
     }
 
     @GetMapping("/get-group")
-    public ResponseEntity getGroup(@RequestAttribute Long groupId) {
-        return new ResponseEntity(groupService.getGroup(groupId), HttpStatus.OK);
+    public ResponseEntity getGroup(@RequestAttribute("group-id") Long groupId,  @RequestAttribute("X-Username") String username) {
+        return new ResponseEntity(groupService.getGroup(groupId, username), HttpStatus.OK);
     }
 
     @PostMapping("/get-groups")
-    public ResponseEntity getGroups(@RequestAttribute GroupRequest request) {
-        return new ResponseEntity(groupService.getGroups(request), HttpStatus.OK);
+    public ResponseEntity getGroups(@RequestAttribute GroupRequest request,  @RequestAttribute("X-Username") String username) {
+        return new ResponseEntity(groupService.getGroups(request, username), HttpStatus.OK);
     }
 
     @PostMapping("/delete-group")
-    public ResponseEntity deleteGroup() {
-        return new ResponseEntity(null, HttpStatus.OK);
+    public ResponseEntity deleteGroup(@RequestAttribute("group-id") Long groupId,  @RequestAttribute("X-Username") String username) {
+        return new ResponseEntity(groupService.deleteGroup(groupId, username), HttpStatus.OK);
     }
 
 }

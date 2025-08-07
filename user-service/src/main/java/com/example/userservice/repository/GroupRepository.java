@@ -10,4 +10,6 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
 
     Group findByCodeAndStatus(@Param("code") String code, @Param("status") Boolean status);
 
+    Group findByCodeAndIsDeleted(@Param("code") String code, @Param("status") Boolean status);
+
 }

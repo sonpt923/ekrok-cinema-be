@@ -71,24 +71,40 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Object updateGroup(GroupRequest request) {
+    public Object updateGroup(GroupRequest request, String username) {
         validateUpdate(request);
-        return null;
+        Group group = groupRepository.findByCodeAndIsDeleted(request.getCode(), false);
+        group.setCode(request.getCode());
+        group.setName(request.getName());
+        group.setDescription(request.getDescription());
+        group.setUpdatedAt(Timestamp.from(Instant.now()));
+        group.setUpdatedBy(username);
+        group.setStatus(request.getStatus());
+        group.setParentCode(request.getParentCode());
+        group = groupRepository.save(group);
+        List<Role> roles = new ArrayList<>();
+        for (RoleRequest roleRequest : request.getRoleRequest()) {
+            Role role = roleService.findByRoleByCodeAndIsDeleted(roleRequest.getCode(), false);
+            if (!ObjectUtil.objectIsNullorEmpty(role)) {
+                roles.add(role);
+            }
+        }
+        return groupRoleService.createByGroupAndRole(List.of(group), roles);
     }
 
     @Override
-    public Object getGroups(GroupRequest request) {
+    public Object getGroups(GroupRequest request, String username) {
         request.setIsDeleted(false);
         return groupRepoCustom.findGroups(request);
     }
 
     @Override
-    public Object deleteGroup(Long id) {
+    public Object deleteGroup(Long groupId, String username) {
         return null;
     }
 
     @Override
-    public Object getGroup(Long id) {
+    public Object getGroup(Long id, String username) {
         return null;
     }
 
@@ -102,7 +118,7 @@ public class GroupServiceImpl implements GroupService {
             throw new ValidateException("", "");
         }
 
-        Group group = groupRepository.findByCodeAndStatus(request.getCode(), false);
+        Group group = groupRepository.findByCodeAndIsDeleted(request.getCode(), false);
         if (group != null) {
             throw new ValidateException(BaseConstant.ERORRS.DATA_USING, dic.get(""));
         }

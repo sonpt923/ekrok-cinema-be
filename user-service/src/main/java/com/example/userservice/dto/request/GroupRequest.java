@@ -13,11 +13,13 @@ import java.util.List;
 @NoArgsConstructor
 public class GroupRequest {
 
+    private Long id;
+
     private String code;
 
     private String name;
 
-    private String parentCode;
+    private Long parentId;
 
     private Boolean isDeleted;
 

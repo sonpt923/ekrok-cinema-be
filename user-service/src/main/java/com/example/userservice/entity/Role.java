@@ -32,8 +32,8 @@ public class Role {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "parent_code")
-    private Long parentCode;
+    @Column(name = "parent_id")
+    private Long parentId;
 
     @Column(name = "created_by")
     private String createdBy;

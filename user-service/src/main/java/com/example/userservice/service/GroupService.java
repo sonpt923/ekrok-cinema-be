@@ -14,4 +14,6 @@ public interface GroupService {
 
     Object getGroup(Long id, String username);
 
+    Object getGroupByUsername(String username);
+
 }

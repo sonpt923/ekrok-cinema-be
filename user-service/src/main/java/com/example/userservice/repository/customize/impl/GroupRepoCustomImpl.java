@@ -3,6 +3,7 @@ package com.example.userservice.repository.customize.impl;
 import com.example.core.dto.response.ListDataResponse;
 import com.example.core.utils.ObjectUtil;
 import com.example.userservice.dto.request.GroupRequest;
+import com.example.userservice.entity.Group;
 import com.example.userservice.repository.customize.GroupRepoCustom;
 import org.springframework.stereotype.Repository;
 
@@ -19,23 +20,25 @@ public class GroupRepoCustomImpl implements GroupRepoCustom {
     private EntityManager entityManager;
 
     @Override
-    public ListDataResponse<Object> findGroups(GroupRequest request) {
+    public ListDataResponse<Object> findGroupsByCondition(GroupRequest request) {
         ListDataResponse<Object> listDataResponse = new ListDataResponse();
         StringBuilder sql = new StringBuilder();
         Map<String, Object> params = new HashMap<>();
 
-        sql.append("WITH RECURSIVE `group_tree` AS ( " +
-                "    SELECT id, name, parent_id" +
-                "    FROM `group`" +
-                "    WHERE id = :group_id   " +
-                "    UNION ALL " +
-                "    SELECT c.id, c.name, c.parent_id " +
-                "    FROM `group` c " +
-                "    INNER JOIN `group` ct ON c.parent_id = ct.id " +
-                ") " +
-                "SELECT * FROM `group_tree` WHERE 1 = 1");
-
-        params.put("groupId", request.getId());
+        sql.append("WITH RECURSIVE group_tree AS (\n" +
+                "    SELECT gr.id, gr.parent_id\n" +
+                "    FROM user u\n" +
+                "    INNER JOIN group_user gu ON u.id = gu.user_id\n" +
+                "    INNER JOIN `group` gr ON gr.id = gu.group_id\n" +
+                "    WHERE u.id = 123 " +
+                "" +
+                "    UNION ALL" +
+                "" +
+                "    SELECT c.id, c.parent_id" +
+                "    FROM `group` c" +
+                "    INNER JOIN group_tree gt ON c.parent_id = gt.id )" +
+                "SELECT * " +
+                "FROM group_tree;");
 
         if (ObjectUtil.objectIsNullorEmpty(request.getCode())) {
             sql.append(" AND gr.code like :code ");
@@ -99,7 +102,6 @@ public class GroupRepoCustomImpl implements GroupRepoCustom {
                 ") " +
                 "SELECT * FROM `group_tree` WHERE 1 = 1");
 
-        params.put("groupId", request.getId());
 
         if (ObjectUtil.objectIsNullorEmpty(request.getCode())) {
             sql.append(" AND gr.code like :code ");

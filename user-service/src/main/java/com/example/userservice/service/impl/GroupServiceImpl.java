@@ -6,14 +6,14 @@ import com.example.core.utils.BaseConstant;
 import com.example.core.utils.ObjectUtil;
 import com.example.userservice.dto.request.GroupRequest;
 import com.example.userservice.dto.request.RoleRequest;
+import com.example.userservice.dto.request.UserRequest;
 import com.example.userservice.entity.Group;
 import com.example.userservice.entity.Role;
+import com.example.userservice.entity.User;
 import com.example.userservice.fiegn.NotificationFeign;
 import com.example.userservice.repository.GroupRepository;
 import com.example.userservice.repository.customize.GroupRepoCustom;
-import com.example.userservice.service.GroupRoleService;
-import com.example.userservice.service.GroupService;
-import com.example.userservice.service.RoleService;
+import com.example.userservice.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,13 @@ public class GroupServiceImpl implements GroupService {
     private GroupRoleService groupRoleService;
 
     @Autowired
+    private GroupUserService groupUserService;
+
+    @Autowired
     private GroupRepoCustom groupRepoCustom;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private Dictionary dic;
@@ -57,20 +63,36 @@ public class GroupServiceImpl implements GroupService {
                 .createdBy(username)
                 .isDeleted(false)
                 .status(request.getStatus())
-                .parentCode(request.getParentCode())
+                .parentId(request.getParentId())
                 .build();
         group = groupRepository.save(group);
         List<Role> roles = new ArrayList<>();
-        for (RoleRequest roleRequest : request.getRoleRequest()) {
-            Role role = roleService.findByRoleByCodeAndIsDeleted(roleRequest.getCode(), false);
-            if (!ObjectUtil.objectIsNullorEmpty(role)) {
-                roles.add(role);
+        if (!ObjectUtil.objectIsNullorEmpty(request.getRoleRequest())) {
+            for (RoleRequest roleRequest : request.getRoleRequest()) {
+                Role role = roleService.findByRoleByCodeAndIsDeleted(roleRequest.getCode(), false);
+                if (!ObjectUtil.objectIsNullorEmpty(role)) {
+                    roles.add(role);
+                }
             }
         }
-        return groupRoleService.createByGroupAndRole(List.of(group), roles);
+        List<User> users = new ArrayList<>();
+        if (!ObjectUtil.objectIsNullorEmpty(request.getUsersRequest())) {
+            for (UserRequest userRequest : request.getUsersRequest()) {
+                User user = userService.findUserByUsername(userRequest.getUsername());
+                if (ObjectUtil.objectIsNullorEmpty(user)) {
+                    users.add(user);
+                }
+            }
+        }
+
+
+        groupRoleService.createByGroupAndRole(List.of(group), roles);
+
+        return null;
     }
 
     @Override
+    @Transactional
     public Object updateGroup(GroupRequest request, String username) {
         validateUpdate(request);
         Group group = groupRepository.findByCodeAndIsDeleted(request.getCode(), false);
@@ -80,7 +102,7 @@ public class GroupServiceImpl implements GroupService {
         group.setUpdatedAt(Timestamp.from(Instant.now()));
         group.setUpdatedBy(username);
         group.setStatus(request.getStatus());
-        group.setParentCode(request.getParentCode());
+        group.setParentId(request.getParentId());
         group = groupRepository.save(group);
         List<Role> roles = new ArrayList<>();
         for (RoleRequest roleRequest : request.getRoleRequest()) {
@@ -95,17 +117,27 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public Object getGroups(GroupRequest request, String username) {
         request.setIsDeleted(false);
-        return groupRepoCustom.findGroups(request);
+        return groupRepoCustom.findGroupsByCondition(request);
     }
 
     @Override
+    @Transactional
     public Object deleteGroup(Long groupId, String username) {
-        return null;
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> {
+            throw new ValidateException("", "");
+        });
+        group.setIsDeleted(true);
+        return groupRepository.save(group);
     }
 
     @Override
     public Object getGroup(Long id, String username) {
         return null;
+    }
+
+    @Override
+    public Object getGroupByUsername(String username) {
+        return groupRepository.findByUsername(username, false);
     }
 
     private void validateCreate(GroupRequest request) {

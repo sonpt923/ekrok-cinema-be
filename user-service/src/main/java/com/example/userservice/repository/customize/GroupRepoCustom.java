@@ -6,6 +6,6 @@ import com.example.userservice.dto.request.UserRequest;
 
 public interface GroupRepoCustom {
 
-    ListDataResponse<Object> findGroups(GroupRequest request);
+    ListDataResponse<Object> findGroupsByCondition(GroupRequest request);
 
 }

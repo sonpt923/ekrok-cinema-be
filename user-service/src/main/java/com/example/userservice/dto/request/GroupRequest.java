@@ -37,6 +37,8 @@ public class GroupRequest {
 
     private List<RoleRequest> roleRequest;
 
+    private List<UserRequest> usersRequest;
+
     private Integer page;
 
     private Integer pageSize;

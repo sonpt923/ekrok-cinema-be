@@ -23,7 +23,7 @@ public class Group {
     private Long id;
 
     @Column(name = "parent_id")
-    private String parentId;
+    private Long parentId;
 
     @Column(name = "code")
     private String code;

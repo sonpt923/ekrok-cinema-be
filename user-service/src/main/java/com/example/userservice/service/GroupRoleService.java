@@ -9,4 +9,8 @@ public interface GroupRoleService {
 
     Object createByGroupAndRole(List<Group> groups, List<Role> roles);
 
+    Object updateByGroupAndRole(List<Group> groups, List<Role> roles);
+
+    Object deleteByGroupAndRole(List<Group> groups, List<Role> roles);
+
 }

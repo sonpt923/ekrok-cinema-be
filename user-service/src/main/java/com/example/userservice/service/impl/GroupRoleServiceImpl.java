@@ -53,6 +53,29 @@ public class GroupRoleServiceImpl implements GroupRoleService {
         return groupRoleRepository.saveAll(groupRoles);
     }
 
+    @Override
+    public Object updateByGroupAndRole(List<Group> groups, List<Role> roles) {
+        validateCreate(groups, roles);
+        List<GroupRole> groupRoles = new ArrayList<>();
+        for (Group group : groups) {
+            for (Role role : roles) {
+                GroupRole groupRole = GroupRole.builder()
+                        .roleId(role.getId())
+                        .groupId(group.getId())
+                        .createdAt(Timestamp.from(Instant.now()))
+                        .createdBy(group.getCreatedBy())
+                        .build();
+                groupRoles.add(groupRole);
+            }
+        }
+        return groupRoleRepository.saveAll(groupRoles);
+    }
+
+    @Override
+    public Object deleteByGroupAndRole(List<Group> groups, List<Role> roles) {
+        return null;
+    }
+
     private void validateCreate(List<Group> groups, List<Role> roles) {
         if (ObjectUtil.objectIsNullorEmpty(groups)) {
             throw new ValidateException(BaseConstant.ERORRS.NOT_NULL, dic.get(""));

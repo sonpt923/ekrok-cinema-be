@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @Data
 @Entity
 @Builder
-@Table(name = "`group`")
+@Table(name = "group")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Group {
@@ -22,11 +22,14 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "parent_code")
-    private String parentCode;
+    @Column(name = "parent_id")
+    private Long parentId;
 
     @Column(name = "code")
     private String code;
+
+    @Column(name = "level")
+    private String level;
 
     @Column(name = "name")
     private String name;

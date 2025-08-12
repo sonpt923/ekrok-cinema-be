@@ -1,5 +1,6 @@
 package com.example.userservice.controller;
 
+import com.example.core.annotation.RequireAuthor;
 import com.example.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,16 +11,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/")
+@RequireAuthor
+@RequestMapping("/user/info")
 public class UserInfoController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/info")
+    @GetMapping("/")
     public ResponseEntity getUserInfo() {
         return new ResponseEntity(null, HttpStatus.OK);
     }
+
 
     @PostMapping("/change-password")
     public ResponseEntity changePassword() {

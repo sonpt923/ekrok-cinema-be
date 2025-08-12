@@ -84,11 +84,9 @@ public class GroupServiceImpl implements GroupService {
                 }
             }
         }
-
-
         groupRoleService.createByGroupAndRole(List.of(group), roles);
-
-        return null;
+        groupUserService.createByGroupsAndUsers(List.of(group), users);
+        return group;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.userservice.entity;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Role {
 
     @Id
@@ -22,6 +24,10 @@ public class Role {
 
     @Column(name = "code")
     private String code;
+
+    // level 0,1
+    @Column(name = "level")
+    private Long level;
 
     @Column(name = "name")
     private String name;

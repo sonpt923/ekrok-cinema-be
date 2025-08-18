@@ -16,18 +16,23 @@ public class MovieController {
     private MovieService movieService;
 
     @PostMapping("/create-movie")
-    public ResponseEntity createMovie(@RequestBody MovieRequest request, @RequestHeader("Authorization") String token) {
-        return new ResponseEntity(movieService.createMovie(request, token), HttpStatus.OK);
+    public ResponseEntity createMovie(@RequestBody MovieRequest request, @RequestHeader String username) {
+        return new ResponseEntity(movieService.createMovie(request, username), HttpStatus.OK);
     }
 
     @PostMapping("/update-movie")
-    public ResponseEntity updateMovie(@RequestBody MovieRequest request, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        return new ResponseEntity(movieService.updateMovie(request, token), HttpStatus.OK);
+    public ResponseEntity updateMovie(@RequestBody MovieRequest request, @RequestHeader String username) {
+        return new ResponseEntity(movieService.updateMovie(request, username), HttpStatus.OK);
     }
 
-    @PostMapping("/find-movie-by-condition")
-    public ResponseEntity findMovieByCondition(@RequestBody MovieRequest request, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+    @GetMapping("/get-movies")
+    public ResponseEntity getMovies(@RequestBody MovieRequest request) {
         return new ResponseEntity(movieService.getMovieBycondition(request), HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity deletedMovie(@RequestBody MovieRequest request) {
+        return new ResponseEntity(null, HttpStatus.OK);
     }
 
 

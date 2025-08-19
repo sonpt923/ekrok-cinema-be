@@ -1,7 +1,6 @@
 package com.example.movieservice.service.impl;
 
 import com.example.movieservice.dto.request.PersonRequest;
-import com.example.movieservice.dto.response.ListResponse;
 import com.example.movieservice.entity.Person;
 import com.example.movieservice.repository.PeopleRepository;
 import com.example.movieservice.service.CloudFlareService;

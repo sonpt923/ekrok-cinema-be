@@ -13,7 +13,6 @@ import com.example.userservice.service.ApDomainService;
 import com.example.userservice.service.AuthenService;
 import com.example.userservice.service.UserService;
 import com.example.userservice.utils.Constant;
-import com.example.userservice.utils.DateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

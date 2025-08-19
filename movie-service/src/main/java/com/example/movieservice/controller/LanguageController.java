@@ -2,37 +2,37 @@ package com.example.movieservice.controller;
 
 import com.example.movieservice.dto.request.GenreRequest;
 import com.example.movieservice.entity.Genre;
-import com.example.movieservice.service.GenreService;
+import com.example.movieservice.service.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/movie")
-public class GenreController {
+@RestController("/language")
+public class LanguageController {
 
     @Autowired
-    private GenreService genreService;
+    private LanguageService languageService;
 
-    @PostMapping("/create-genre")
+    @PostMapping("/create-language")
     public ResponseEntity createGenre(@RequestBody Genre genre) {
-        return new ResponseEntity(genreService.createGenre(genre), HttpStatus.OK);
+        return new ResponseEntity(languageService.createGenre(genre), HttpStatus.OK);
     }
 
-    @PostMapping("/update-genre")
+    @PostMapping("/update-language")
     public ResponseEntity udpateGenre(@RequestBody Genre genre) {
-        return new ResponseEntity(genreService.updateGenre(genre), HttpStatus.OK);
+        return new ResponseEntity(languageService.updateGenre(genre), HttpStatus.OK);
     }
 
-    @PostMapping("/get-genres")
+    @PostMapping("/get-language")
     public ResponseEntity getGenres(@RequestBody GenreRequest request) {
-        return new ResponseEntity(genreService.getGenres(request), HttpStatus.OK);
+        return new ResponseEntity(languageService.getGenres(request), HttpStatus.OK);
     }
 
-    @GetMapping("/get-genre")
+    @GetMapping("/get-language")
     public ResponseEntity getGenre(@RequestAttribute GenreRequest request){
-        return new ResponseEntity(genreService, HttpStatus.OK);
+        return new ResponseEntity(languageService, HttpStatus.OK);
     }
+
 
 }

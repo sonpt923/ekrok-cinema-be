@@ -9,10 +9,10 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>subscription-service</artifactId>
+	<artifactId>subcription-service</artifactId>
 	<version>1.0</version>
-	<name>subscription-service</name>
-	<description>subscription-service</description>
+	<name>subcription-service</name>
+	<description>subcription-service</description>
 
 	<properties>
 		<java.version>11</java.version>

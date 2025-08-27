@@ -1,8 +1,15 @@
-server:
-  port: 8090
 spring:
   application:
     name: supcription-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/subcription-service?useSSL=true
+    username: root
+    password: Son191203
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
   cache:
     type: redis
     redis:
@@ -14,8 +21,8 @@ spring:
       host: redis-10592.c1.ap-southeast-1-1.ec2.redns.redis-cloud.com
       port: 10592
       username: default
-      password: El4coajMDswliyAPvHkMR5EmpVJRhY8Z
-      ssl: true
+      password: RWw0Y29hak1Ec3dsaXlBUHZIa01SNUVtcFZKUmhZOFo=
+      havePassword: "YES"
   kafka:
     consumer:
       bootstrap-servers: localhost

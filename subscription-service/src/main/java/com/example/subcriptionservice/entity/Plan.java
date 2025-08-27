@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Data
@@ -14,14 +15,22 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "plan")
-// goi phim
+@Table(name = "package")
 public class Plan {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "parent_id")
+    private Long parentId;
+
+    @Column(name = "level")
+    private Integer level;
+
+    @Column(name = "code")
+    private String code;
 
     @Column(name = "name")
     private String name;
@@ -30,13 +39,19 @@ public class Plan {
     private String description;
 
     @Column(name = "price")
-    private String price;
+    private BigDecimal price;
 
-    @Column(name = "duration_days")
-    private String durationDays;
+    @Column(name = "currency")
+    private String currency;
 
-    @Column(name = "max_devices")
-    private String maxDevices;
+    @Column(name = "duration")
+    private Long duration;
+
+    @Column(name = "max_device")
+    private Integer maxDevice;
+
+    @Column(name = "quality")
+    private String quality;
 
     @Column(name = "resolution")
     private String resolution;
@@ -58,6 +73,5 @@ public class Plan {
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
-
 
 }

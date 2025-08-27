@@ -4,6 +4,12 @@ spring:
   messages:
     basename: messages
     encoding: UTF-8
+  cache:
+    type: redis
+    redis:
+      cache-null-values: false
+      use-key-prefix: true
+      time-to-live: 3000
   data:
     redis:
       host: redis-10592.c1.ap-southeast-1-1.ec2.redns.redis-cloud.com

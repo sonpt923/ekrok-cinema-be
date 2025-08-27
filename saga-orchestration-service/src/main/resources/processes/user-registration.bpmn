@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+    xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+    id="Definitions_1"
+    targetNamespace="http://example.com/saga">
+
+  <bpmn:process id="UserRegistration" isExecutable="true" name="User Registration Saga">
+    <bpmn:startEvent id="StartEvent" name="Start"/>
+    <bpmn:sequenceFlow id="f1" sourceRef="StartEvent" targetRef="TaskCreateUser"/>
+
+    <bpmn:serviceTask id="TaskCreateUser" name="Create User" camunda:class="com.ekrok.saga.domain.user.delegate.CreateUserDelegate">
+      <bpmn:extensionElements>
+        <camunda:taskListener event="create" class="com.ekrok.saga.domain.user.compensation.UserCompensationHandler"/>
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+
+    <bpmn:sequenceFlow id="f2" sourceRef="TaskCreateUser" targetRef="TaskCreateSubscription"/>
+    <bpmn:serviceTask id="TaskCreateSubscription" name="Create Subscription" camunda:class="com.ekrok.saga.domain.user.delegate.CreateSubscriptionDelegate">
+      <bpmn:extensionElements>
+        <camunda:taskListener event="create" class="com.ekrok.saga.domain.user.compensation.SubscriptionCompensationHandler"/>
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+
+    <bpmn:sequenceFlow id="f3" sourceRef="TaskCreateSubscription" targetRef="TaskSendNotification"/>
+    <bpmn:serviceTask id="TaskSendNotification" name="Send Notification" camunda:class="com.ekrok.saga.domain.user.delegate.SendNotificationDelegate"/>
+
+    <bpmn:sequenceFlow id="f4" sourceRef="TaskSendNotification" targetRef="EndEvent"/>
+    <bpmn:endEvent id="EndEvent" name="Completed"/>
+  </bpmn:process>
+</bpmn:definitions>

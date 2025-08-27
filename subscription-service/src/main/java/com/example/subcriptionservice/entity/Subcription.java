@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -25,7 +27,7 @@ public class Subcription {
     private Long userId;
 
     @Column(name = "plan_id")
-    private Long planId;
+    private Long plan_id;
 
     @Column(name = "start_date")
     private Timestamp startDate;
@@ -39,6 +41,18 @@ public class Subcription {
     // tự động gia hạn phục vụ luồng saga
     @Column(name = "auto_renew")
     private Boolean autoRenew;
+
+    @Column(name = "next_billing_date")
+    private Date nextBillingDate;
+
+    @Column(name = "transaction_code")
+    private String transactionCode;
+
+    @Column(name = "cancel_reason")
+    private String cancelReason;
+
+    @Column(name = "canceled_at")
+    private Timestamp canceledAt;
 
     @Column(name = "created_by")
     private String createdBy;

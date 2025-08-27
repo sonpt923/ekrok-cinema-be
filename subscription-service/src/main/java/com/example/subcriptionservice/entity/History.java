@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
@@ -20,6 +21,19 @@ public class History {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "subcription_id")
+    private Long subcriptionId;
 
+    @Column(name = "action")
+    private String action;
 
+    @Column(name = "actor")
+    private String actor;
+
+    @Column(name = "note")
+    private String note;
+
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+    
 }

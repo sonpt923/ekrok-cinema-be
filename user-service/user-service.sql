@@ -1,5 +1,4 @@
-CREATE
-DATABASE `user-service`;
+CREATE SCHEMA `user-service`;
 
 CREATE TABLE `user-service`.`new_table`
 (

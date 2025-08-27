@@ -1,0 +1,17 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: subcription-service
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: https://service-registry-n69h.onrender.com/eureka/
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+

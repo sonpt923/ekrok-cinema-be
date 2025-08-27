@@ -14,12 +14,12 @@
         <module name="user-service" />
         <module name="notification-service" />
         <module name="recommendation-service" />
+        <module name="saga-orchestration-service" />
         <module name="core" />
         <module name="payment-service" />
         <module name="schedule-service" />
         <module name="discount-service" />
         <module name="api-gateway" />
-        <module name="saga-service" />
         <module name="config-sever" />
         <module name="service-registry" />
       </profile>
@@ -36,26 +36,26 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="api-gateway" options="-parameters" />
-      <module name="config-sever" options="-parameters" />
+      <module name="api-gateway" options="" />
+      <module name="config-sever" options="" />
       <module name="core" options="-parameters" />
       <module name="department-service" options="-parameters" />
-      <module name="discount-service" options="-parameters" />
+      <module name="discount-service" options="" />
       <module name="discount-service (1)" options="-parameters" />
       <module name="discount-service (2)" options="-parameters" />
       <module name="employee-service" options="-parameters" />
       <module name="mail-service" options="-parameters" />
-      <module name="movie-service" options="-parameters" />
-      <module name="notification-service" options="-parameters" />
-      <module name="payment-service" options="-parameters" />
-      <module name="recommendation-service" options="-parameters" />
-      <module name="saga-service" options="-parameters" />
-      <module name="schedule-service" options="-parameters" />
-      <module name="service-registry" options="-parameters" />
-      <module name="streaming-service" options="-parameters" />
+      <module name="movie-service" options="" />
+      <module name="notification-service" options="" />
+      <module name="payment-service" options="" />
+      <module name="recommendation-service" options="" />
+      <module name="saga-orchestration-service" options="" />
+      <module name="schedule-service" options="" />
+      <module name="service-registry" options="" />
+      <module name="streaming-service" options="" />
       <module name="subcription-service" options="-parameters" />
       <module name="subscription-service" options="-parameters" />
-      <module name="user-service" options="-parameters" />
+      <module name="user-service" options="" />
     </option>
   </component>
 </project>

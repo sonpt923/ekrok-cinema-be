@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="subscription-service" />
         <module name="department-service" />
         <module name="streaming-service" />
         <module name="movie-service" />
@@ -19,7 +20,6 @@
         <module name="schedule-service" />
         <module name="discount-service" />
         <module name="api-gateway" />
-        <module name="subcription-service" />
         <module name="config-sever" />
         <module name="service-registry" />
       </profile>
@@ -31,7 +31,6 @@
       <module name="employee-service" target="17" />
       <module name="mail-service" target="11" />
       <module name="notify-service" target="17" />
-      <module name="subscription-service" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -53,7 +52,6 @@
       <module name="schedule-service" options="-parameters" />
       <module name="service-registry" options="-parameters" />
       <module name="streaming-service" options="-parameters" />
-      <module name="subcription-service" options="-parameters" />
       <module name="subscription-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>

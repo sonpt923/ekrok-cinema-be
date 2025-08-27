@@ -1,6 +1,6 @@
 spring:
   application:
-    name: subcription-service
+    name: subscription-service
   cloud:
     config:
       uri: https://config-sever.onrender.com/

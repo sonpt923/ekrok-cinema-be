@@ -74,7 +74,7 @@ public class AuthenServiceImpl implements AuthenService {
                     return new HashMap<>(Map.of("X-Authen-Key", key));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
                 throw new BusinessException(BaseConstant.ERORRS.SYSTEM, dic.get(""));
             }
         }

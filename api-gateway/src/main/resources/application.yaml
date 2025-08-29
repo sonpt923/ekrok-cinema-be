@@ -12,10 +12,10 @@ spring:
       time-to-live: 3000
   data:
     redis:
-      host: redis-10592.c1.ap-southeast-1-1.ec2.redns.redis-cloud.com
-      port: 10592
+      host: redis-12995.crce185.ap-seast-1-1.ec2.redns.redis-cloud.com
+      port: 12995
       username: default
-      password: RWw0Y29hak1Ec3dsaXlBUHZIa01SNUVtcFZKUmhZOFo=
+      password: d3dmbFdTeE5GTDFjSU4zUFdTRDE5eG05a3FPOG9GMFg=
       havePassword: "YES"
 kafka:
   server-config: localhost:9092
@@ -26,9 +26,9 @@ zuul:
     cinema-service:
       service-id: cinema-service
       path: /cinema/**
-    booking-service:
-      service-id: booking-service
-      path: /booking/**
+    subscription-service:
+      service-id: subscription-service
+      path: /subscription/**
     notification-service:
       service-id: notification-service
       path: /notification/**

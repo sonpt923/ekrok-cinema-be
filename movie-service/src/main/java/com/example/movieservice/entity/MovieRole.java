@@ -32,6 +32,6 @@ public class MovieRole {
     private Long movie;
 
     @Column(name = "role")
-    private Integer role;
+    private Long role;
 
 }

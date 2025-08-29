@@ -33,7 +33,7 @@ public class History {
     @Column(name = "note")
     private String note;
 
-    @Column(name = "created_at")
-    private Timestamp createdAt;
+    @Column(name = "action_time")
+    private Timestamp actionTime;
     
 }

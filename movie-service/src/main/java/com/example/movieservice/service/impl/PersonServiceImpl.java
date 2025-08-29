@@ -1,8 +1,9 @@
 package com.example.movieservice.service.impl;
 
+import com.example.core.dto.response.ListDataResponse;
 import com.example.movieservice.dto.request.PersonRequest;
 import com.example.movieservice.entity.Person;
-import com.example.movieservice.repository.PeopleRepository;
+import com.example.movieservice.repository.PersonRepository;
 import com.example.movieservice.service.CloudFlareService;
 import com.example.movieservice.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,24 +17,26 @@ public class PersonServiceImpl implements PersonService {
     private CloudFlareService cloudFlareService = new CloudFlareServiceImpl();
 
     @Autowired
-    private PeopleRepository peopleRepository;
+    private PersonRepository peopleRepository;
+
 
     @Override
-    @Transactional
-    public Person createPeople(Person request, String username) {
-        request.setCreatedBy(username);
-        return peopleRepository.save(request);
+    public Person createPeople(Person request) {
+        return null;
     }
 
     @Override
-    @Transactional
-    public Person updatePeople(Person request, String username) {
-        request.setUpdatedBy(username);
-        return peopleRepository.save(request);
+    public Person updatePeople(Person request) {
+        return null;
     }
 
     @Override
-    public ListResponse<Person> getPersonsByCondition(PersonRequest request) {
+    public ListDataResponse<Person> getPersons(PersonRequest request) {
+        return null;
+    }
+
+    @Override
+    public Person getPerson(Long id) {
         return null;
     }
 }

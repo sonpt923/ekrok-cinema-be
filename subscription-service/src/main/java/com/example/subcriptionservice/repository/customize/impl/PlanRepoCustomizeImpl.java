@@ -23,6 +23,7 @@ public class PlanRepoCustomizeImpl implements PlanRepoCustomize {
     public ListDataResponse<Object> getPlans(PlanRequest request) {
         StringBuilder str = new StringBuilder();
         Map<String, Object> params = new HashMap<>();
+        ListDataResponse<Object> plans = new ListDataResponse<>();
 
         str.append(" SELECT p.* FROM plan p WHERE 1 = 1 ");
 
@@ -31,6 +32,9 @@ public class PlanRepoCustomizeImpl implements PlanRepoCustomize {
             params.put("code", request.getCode());
         }
 
-        return null;
+
+
+
+        return plans;
     }
 }

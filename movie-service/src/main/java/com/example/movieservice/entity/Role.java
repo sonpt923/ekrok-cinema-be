@@ -1,22 +1,18 @@
 package com.example.movieservice.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.sql.Date;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "language")
+@Table(name = "role")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Language {
+@Builder
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,17 +25,20 @@ public class Language {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "created_by")
-    private String createdBy;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-    @Column(name = "updated_by")
-    private String updatedBy;
+    @Column(name = "created_by")
+    private String createdBy;
 
     @Column(name = "updated_at")
     private Timestamp updatedAt;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;

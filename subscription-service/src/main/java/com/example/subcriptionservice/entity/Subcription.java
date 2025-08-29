@@ -30,10 +30,10 @@ public class Subcription {
     private Long plan_id;
 
     @Column(name = "start_date")
-    private Timestamp startDate;
+    private Date startDate;
 
     @Column(name = "end_date")
-    private Timestamp endDate;
+    private Date endDate;
 
     @Column(name = "status")
     private Integer status;

@@ -27,7 +27,7 @@ public class PlanServiceImpl implements PlanService {
                 .duration(request.getDuration()).maxDevice(request.getMaxDevice())
                 .quality(request.getQuality()).resolution(request.getResolution())
                 .createdBy(request.getCreatedBy()).createdAt(null)
-                .parentId(request.getParentId()).build();
+                .planParentId(request.getParentId()).build();
         pack = planRepository.save(pack);
         return pack;
     }

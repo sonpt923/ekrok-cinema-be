@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "package")
+@Table(name = "plan")
 public class Plan {
 
     @Id
@@ -23,8 +23,8 @@ public class Plan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "parent_id")
-    private Long parentId;
+    @Column(name = "plan_parent_id")
+    private Long planParentId;
 
     @Column(name = "level")
     private Integer level;

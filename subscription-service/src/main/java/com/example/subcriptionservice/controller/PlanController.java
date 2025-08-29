@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/plan")
+@RestController
+@RequestMapping("/plan")
 public class PlanController {
 
     @Autowired
@@ -18,7 +19,7 @@ public class PlanController {
         return new ResponseEntity(planService.createPlan(request), HttpStatus.CREATED);
     }
 
-    @GetMapping("/get-plan")
+    @GetMapping("/get-plan/{id}")
     public ResponseEntity getPlan(@PathVariable("id") Long id) {
         return new ResponseEntity(planService.getPlan(id), HttpStatus.OK);
     }

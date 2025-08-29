@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "people")
@@ -52,16 +53,16 @@ public class Person {
     private String createdBy;
 
     @Column(name = "created_at")
-    private Date createdAt;
+    private Timestamp createdAt;
 
     @Column(name = "updated_by")
     private String updatedBy;
 
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private Timestamp updatedAt;
 
-    @Column(name = "delted_at")
-    private Date deletedAt;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
 
 }

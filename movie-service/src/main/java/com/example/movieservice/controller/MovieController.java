@@ -27,12 +27,17 @@ public class MovieController {
 
     @GetMapping("/get-movies")
     public ResponseEntity getMovies(@RequestBody MovieRequest request) {
-        return new ResponseEntity(movieService.getMovieBycondition(request), HttpStatus.OK);
+        return new ResponseEntity(movieService.getMovies(request), HttpStatus.OK);
+    }
+
+    @GetMapping("/get-movie/{id}")
+    public ResponseEntity getMovie(@RequestParam("id") Long id){
+        return new ResponseEntity(movieService.getMovie(id), HttpStatus.OK);
     }
 
     @DeleteMapping
-    public ResponseEntity deletedMovie(@RequestBody MovieRequest request) {
-        return new ResponseEntity(null, HttpStatus.OK);
+    public ResponseEntity deleteMovie(@RequestAttribute Long id) {
+        return new ResponseEntity(movieService.deleteMovie(id), HttpStatus.OK);
     }
 
 

@@ -10,6 +10,10 @@ public interface MovieService {
 
     Movie updateMovie(MovieRequest movieRequest, String username);
 
-    ListDataResponse<Object> getMovieBycondition(MovieRequest request);
+    Movie getMovie(Long id);
+
+    ListDataResponse<Movie> getMovies(MovieRequest request);
+
+    Object deleteMovie(Long id);
 
 }

@@ -1,7 +1,6 @@
 package com.example.movieservice.dto.request;
 
 import com.example.movieservice.entity.Genre;
-import com.example.movieservice.entity.Person;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,6 +31,6 @@ public class MovieRequest {
 
     private List<Genre> genres;
 
-    private List<PersonRequest> persons;
+    private List<CastRequest> persons;
 
 }

@@ -2,6 +2,7 @@ package com.example.movieservice.service.impl;
 
 import com.example.core.dto.response.ListDataResponse;
 import com.example.movieservice.dto.request.GenreRequest;
+import com.example.movieservice.entity.Cast;
 import com.example.movieservice.entity.Genre;
 import com.example.movieservice.repository.GenreRepository;
 import com.example.movieservice.repository.customize.GenreRepoCustom;
@@ -18,24 +19,29 @@ public class GenreServiceImpl implements GenreService {
     @Autowired
     private GenreRepoCustom genreRepoCustom;
 
+
     @Override
-    public Genre createGenre(Genre genre) {
+    public Genre createCast(GenreRequest request) {
         return null;
     }
 
     @Override
-    public Genre updateGenre(Genre genre) {
+    public Genre updateCast(GenreRequest request) {
         return null;
     }
 
     @Override
-    public ListDataResponse getGenres(GenreRequest request) {
-        return genreRepoCustom.getGenres(request);
-    }
-
-    @Override
-    public Genre getGenre(GenreRequest request) {
+    public ListDataResponse<Cast> getCasts(GenreRequest request) {
         return null;
     }
 
+    @Override
+    public Genre getCast(Long id) {
+        return null;
+    }
+
+    @Override
+    public Boolean deleteCast(Long id) {
+        return null;
+    }
 }

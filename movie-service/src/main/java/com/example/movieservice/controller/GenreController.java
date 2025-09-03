@@ -1,7 +1,10 @@
 package com.example.movieservice.controller;
 
+import com.example.core.annotation.RequireAuthor;
+import com.example.movieservice.dto.request.CastRequest;
 import com.example.movieservice.dto.request.GenreRequest;
 import com.example.movieservice.entity.Genre;
+import com.example.movieservice.service.CastService;
 import com.example.movieservice.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,29 +13,35 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/movie")
+@RequireAuthor
 public class GenreController {
 
     @Autowired
     private GenreService genreService;
 
-    @PostMapping("/create-genre")
-    public ResponseEntity createGenre(@RequestBody Genre genre) {
-        return new ResponseEntity(genreService.createGenre(genre), HttpStatus.OK);
+    @PostMapping("/create-cast")
+    public ResponseEntity createGenre(@RequestBody GenreRequest request, @RequestHeader("Authorization") String token) {
+        return new ResponseEntity(genreService.createCast(request), HttpStatus.CREATED);
     }
 
-    @PostMapping("/update-genre")
-    public ResponseEntity udpateGenre(@RequestBody Genre genre) {
-        return new ResponseEntity(genreService.updateGenre(genre), HttpStatus.OK);
+    @PostMapping("/update-cast")
+    public ResponseEntity updateGenre(@RequestBody GenreRequest request, @RequestHeader("Authorization") String token) {
+        return new ResponseEntity(genreService.updateCast(request), HttpStatus.OK);
     }
 
-    @PostMapping("/get-genres")
-    public ResponseEntity getGenres(@RequestBody GenreRequest request) {
-        return new ResponseEntity(genreService.getGenres(request), HttpStatus.OK);
+    @GetMapping("/get-cast/{id}")
+    public ResponseEntity getGenre(@PathVariable("id") Long id) {
+        return new ResponseEntity(genreService.getCast(id), HttpStatus.OK);
     }
 
-    @GetMapping("/get-genre")
-    public ResponseEntity getGenre(@RequestAttribute GenreRequest request){
-        return new ResponseEntity(genreService, HttpStatus.OK);
+    @GetMapping("/get-casts")
+    public ResponseEntity getGenres(@RequestAttribute GenreRequest request){
+        return new ResponseEntity(genreService.getCasts(request), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete-cast")
+    public ResponseEntity deleteGenre(@RequestAttribute("id") Long id){
+        return new ResponseEntity(genreService.deleteCast(id), HttpStatus.OK);
     }
 
 }

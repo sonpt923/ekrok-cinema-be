@@ -30,7 +30,17 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public ListDataResponse<Object> getMovieBycondition(MovieRequest request) {
+    public Movie getMovie(Long id) {
+        return null;
+    }
+
+    @Override
+    public ListDataResponse<Movie> getMovies(MovieRequest request) {
+        return null;
+    }
+
+    @Override
+    public Object deleteMovie(Long id) {
         return null;
     }
 

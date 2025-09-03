@@ -33,17 +33,21 @@ public class Movie {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "poster")
-    private String poster;
-
-    @Column(name = "trailer")
-    private String trailer;
-
     @Column(name = "age_restriction")
     private Integer ageRestriction;
 
     @Column(name = "duration")
     private Integer duration;
+
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "language")
+    private String language;
+
+    // MOVIE, EP ..
+    @Column(name = "type")
+    private String type;
 
     @Column(name = "status")
     private Integer status;

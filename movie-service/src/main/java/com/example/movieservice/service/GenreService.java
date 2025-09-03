@@ -1,17 +1,21 @@
 package com.example.movieservice.service;
 
 import com.example.core.dto.response.ListDataResponse;
+import com.example.movieservice.dto.request.CastRequest;
 import com.example.movieservice.dto.request.GenreRequest;
+import com.example.movieservice.entity.Cast;
 import com.example.movieservice.entity.Genre;
 
 public interface GenreService {
 
-    Genre createGenre(Genre genre);
+    Genre createCast(GenreRequest request);
 
-    Genre updateGenre(Genre genre);
+    Genre updateCast(GenreRequest request);
 
-    ListDataResponse<Object> getGenres(GenreRequest request);
+    ListDataResponse<Cast> getCasts(GenreRequest request);
 
-    Genre getGenre(GenreRequest request);
+    Genre getCast(Long id);
+
+    Boolean deleteCast(Long id);
 
 }

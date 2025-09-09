@@ -16,27 +16,27 @@ public class RoleController {
 
     @PostMapping("/create-role")
     public ResponseEntity createMovie(@RequestBody RoleRequest request, @RequestHeader String username) {
-        return new ResponseEntity(roleService.createMovie(request, username), HttpStatus.OK);
+        return new ResponseEntity(roleService.createRole(request), HttpStatus.OK);
     }
 
     @PostMapping("/update-movie")
     public ResponseEntity updateMovie(@RequestBody RoleRequest request, @RequestHeader String username) {
-        return new ResponseEntity(roleService.updateMovie(request, username), HttpStatus.OK);
+        return new ResponseEntity(roleService.updateRole(request), HttpStatus.OK);
     }
 
     @GetMapping("/get-movies")
     public ResponseEntity getMovies(@RequestBody RoleRequest request) {
-        return new ResponseEntity(roleService.getMovies(request), HttpStatus.OK);
+        return new ResponseEntity(roleService.getRoles(request), HttpStatus.OK);
     }
 
     @GetMapping("/get-movie/{id}")
     public ResponseEntity getMovie(@RequestParam("id") Long id) {
-        return new ResponseEntity(roleService.getMovie(id), HttpStatus.OK);
+        return new ResponseEntity(roleService.getRole(id), HttpStatus.OK);
     }
 
     @DeleteMapping
     public ResponseEntity deleteMovie(@RequestAttribute Long id) {
-        return new ResponseEntity(roleService.deleteMovie(id), HttpStatus.OK);
+        return new ResponseEntity(roleService.deleteRole(id), HttpStatus.OK);
     }
 
 }

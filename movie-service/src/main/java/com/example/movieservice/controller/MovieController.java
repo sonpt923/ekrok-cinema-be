@@ -31,7 +31,7 @@ public class MovieController {
     }
 
     @GetMapping("/get-movie/{id}")
-    public ResponseEntity getMovie(@RequestParam("id") Long id){
+    public ResponseEntity getMovie(@PathVariable("id") Long id){
         return new ResponseEntity(movieService.getMovie(id), HttpStatus.OK);
     }
 

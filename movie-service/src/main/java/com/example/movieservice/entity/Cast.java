@@ -16,7 +16,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "people")
+@Table(name = "cast")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -45,9 +45,6 @@ public class Cast {
 
     @Column(name = "birth_date")
     private Date birthDate;
-
-    @Column(name = "status")
-    private Integer status;
 
     @Column(name = "created_by")
     private String createdBy;

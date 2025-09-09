@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: movie-service
+  cloud:
+    config:
+      uri: https://config-sever.onrender.com/
+      fail-fast: true
+      retry:
+        initial-interval: 2000
+        max-interval: 10000
+        max-attempts: 5
+        multiplier: 1.5
+      request-connect-timeout: 5000
+      request-read-timeout: 10000

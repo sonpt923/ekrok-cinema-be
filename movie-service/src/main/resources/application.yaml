@@ -10,8 +10,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    show-sql: false
+      ddl-auto: none
+    show-sql: true
   cache:
     type: redis
     redis:
@@ -20,11 +20,11 @@ spring:
       time-to-live: 3000
   data:
     redis:
-      host: redis-10592.c1.ap-southeast-1-1.ec2.redns.redis-cloud.com
-      port: 10592
+      host: redis-12995.crce185.ap-seast-1-1.ec2.redns.redis-cloud.com
+      port: 12995
       username: default
-      password: El4coajMDswliyAPvHkMR5EmpVJRhY8Z
-      ssl: true
+      password: d3dmbFdTeE5GTDFjSU4zUFdTRDE5eG05a3FPOG9GMFg=
+      havePassword: "YES"
 cloudflare:
   r2:
     access-key-id: NDg5MDEwY2MyNTc3NWY0M2IxMTMxNWRhOGM5ZThlY2Y=

@@ -1,7 +1,9 @@
 package com.example.movieservice.security;
 
 import com.example.core.service.AuthorizationService;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AuthorizationServiceImpl implements AuthorizationService {
     @Override
     public boolean checkPermission(String token, String method, String path) {

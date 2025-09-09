@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Data
@@ -16,6 +16,16 @@ public class MovieRequest {
     private String code;
 
     private String title;
+
+    private String poster;
+
+    private String trailer;
+
+    private String country;
+
+    private String language;
+
+    private String type;
 
     private Integer ageRestriction;
 
@@ -29,8 +39,10 @@ public class MovieRequest {
 
     private int pageSize;
 
-    private List<Genre> genres;
+    private List<GenreRequest> genreRequests;
 
-    private List<CastRequest> persons;
+    private List<CastRequest> CastRequest;
+
+
 
 }

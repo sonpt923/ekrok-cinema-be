@@ -2,6 +2,7 @@ package com.example.movieservice.repository.customize.impl;
 
 import com.example.core.dto.response.ListDataResponse;
 import com.example.movieservice.dto.request.GenreRequest;
+import com.example.movieservice.entity.Genre;
 import com.example.movieservice.repository.customize.GenreRepoCustom;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,7 @@ public class GenreRepoCustomImpl implements GenreRepoCustom {
 
 
     @Override
-    public ListDataResponse<Object> getGenres(GenreRequest request) {
+    public ListDataResponse<Genre> getGenres(GenreRequest request) {
         return null;
     }
 }

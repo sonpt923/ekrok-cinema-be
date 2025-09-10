@@ -21,27 +21,40 @@ public class GenreServiceImpl implements GenreService {
 
 
     @Override
-    public Genre createCast(GenreRequest request) {
+    public Genre createGenre(GenreRequest request) {
         return null;
     }
 
     @Override
-    public Genre updateCast(GenreRequest request) {
+    public Genre updateGenre(GenreRequest request) {
         return null;
     }
 
     @Override
-    public ListDataResponse<Cast> getCasts(GenreRequest request) {
+    public ListDataResponse<Cast> getGenres(GenreRequest request) {
         return null;
     }
 
     @Override
-    public Genre getCast(Long id) {
+    public Genre getGenre(Long id) {
         return null;
     }
 
     @Override
-    public Boolean deleteCast(Long id) {
+    public Boolean deleteGenre(Long id) {
         return null;
     }
+
+    private void validateCreateGenre(GenreRequest request){
+
+    }
+
+    private void validateUpdateGenre(GenreRequest request){
+
+    }
+
+    private void validateGenre(GenreRequest request){
+
+    }
+
 }

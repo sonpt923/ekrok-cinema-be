@@ -19,29 +19,29 @@ public class GenreController {
     @Autowired
     private GenreService genreService;
 
-    @PostMapping("/create-cast")
+    @PostMapping("/create-genre")
     public ResponseEntity createGenre(@RequestBody GenreRequest request, @RequestHeader("Authorization") String token) {
-        return new ResponseEntity(genreService.createCast(request), HttpStatus.CREATED);
+        return new ResponseEntity(genreService.createGenre(request), HttpStatus.CREATED);
     }
 
-    @PostMapping("/update-cast")
+    @PostMapping("/update-genre")
     public ResponseEntity updateGenre(@RequestBody GenreRequest request, @RequestHeader("Authorization") String token) {
-        return new ResponseEntity(genreService.updateCast(request), HttpStatus.OK);
+        return new ResponseEntity(genreService.updateGenre(request), HttpStatus.OK);
     }
 
-    @GetMapping("/get-cast/{id}")
-    public ResponseEntity getGenre(@PathVariable("id") Long id) {
-        return new ResponseEntity(genreService.getCast(id), HttpStatus.OK);
+    @GetMapping("/get-genre}")
+    public ResponseEntity getGenre(@RequestParam("id") Long id) {
+        return new ResponseEntity(genreService.getGenre(id), HttpStatus.OK);
     }
 
-    @GetMapping("/get-casts")
+    @GetMapping("/get-genres")
     public ResponseEntity getGenres(@RequestAttribute GenreRequest request){
-        return new ResponseEntity(genreService.getCasts(request), HttpStatus.OK);
+        return new ResponseEntity(genreService.getGenres(request), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete-cast")
-    public ResponseEntity deleteGenre(@RequestAttribute("id") Long id){
-        return new ResponseEntity(genreService.deleteCast(id), HttpStatus.OK);
+    @DeleteMapping("/delete-genre")
+    public ResponseEntity deleteGenre(@RequestParam("id") Long id){
+        return new ResponseEntity(genreService.deleteGenre(id), HttpStatus.OK);
     }
 
 }

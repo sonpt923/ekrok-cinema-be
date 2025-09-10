@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -34,6 +35,14 @@ public class MovieRequest {
     private Integer status;
 
     private Date releaseDate;
+
+    private String createdBy;
+
+    private Timestamp createdAt;
+
+    private String updatedBy;
+
+    private Timestamp updatedAt;
 
     private int page;
 

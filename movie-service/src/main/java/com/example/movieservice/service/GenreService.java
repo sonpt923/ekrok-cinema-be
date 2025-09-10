@@ -8,14 +8,14 @@ import com.example.movieservice.entity.Genre;
 
 public interface GenreService {
 
-    Genre createCast(GenreRequest request);
+    Genre createGenre(GenreRequest request);
 
-    Genre updateCast(GenreRequest request);
+    Genre updateGenre(GenreRequest request);
 
-    ListDataResponse<Cast> getCasts(GenreRequest request);
+    ListDataResponse<Cast> getGenres(GenreRequest request);
 
-    Genre getCast(Long id);
+    Genre getGenre(Long id);
 
-    Boolean deleteCast(Long id);
+    Boolean deleteGenre(Long id);
 
 }

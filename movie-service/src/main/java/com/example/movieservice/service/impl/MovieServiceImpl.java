@@ -3,10 +3,15 @@ package com.example.movieservice.service.impl;
 import com.example.core.dto.response.ListDataResponse;
 import com.example.core.exception.ValidateException;
 import com.example.core.utils.ObjectUtil;
+import com.example.movieservice.dto.request.CastRequest;
+import com.example.movieservice.dto.request.GenreRequest;
 import com.example.movieservice.dto.request.MovieRequest;
+import com.example.movieservice.dto.request.RoleRequest;
 import com.example.movieservice.entity.Movie;
 import com.example.movieservice.repository.MovieRepository;
+import com.example.movieservice.repository.customize.MovieRepoCustom;
 import com.example.movieservice.service.MovieGenreService;
+import com.example.movieservice.service.MovieRolesService;
 import com.example.movieservice.service.MovieService;
 import com.example.movieservice.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +27,13 @@ public class MovieServiceImpl implements MovieService {
     private MovieRepository movieRepository;
 
     @Autowired
+    private MovieRepoCustom movieRepoCustom;
+
+    @Autowired
     private MovieGenreService movieGenreService;
+
+    @Autowired
+    private MovieRolesService movieRolesService;
 
     @Override
     @Transactional
@@ -36,11 +47,19 @@ public class MovieServiceImpl implements MovieService {
                 .releaseDate(movieRequest.getReleaseDate()).createdBy(username)
                 .createdAt(new Timestamp(System.currentTimeMillis())).isDeleted(false)
                 .build();
-        movieRepository.save(movie);
+       movie = movieRepository.save(movie);
+       for(GenreRequest genre : movieRequest.getGenreRequests()){
+
+       }
+
+       for(CastRequest cast : movieRequest.getCastRequest()){
+
+       }
         return null;
     }
 
     @Override
+    @Transactional
     public Movie updateMovie(MovieRequest movieRequest, String username) {
         validateUpdate(movieRequest);
         return null;
@@ -49,7 +68,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Movie getMovie(Long id) {
         Movie movie = movieRepository.findByIdAndIsDeleted(id, false);
-        if (ObjectUtil.objectIsNullorEmpty(movie)){
+        if (ObjectUtil.objectIsNullorEmpty(movie)) {
             throw new ValidateException("API001", "can't find movie by id");
         }
         return movie;
@@ -57,12 +76,19 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public ListDataResponse<Movie> getMovies(MovieRequest request) {
-        return null;
+        validateGetMovies(request);
+        return movieRepoCustom.getMovies(request);
     }
 
     @Override
+    @Transactional
     public Object deleteMovie(Long id) {
-        return null;
+        Movie movie = movieRepository.findByIdAndIsDeleted(id, false);
+        if (ObjectUtil.objectIsNullorEmpty(movie)) {
+            throw new ValidateException("API001", "can't find movie by id");
+        }
+        movie.setIsDeleted(true);
+        return movieRepository.save(movie);
     }
 
     private void validateCreate(MovieRequest request) {
@@ -123,7 +149,11 @@ public class MovieServiceImpl implements MovieService {
         }
     }
 
-    private void validateUpdate(MovieRequest movieRequest){
+    private void validateUpdate(MovieRequest movieRequest) {
+
+    }
+
+    private void validateGetMovies(MovieRequest request) {
 
     }
 }

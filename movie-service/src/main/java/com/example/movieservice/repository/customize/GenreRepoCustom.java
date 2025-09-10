@@ -2,9 +2,10 @@ package com.example.movieservice.repository.customize;
 
 import com.example.core.dto.response.ListDataResponse;
 import com.example.movieservice.dto.request.GenreRequest;
+import com.example.movieservice.entity.Genre;
 
 public interface GenreRepoCustom {
 
-    ListDataResponse<Object> getGenres(GenreRequest request);
+    ListDataResponse<Genre> getGenres(GenreRequest request);
 
 }

@@ -25,13 +25,17 @@ public class MovieRole {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "id_person")
-    private Long person;
+    @Column(name = "cast_id")
+    private Long castId;
 
-    @Column(name = "id_movie")
-    private Long movie;
+    @Column(name = "movie_id")
+    private Long movieId;
 
-    @Column(name = "role")
-    private Long role;
+    @Column(name = "role_id")
+    private Long roleId;
+
+    // neu la dien vien thi day la ten nhan vat
+    @Column(name = "character_name")
+    private String chracterName;
 
 }

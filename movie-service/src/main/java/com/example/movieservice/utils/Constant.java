@@ -29,4 +29,17 @@ public class Constant {
     public static final String TRAILER_FOLDER = "trailer/";
 
     public static final String DROPDOWN_FOLDER = "dropback/";
+
+
+    public interface TYPE {
+        String MOVIE = "MV";
+
+        String EPOSIDE = "EP";
+    }
+    public interface START_CODE {
+        String CAST = "CAST";
+
+    }
+
+
 }

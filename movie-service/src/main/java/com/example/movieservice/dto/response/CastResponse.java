@@ -1,15 +1,17 @@
-package com.example.movieservice.dto.request;
+package com.example.movieservice.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.sql.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonRequest {
-
-    private Long id;
+@Builder
+public class CastResponse {
 
     private String code;
 
@@ -18,6 +20,12 @@ public class PersonRequest {
     private String image;
 
     private String name;
+
+    private Integer gender;
+
+    private String biography;
+
+    private Date birthDate;
 
     private Integer status;
 

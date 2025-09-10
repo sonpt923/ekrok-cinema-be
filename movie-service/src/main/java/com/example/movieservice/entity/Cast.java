@@ -1,6 +1,9 @@
 package com.example.movieservice.entity;
 
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -13,10 +16,12 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "language")
+@Table(name = "cast")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Language {
+@Builder
+public class Cast {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +31,20 @@ public class Language {
     @Column(name = "code")
     private String code;
 
+    @Column(name = "image")
+    private String image;
+
     @Column(name = "name")
     private String name;
+
+    @Column(name = "gender")
+    private Integer gender;
+
+    @Column(name = "biography")
+    private String biography;
+
+    @Column(name = "birth_date")
+    private Date birthDate;
 
     @Column(name = "created_by")
     private String createdBy;
@@ -43,5 +60,6 @@ public class Language {
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
+
 
 }

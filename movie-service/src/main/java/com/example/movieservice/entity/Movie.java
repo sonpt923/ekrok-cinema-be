@@ -45,6 +45,16 @@ public class Movie {
     @Column(name = "duration")
     private Integer duration;
 
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "language")
+    private String language;
+
+    // MOVIE, EP ..
+    @Column(name = "type")
+    private String type;
+
     @Column(name = "status")
     private Integer status;
 

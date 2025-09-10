@@ -1,12 +1,12 @@
 package com.example.movieservice.dto.request;
 
 import com.example.movieservice.entity.Genre;
-import com.example.movieservice.entity.Person;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -18,6 +18,16 @@ public class MovieRequest {
 
     private String title;
 
+    private String poster;
+
+    private String trailer;
+
+    private String country;
+
+    private String language;
+
+    private String type;
+
     private Integer ageRestriction;
 
     private Integer duration;
@@ -26,12 +36,22 @@ public class MovieRequest {
 
     private Date releaseDate;
 
+    private String createdBy;
+
+    private Timestamp createdAt;
+
+    private String updatedBy;
+
+    private Timestamp updatedAt;
+
     private int page;
 
     private int pageSize;
 
-    private List<Genre> genres;
+    private List<GenreRequest> genreRequests;
 
-    private List<PersonRequest> persons;
+    private List<CastRequest> CastRequest;
+
+
 
 }

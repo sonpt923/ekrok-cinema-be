@@ -3,10 +3,7 @@ package com.example.movieservice.service.impl;
 import com.example.core.dto.response.ListDataResponse;
 import com.example.core.exception.ValidateException;
 import com.example.core.utils.ObjectUtil;
-import com.example.movieservice.dto.request.CastRequest;
-import com.example.movieservice.dto.request.GenreRequest;
 import com.example.movieservice.dto.request.MovieRequest;
-import com.example.movieservice.dto.request.RoleRequest;
 import com.example.movieservice.entity.Movie;
 import com.example.movieservice.repository.MovieRepository;
 import com.example.movieservice.repository.customize.MovieRepoCustom;
@@ -35,6 +32,7 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     private MovieRolesService movieRolesService;
 
+
     @Override
     @Transactional
     public Object createMovie(MovieRequest movieRequest, String username) {
@@ -45,17 +43,11 @@ public class MovieServiceImpl implements MovieService {
                 .country(movieRequest.getCountry()).language(movieRequest.getLanguage())
                 .type(movieRequest.getType()).status(movieRequest.getStatus())
                 .releaseDate(movieRequest.getReleaseDate()).createdBy(username)
-                .createdAt(new Timestamp(System.currentTimeMillis())).isDeleted(false)
-                .build();
-       movie = movieRepository.save(movie);
-       for(GenreRequest genre : movieRequest.getGenreRequests()){
-
-       }
-
-       for(CastRequest cast : movieRequest.getCastRequest()){
-
-       }
-        return null;
+                .createdAt(new Timestamp(System.currentTimeMillis())).isDeleted(false).build();
+        movieRepository.save(movie);
+        movieGenreService.createBatchMovieGenre(null, movie);
+        movieRolesService.createBatchMovieRole(null, movie);
+        return movie;
     }
 
     @Override
@@ -76,18 +68,18 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public ListDataResponse<Movie> getMovies(MovieRequest request) {
+        request.setIsDeleted(false);
         validateGetMovies(request);
         return movieRepoCustom.getMovies(request);
     }
 
     @Override
     @Transactional
-    public Object deleteMovie(Long id) {
-        Movie movie = movieRepository.findByIdAndIsDeleted(id, false);
-        if (ObjectUtil.objectIsNullorEmpty(movie)) {
-            throw new ValidateException("API001", "can't find movie by id");
-        }
+    public Object deleteMovie(Long id, String username) {
+        Movie movie = this.getMovie(id);
         movie.setIsDeleted(true);
+        movie.setUpdatedBy(username);
+        movie.setUpdatedAt(null);
         return movieRepository.save(movie);
     }
 

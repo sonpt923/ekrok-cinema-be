@@ -44,6 +44,8 @@ public class MovieRequest {
 
     private Timestamp updatedAt;
 
+    private Boolean isDeleted;
+
     private int page;
 
     private int pageSize;

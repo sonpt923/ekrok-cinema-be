@@ -78,9 +78,9 @@ public class SecurityFilterChain extends OncePerRequestFilter {
                 throw new BusinessException(BaseConstant.ERORRS.LOGIC, String.format(dic.get("GW-007")));
             }
 
-            request.setAttribute("X-Username", username);
-            request.setAttribute("X-User-Id", userId);
-            request.setAttribute("X-Session-Key", redisKey);
+            request.setAttribute("username", username);
+            request.setAttribute("userId", userId);
+            request.setAttribute("sessionkey", redisKey);
 
             log.info("Authenticated user: {} with token={}", username, token);
         }

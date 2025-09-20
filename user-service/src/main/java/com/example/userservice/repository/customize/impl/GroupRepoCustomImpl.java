@@ -147,10 +147,11 @@ public class GroupRepoCustomImpl implements GroupRepoCustom {
         }
 
 
-        query = entityManager.createQuery(sql.toString());
+        query = entityManager.createNativeQuery(sql.toString());
         params.forEach(query::setParameter);
+        Long totalRecord = Long.valueOf(query.getSingleResult().toString());
+        listDataResponse.setTotalRecord(totalRecord);
 
-        listDataResponse.setTotalRecord(Long.valueOf((String) query.getSingleResult()));
         return listDataResponse;
     }
 }

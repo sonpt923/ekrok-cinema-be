@@ -20,13 +20,13 @@ public class GenreController {
     private GenreService genreService;
 
     @PostMapping("/create-genre")
-    public ResponseEntity createGenre(@RequestBody GenreRequest request, @RequestHeader("Authorization") String token) {
-        return new ResponseEntity(genreService.createGenre(request), HttpStatus.CREATED);
+    public ResponseEntity createGenre(@RequestBody GenreRequest request, @RequestHeader("username") String username) {
+        return new ResponseEntity(genreService.createGenre(request, username), HttpStatus.CREATED);
     }
 
     @PostMapping("/update-genre")
-    public ResponseEntity updateGenre(@RequestBody GenreRequest request, @RequestHeader("Authorization") String token) {
-        return new ResponseEntity(genreService.updateGenre(request), HttpStatus.OK);
+    public ResponseEntity updateGenre(@RequestBody GenreRequest request, @RequestAttribute("username") String username) {
+        return new ResponseEntity(genreService.updateGenre(request, username), HttpStatus.OK);
     }
 
     @GetMapping("/get-genre}")
@@ -35,13 +35,13 @@ public class GenreController {
     }
 
     @GetMapping("/get-genres")
-    public ResponseEntity getGenres(@RequestAttribute GenreRequest request){
+    public ResponseEntity getGenres(@RequestParam GenreRequest request){
         return new ResponseEntity(genreService.getGenres(request), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete-genre")
-    public ResponseEntity deleteGenre(@RequestParam("id") Long id){
-        return new ResponseEntity(genreService.deleteGenre(id), HttpStatus.OK);
+    public ResponseEntity deleteGenre(@RequestParam("id") Long id, @RequestAttribute("username") String username){
+        return new ResponseEntity(genreService.deleteGenre(id, username), HttpStatus.OK);
     }
 
 }

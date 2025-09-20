@@ -4,6 +4,7 @@ import com.example.core.dto.response.ListDataResponse;
 import com.example.core.exception.ValidateException;
 import com.example.movieservice.dto.request.CastRequest;
 import com.example.movieservice.entity.Cast;
+import com.example.movieservice.entity.Movie;
 import com.example.movieservice.repository.CastRepository;
 import com.example.movieservice.repository.customize.CastRepoCustom;
 import com.example.movieservice.service.CastService;
@@ -12,13 +13,11 @@ import com.example.movieservice.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class CastServiceImpl implements CastService {
-
-    @Autowired
-    private CloudFlareService cloudFlareService;
 
     @Autowired
     private CastRepository castRepository;
@@ -28,7 +27,7 @@ public class CastServiceImpl implements CastService {
 
 
     @Override
-    public Cast createCast(CastRequest request) {
+    public Cast createCast(CastRequest request, String username) {
         validateCreateCast(request);
         String pathImage = "";
         Cast cast = Cast.builder()
@@ -39,7 +38,7 @@ public class CastServiceImpl implements CastService {
     }
 
     @Override
-    public Cast updateCast(CastRequest request) {
+    public Cast updateCast(CastRequest request, String username) {
         validateUpdateCast(request);
         return null;
     }
@@ -60,7 +59,7 @@ public class CastServiceImpl implements CastService {
     }
 
     @Override
-    public Boolean deleteCast(Long id) {
+    public Boolean deleteCast(Long id, String username) {
         return null;
     }
 

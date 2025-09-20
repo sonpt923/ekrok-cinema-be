@@ -14,6 +14,6 @@ public interface MovieService {
 
     ListDataResponse<Movie> getMovies(MovieRequest request);
 
-    Object deleteMovie(Long id);
+    Object deleteMovie(Long id, String username);
 
 }

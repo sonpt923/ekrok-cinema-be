@@ -1,0 +1,63 @@
+import pandas as pd
+df = pd.read_csv('online_shoppers_intention.csv')
+
+df.info()
+df.head()
+
+
+import matplotlib.pyplot as plt
+
+#vẽ ví dụ biểu đồ
+plt.figure(figsize=(8,6))
+plt.hist(df['Administrative_Duration'], bins=30, color='skyblue', edgecolor='black')
+plt.title('Phân bố thời lượng truy cập')
+plt.xlabel('Thời lượng')
+plt.ylabel('Số lần truy cập')
+plt.grid(True)
+plt.show()
+
+
+import numpy as np
+import seaborn as sns
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+
+
+# chuyển text sang số cho đỡ sai
+le = LabelEncoder()
+df['Month'] = le.fit_transform(df['Month'])
+df['VisitorType'] = le.fit_transform(df['VisitorType'])
+df['Weekend'] = df['Weekend'].astype(int)
+df['Revenue'] = df['Revenue'].astype(int)
+
+X = df.drop('Revenue', axis=1)
+y = df['Revenue']
+
+# Chuẩn hóa
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Chia train test 80-20, bình thường hay chia thế
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+
+#train
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+#đánh giá
+y_pred = model.predict(X_test)
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("\nClassification:\n", classification_report(y_test, y_pred))
+
+# mt nhầm lẫn confu
+plt.figure(figsize=(5,4))
+sns.heatmap(confusion_matrix(y_test, y_pred), annot=True, fmt='d', cmap='Blues')
+plt.title("Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
